@@ -1,0 +1,90 @@
+[gd_scene load_steps=13 format=3 uid="uid://c4y5ipx1wva21"]
+
+[ext_resource type="Script" path="res://Objects/Characters/Nitro/Nitro.cs" id="1_g5dot"]
+[ext_resource type="Texture2D" uid="uid://dld8wgs2drbhq" path="res://Objects/Characters/Nitro/nitro-red-walking-Sheet.png" id="1_mrnoq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_opaee"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(0, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdgyp"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(44, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86fgd"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(88, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pp0v6"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(132, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ciq86"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(176, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjl40"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(220, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y81c"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(264, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2rok"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(308, 0, 44, 44)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4jddo"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_opaee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdgyp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_86fgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pp0v6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ciq86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjl40")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8y81c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2rok")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mm4ra"]
+radius = 5.0
+height = 36.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_g5dot")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -21)
+sprite_frames = SubResource("SpriteFrames_4jddo")
+animation = &"walking"
+frame_progress = 0.831055
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -18)
+shape = SubResource("CapsuleShape2D_mm4ra")
