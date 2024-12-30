@@ -1,18 +1,60 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgqvpwelbpjjl"]
+[gd_scene load_steps=9 format=3 uid="uid://bgqvpwelbpjjl"]
 
 [ext_resource type="Texture2D" uid="uid://curx4rv8nsi4n" path="res://Levels/Mission001/Mission001.png" id="1_wft4v"]
 [ext_resource type="PackedScene" uid="uid://c4y5ipx1wva21" path="res://Objects/Characters/Nitro/Nitro.tscn" id="2_62u0d"]
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_lda0o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xkl01"]
+size = Vector2(1088, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wshp"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d27ai"]
+size = Vector2(1536, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdwu"]
+size = Vector2(128, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ucpu2"]
+size = Vector2(32, 16)
+
 [node name="Mission001" type="Node2D"]
 
 [node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(2736.75, 527.75)
+scale = Vector2(5470.5, 1056.5)
+texture = SubResource("CanvasTexture_lda0o")
+
+[node name="MainLevel" type="Node2D" parent="."]
+
+[node name="MainSprite" type="Sprite2D" parent="MainLevel"]
 position = Vector2(2736, 528)
 texture = ExtResource("1_wft4v")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="CeilingFloorAndWalls" type="StaticBody2D" parent="MainLevel"]
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PackedVector2Array(448, 448, 448, 368, 672, 368, 672, 352, 704, 352, 704, 368, 1088, 368, 1088, 448, 960, 448, 960, 496, 1088, 496, 1088, 544, 1216, 544, 1216, 496, 1408, 496, 1408, 640, 448, 640)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MainLevel/CeilingFloorAndWalls"]
+position = Vector2(544, 408)
+shape = SubResource("RectangleShape2D_xkl01")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MainLevel/CeilingFloorAndWalls"]
+position = Vector2(688, 360)
+shape = SubResource("RectangleShape2D_7wshp")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="MainLevel/CeilingFloorAndWalls"]
+position = Vector2(1344, 128)
+shape = SubResource("RectangleShape2D_d27ai")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="MainLevel/CeilingFloorAndWalls"]
+position = Vector2(512, 224)
+shape = SubResource("RectangleShape2D_ijdwu")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="MainLevel/CeilingFloorAndWalls"]
+position = Vector2(560, 8)
+shape = SubResource("RectangleShape2D_ucpu2")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_62u0d")]
 position = Vector2(552, 320)
