@@ -89,7 +89,7 @@ public class NitroTest
     {
         // Arrange
         var (nitro, nitroBehavior) = new NitroBuilder()
-            .WithMainAnimatedSprite(new AnimatedSprite2D())
+            .WithAnimations(new AnimatedSprite2D())
             .WithGravity(new Vector2(0, 1000))
             .WithButtonPressedAndHeld("D_Pad_Left")
             .WithOnFloor(true)
@@ -101,7 +101,7 @@ public class NitroTest
         // Assert
         nitro.Velocity.X.Should().BeLessThan(0);
         nitro.Velocity.Y.Should().Be(0);
-        nitro.MainAnimatedSprite.Scale.X.Should().Be(-1);
+        nitro.NitroAnimations.Scale.X.Should().Be(-1);
         
         nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
     }
@@ -111,7 +111,7 @@ public class NitroTest
     {
         // Arrange
         var (nitro, nitroBehavior) = new NitroBuilder()
-            .WithMainAnimatedSprite(new AnimatedSprite2D())
+            .WithAnimations(new AnimatedSprite2D())
             .WithGravity(new Vector2(0, 1000))
             .WithButtonPressedAndHeld("D_Pad_Right")
             .WithOnFloor(true)
@@ -123,7 +123,7 @@ public class NitroTest
         // Assert
         nitro.Velocity.X.Should().BeGreaterThan(0);
         nitro.Velocity.Y.Should().Be(0);
-        nitro.MainAnimatedSprite.Scale.X.Should().Be(1);
+        nitro.NitroAnimations.Scale.X.Should().Be(1);
         
         nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
     }

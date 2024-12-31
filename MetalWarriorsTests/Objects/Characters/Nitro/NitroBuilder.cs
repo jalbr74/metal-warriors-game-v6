@@ -52,9 +52,9 @@ public class NitroBuilder
         return this;
     }
 
-    public NitroBuilder WithMainAnimatedSprite(AnimatedSprite2D mainAnimatedSprite)
+    public NitroBuilder WithAnimations(AnimatedSprite2D animations)
     {
-        _nitro.Object.MainAnimatedSprite = mainAnimatedSprite;
+        _nitro.Object.NitroAnimations = animations;
         
         return this;
     }

@@ -1,7 +1,59 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4y5ipx1wva21"]
+[gd_scene load_steps=29 format=3 uid="uid://c4y5ipx1wva21"]
 
 [ext_resource type="Script" path="res://Objects/Characters/Nitro/Nitro.cs" id="1_g5dot"]
 [ext_resource type="Texture2D" uid="uid://dld8wgs2drbhq" path="res://Objects/Characters/Nitro/nitro-red-walking-Sheet.png" id="1_mrnoq"]
+[ext_resource type="Texture2D" uid="uid://ceh3ig7i3xkr7" path="res://Objects/Characters/Nitro/nitro_red_falling.png" id="2_hxpym"]
+[ext_resource type="Texture2D" uid="uid://c0jolw6a30ux1" path="res://Objects/Characters/Nitro/nitro_red_flying.png" id="3_bnnru"]
+[ext_resource type="Texture2D" uid="uid://btmd78k8t1cm7" path="res://Objects/Characters/Nitro/nitro_red_landing.png" id="4_davsn"]
+[ext_resource type="Texture2D" uid="uid://d2j1rroy2qpo2" path="res://Objects/Characters/Nitro/nitro_red_launching.png" id="5_rmckq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mhxt"]
+atlas = ExtResource("3_bnnru")
+region = Rect2(0, 0, 41, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g5tk5"]
+atlas = ExtResource("3_bnnru")
+region = Rect2(41, 0, 41, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i36by"]
+atlas = ExtResource("3_bnnru")
+region = Rect2(82, 0, 41, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxdci"]
+atlas = ExtResource("3_bnnru")
+region = Rect2(123, 0, 41, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bs54"]
+atlas = ExtResource("1_mrnoq")
+region = Rect2(176, 0, 44, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bd5i4"]
+atlas = ExtResource("4_davsn")
+region = Rect2(0, 0, 35, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4h3ne"]
+atlas = ExtResource("4_davsn")
+region = Rect2(35, 0, 35, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7gg2w"]
+atlas = ExtResource("4_davsn")
+region = Rect2(70, 0, 35, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spt3t"]
+atlas = ExtResource("4_davsn")
+region = Rect2(105, 0, 35, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_071qk"]
+atlas = ExtResource("5_rmckq")
+region = Rect2(0, 0, 46, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1drfv"]
+atlas = ExtResource("5_rmckq")
+region = Rect2(46, 0, 46, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jfo7s"]
+atlas = ExtResource("5_rmckq")
+region = Rect2(92, 0, 46, 50)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_opaee"]
 atlas = ExtResource("1_mrnoq")
@@ -37,9 +89,68 @@ region = Rect2(308, 0, 44, 44)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4jddo"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hxpym")
+}],
+"loop": true,
+"name": &"falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6mhxt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g5tk5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i36by")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxdci")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 13.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bs54")
+}],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bd5i4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4h3ne")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7gg2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_spt3t")
+}],
+"loop": true,
+"name": &"landing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_071qk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1drfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jfo7s")
+}],
+"loop": true,
+"name": &"launching",
 "speed": 5.0
 }, {
 "frames": [{
@@ -69,21 +180,21 @@ animations = [{
 }],
 "loop": true,
 "name": &"walking",
-"speed": 5.0
+"speed": 1.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mm4ra"]
 radius = 5.0
 height = 36.0
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="Nitro" type="CharacterBody2D"]
 script = ExtResource("1_g5dot")
 
-[node name="MainSprite" type="AnimatedSprite2D" parent="."]
+[node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"walking"
-frame_progress = 0.831055
+animation = &"idle"
+autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)

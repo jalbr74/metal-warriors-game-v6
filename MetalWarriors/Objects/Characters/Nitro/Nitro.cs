@@ -3,14 +3,14 @@ using System;
 
 public partial class Nitro : CharacterBody2D
 {
-    public AnimatedSprite2D MainAnimatedSprite { get; set; }
+    public AnimatedSprite2D NitroAnimations { get; set; }
     
     public const float Speed = 300.0f;
     public const float JumpVelocity = -400.0f;
     
     public override void _Ready()
     {
-        MainAnimatedSprite = GetNode<AnimatedSprite2D>("MainSprite");
+        NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -34,11 +34,11 @@ public partial class Nitro : CharacterBody2D
         var direction = Input.GetVector("D_Pad_Left", "D_Pad_Right", "D_Pad_Up", "D_Pad_Down");
         if (direction != Vector2.Zero)
         {
-            MainAnimatedSprite.Scale = direction.X switch
+            NitroAnimations.Scale = direction.X switch
             {
                 < 0 => new Vector2(-1, 1),
                 > 0 => new Vector2(1, 1),
-                _ => MainAnimatedSprite.Scale
+                _ => NitroAnimations.Scale
             };
             
             velocity.X = direction.X * Speed;
