@@ -5,9 +5,10 @@ public partial class Nitro : CharacterBody2D
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
     
-    public const float JetVelocity = -300.0f;
-    public const float Gravity = 10.0f;
-    public const float TerminalFallVelocity = 300.0f;
+    public const float MaxFallingVelocity = 300.0f;
+    public const float MaxRisingVelocity = -300.0f;
+    public const float FallingForce = 10.0f;
+    public const float BoostingForce = 10.0f;
     
     public override void _Ready()
     {
@@ -18,15 +19,27 @@ public partial class Nitro : CharacterBody2D
     {
         if (Input.IsActionPressed("Button_B", false))
         {
-            Velocity = new Vector2(0, JetVelocity);
+            if (IsOnFloor()) 
+            {
+                Velocity = new Vector2(0, MaxRisingVelocity);
+            }
+            else
+            {
+                Velocity = new Vector2(0, Velocity.Y - BoostingForce);
+                
+                if (Velocity.Y < MaxRisingVelocity)
+                {
+                    Velocity = new Vector2(0, MaxRisingVelocity);
+                }
+            }
         }
         else
         {
-            Velocity = new Vector2(0, Velocity.Y + Gravity);
+            Velocity = new Vector2(0, Velocity.Y + FallingForce);
             
-            if (Velocity.Y > TerminalFallVelocity)
+            if (Velocity.Y > MaxFallingVelocity)
             {
-                Velocity = new Vector2(0, TerminalFallVelocity);
+                Velocity = new Vector2(0, MaxFallingVelocity);
             }
         }
 
