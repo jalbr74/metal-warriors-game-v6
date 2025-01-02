@@ -255,11 +255,12 @@ script = ExtResource("1_642j5")
 
 [node name="BackgroundColor" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 1)
-position = Vector2(2736, 528)
+position = Vector2(2736, -528)
 scale = Vector2(5472, 1056)
 texture = SubResource("CanvasTexture_lda0o")
 
 [node name="MainLevel" type="Node2D" parent="."]
+position = Vector2(0, -1056)
 
 [node name="MainSprite" type="Sprite2D" parent="MainLevel"]
 position = Vector2(2736, 528)
@@ -604,17 +605,26 @@ autoplay = "default"
 frame_progress = 0.00487427
 
 [node name="Nitro" parent="." instance=ExtResource("2_62u0d")]
-position = Vector2(2192, 800)
+position = Vector2(400, -728)
 
 [node name="CameraMover" type="RemoteTransform2D" parent="Nitro"]
 remote_path = NodePath("../../Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(2192, 800)
+position = Vector2(400, -728)
 offset = Vector2(0, -22)
 zoom = Vector2(3, 3)
 limit_left = 0
-limit_top = 0
+limit_top = -1035
 limit_right = 5472
-limit_bottom = 1078
+limit_bottom = 22
 position_smoothing_enabled = true
+
+[node name="DebugText" type="CanvasLayer" parent="."]
+
+[node name="VelocityLabel" type="Label" parent="DebugText"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 86.0
+offset_bottom = 39.0
+text = "Velocity: "

@@ -125,4 +125,105 @@ public class NitroTest
     
         nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
     }
+
+    [Test]
+    public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
+    {
+        // Arrange
+        var (nitro, nitroBehavior) = new NitroBuilder()
+            .WithOnFloor(true)
+            .WithVelocity(new Vector2(0, 0))
+            .Build();
+
+        // Act
+        nitro._PhysicsProcess(0.1f);
+        
+        // Assert
+        nitro.Velocity.X.Should().Be(0);
+        nitro.Velocity.Y.Should().Be(0, because: "he can't go down more if he's on the floor");
+    
+        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+    }
+
+    [Test]
+    public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
+    {
+        // Arrange
+        var (nitro, nitroBehavior) = new NitroBuilder()
+            .WithOnFloor(true)
+            .WithVelocity(new Vector2(0, 0))
+            .WithActionPressed("D_Pad_Left")
+            .Build();
+    
+        // Act
+        nitro._PhysicsProcess(0.1f);
+        
+        // Assert
+        nitro.Velocity.X.Should().Be(-global::Nitro.MovementSpeed);
+        
+        // Add a message to the assertion
+        nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
+    
+        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+    }
+
+    [Test]
+    public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
+    {
+        // Arrange
+        var (nitro, nitroBehavior) = new NitroBuilder()
+            .WithOnFloor(true)
+            .WithVelocity(new Vector2(-global::Nitro.MovementSpeed, 0))
+            .Build();
+    
+        // Act
+        nitro._PhysicsProcess(0.1f);
+        
+        // Assert
+        nitro.Velocity.X.Should().Be(0, because: "the left D_Pad is not being pressed");
+        nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
+    
+        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+    }
+
+    [Test]
+    public void Nitro_should_move_right_when_left_D_Pad_is_pressed()
+    {
+        // Arrange
+        var (nitro, nitroBehavior) = new NitroBuilder()
+            .WithOnFloor(true)
+            .WithVelocity(new Vector2(0, 0))
+            .WithActionPressed("D_Pad_Right")
+            .Build();
+    
+        // Act
+        nitro._PhysicsProcess(0.1f);
+        
+        // Assert
+        nitro.Velocity.X.Should().Be(global::Nitro.MovementSpeed);
+        
+        // Add a message to the assertion
+        nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
+    
+        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+    }
+
+    [Test]
+    public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
+    {
+        // Arrange
+        var (nitro, nitroBehavior) = new NitroBuilder()
+            .WithOnFloor(true)
+            .WithVelocity(new Vector2(global::Nitro.MovementSpeed, 0))
+            .Build();
+    
+        // Act
+        nitro._PhysicsProcess(0.1f);
+        
+        // Assert
+        nitro.Velocity.X.Should().Be(0, because: "the right D_Pad is not being pressed");
+        nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
+    
+        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+    }
 }

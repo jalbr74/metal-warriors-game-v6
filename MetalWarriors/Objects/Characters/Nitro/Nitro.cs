@@ -5,6 +5,7 @@ public partial class Nitro : CharacterBody2D
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
     
+    public const float MovementSpeed = 300.0f;
     public const float MaxFallingVelocity = 300.0f;
     public const float MaxRisingVelocity = -300.0f;
     public const float FallingForce = 10.0f;
@@ -17,33 +18,57 @@ public partial class Nitro : CharacterBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        var velocity = Velocity;
+        
+        if (Input.IsActionPressed("D_Pad_Left"))
+        {
+            // NitroAnimations.FlipH = true;
+            velocity.X = -MovementSpeed;
+        }
+        else if (Input.IsActionPressed("D_Pad_Right", false))
+        {
+            // NitroAnimations.FlipH = false;
+            velocity.X = MovementSpeed;
+        }
+        else
+        {
+            velocity.X = 0;
+        }
+
         if (Input.IsActionPressed("Button_B", false))
         {
-            if (IsOnFloor()) 
+            if (IsOnFloor())
             {
-                Velocity = new Vector2(0, MaxRisingVelocity);
+                velocity.Y = MaxRisingVelocity;
             }
             else
             {
-                Velocity = new Vector2(0, Velocity.Y - BoostingForce);
+                velocity.Y = Velocity.Y - BoostingForce;
                 
                 if (Velocity.Y < MaxRisingVelocity)
                 {
-                    Velocity = new Vector2(0, MaxRisingVelocity);
+                    velocity.Y = Velocity.Y - MaxRisingVelocity;
                 }
             }
         }
         else
         {
-            Velocity = new Vector2(0, Velocity.Y + FallingForce);
-            
-            if (Velocity.Y > MaxFallingVelocity)
+            if (IsOnFloor())
             {
-                Velocity = new Vector2(0, MaxFallingVelocity);
+                velocity.Y = 0;
+            }
+            else
+            {
+                velocity.Y = Velocity.Y + FallingForce;
+
+                if (Velocity.Y > MaxFallingVelocity)
+                {
+                    velocity.Y = MaxFallingVelocity;
+                }
             }
         }
 
-        
+        Velocity = velocity;
         MoveAndSlide();
     }
 }
