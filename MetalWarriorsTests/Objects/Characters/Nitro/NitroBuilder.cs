@@ -1,4 +1,5 @@
 ﻿using Godot;
+using Godot.Utils;
 using Moq;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
@@ -6,10 +7,11 @@ namespace MetalWarriorsTests.Objects.Characters.Nitro;
 public class NitroBuilder
 {
     private readonly Mock<global::Nitro> _nitro = new() { CallBase = true };
+    private readonly Mock<IInputState> _inputState = new();
 
     public NitroBuilder()
     {
-        Input.Reset();
+        Input.InputState = _inputState.Object;
     }
 
     public (global::Nitro nitro, Mock<global::Nitro> nitroBehavior) Build()
@@ -31,17 +33,24 @@ public class NitroBuilder
         return this;
     }
 
-    public NitroBuilder WithButtonPressed(string name)
+    public NitroBuilder WithActionPressed(string name)
     {
-        Input.PressAction(name);
+        _inputState.Setup(x => x.IsActionPressed(name, false)).Returns(true);
 
         return this;
     }
 
-    public NitroBuilder WithButtonPressedAndHeld(string name)
+    public NitroBuilder WithActionJustPressed(string name)
     {
-        Input.PressAndHoldAction(name);
+        _inputState.Setup(x => x.IsActionJustPressed(name, false)).Returns(true);
+        
+        return this;
+    }
 
+    public NitroBuilder WithActionJustReleased(string name)
+    {
+        _inputState.Setup(x => x.IsActionJustReleased(name, false)).Returns(true);
+        
         return this;
     }
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://bgqvpwelbpjjl"]
+[gd_scene load_steps=61 format=3 uid="uid://bgqvpwelbpjjl"]
 
 [ext_resource type="Script" path="res://Levels/Mission001/Mission001.cs" id="1_642j5"]
 [ext_resource type="Texture2D" uid="uid://curx4rv8nsi4n" path="res://Levels/Mission001/Mission001.png" id="1_wft4v"]
@@ -23,6 +23,9 @@ size = Vector2(1536, 256)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdwu"]
 size = Vector2(128, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txg1p"]
+size = Vector2(32, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ucpu2"]
 size = Vector2(32, 16)
@@ -290,6 +293,10 @@ shape = SubResource("RectangleShape2D_d27ai")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="MainLevel/CollisionsForCeilingsFloorsAndWalls"]
 position = Vector2(512, 224)
 shape = SubResource("RectangleShape2D_ijdwu")
+
+[node name="CollisionShape2D27" type="CollisionShape2D" parent="MainLevel/CollisionsForCeilingsFloorsAndWalls"]
+position = Vector2(688, 360)
+shape = SubResource("RectangleShape2D_txg1p")
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="MainLevel/CollisionsForCeilingsFloorsAndWalls"]
 position = Vector2(560, 8)
@@ -597,13 +604,13 @@ autoplay = "default"
 frame_progress = 0.00487427
 
 [node name="Nitro" parent="." instance=ExtResource("2_62u0d")]
-position = Vector2(760, 328)
+position = Vector2(2192, 800)
 
 [node name="CameraMover" type="RemoteTransform2D" parent="Nitro"]
 remote_path = NodePath("../../Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(760, 328)
+position = Vector2(2192, 800)
 offset = Vector2(0, -22)
 zoom = Vector2(3, 3)
 limit_left = 0

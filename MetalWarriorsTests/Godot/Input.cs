@@ -1,55 +1,28 @@
-﻿namespace Godot;
+﻿using Godot.Utils;
+
+namespace Godot;
 
 public class Input
 {
-    private static readonly List<string> PressedActions = [];
-    private static readonly List<string> HeldActions = [];
+    public static IInputState InputState { get; set; }
     
-    public static void PressAction(string action)
-    {
-        PressedActions.Add(action);
-    }
-
-    public static void PressAndHoldAction(string action)
-    {
-        PressedActions.Add(action);
-        HeldActions.Add(action);
-    }
-
     public static Vector2 GetVector(string negativeX, string positiveX, string negativeY, string positiveY, float deadzone = -1f)
     {
-        var x = 0;
-        var y = 0;
-        
-        if (HeldActions.Contains(negativeX))
-        {
-            x = -1;
-        }
-        else if (HeldActions.Contains(positiveX))
-        {
-            x = 1;
-        }
-        
-        if (HeldActions.Contains(negativeY))
-        {
-            y = -1;
-        }
-        else if (HeldActions.Contains(positiveY))
-        {
-            y = 1;
-        }
-
-        return new Vector2(x, y);
+        return InputState.GetVector(negativeX, positiveX, negativeY, positiveY, deadzone);
     }
     
-    public static bool IsActionJustPressed(string action, bool exactMatch = false)
+    public static bool IsActionPressed(string action, bool exactMatch = false)
     {
-        return PressedActions.Contains(action);
+        return InputState.IsActionPressed(action, exactMatch);
     }
 
-    public static void Reset()
+    public static bool IsActionJustPressed(string action, bool exactMatch = false)
     {
-        PressedActions.Clear();
-        HeldActions.Clear();
+        return InputState.IsActionJustPressed(action, exactMatch);
+    }
+
+    public static bool IsActionJustReleased(string action, bool exactMatch = false)
+    {
+        return InputState.IsActionJustReleased(action, exactMatch);
     }
 }
