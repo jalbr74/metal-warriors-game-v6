@@ -1,0 +1,35 @@
+﻿How do you TDD "game feel", is it even possible?
+
+
+Nitro should raise in the air when the B button is pressed	
+	Given:
+	* Nitro is resting on the floor
+	* The B button has just been pressed and is being held down
+	
+	Expected results:
+	- Nitro will rise into the air
+
+Nitro should keep rising but decelerate when the B button is released
+	Given:
+	* Nitro is in the air
+	* The B button has just been released
+	
+	Expected results:
+	- Nitro will keep rising but will decelerate
+
+Nitro should keep decelerating if already decelerating
+	Given:
+	* Nitro is in the air
+	* Nitro is rising, but decelerating
+	
+	Expected results:
+	- Nitro will keep decelerating until it is moving downwards
+
+Nitro should fall when in the air, but no longer decelerating
+	Given:
+	* Nitro is in the air
+	* The B button is not being pressed
+	* Nitro is no longer decelerating
+	
+	Expected results:
+	- Nitro will fall to the ground
