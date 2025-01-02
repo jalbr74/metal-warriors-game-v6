@@ -1,15 +1,24 @@
 using Godot;
 using System;
 
+public static class NitroDefaults
+{
+    public const float MovementSpeed = 120.0f;
+    public const float MaxFallingVelocity = 300.0f;
+    public const float MaxRisingVelocity = -135.0f;
+    public const float FallingForce = 10.0f;
+    public const float BoostingForce = 10.0f;
+}
+
 public partial class Nitro : CharacterBody2D
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
     
-    public const float MovementSpeed = 300.0f;
-    public const float MaxFallingVelocity = 300.0f;
-    public const float MaxRisingVelocity = -300.0f;
-    public const float FallingForce = 10.0f;
-    public const float BoostingForce = 10.0f;
+    [Export] public float MovementSpeed = NitroDefaults.MovementSpeed;
+    [Export] public float MaxFallingVelocity = NitroDefaults.MaxFallingVelocity;
+    [Export] public float MaxRisingVelocity = NitroDefaults.MaxRisingVelocity;
+    [Export] public float FallingForce = NitroDefaults.FallingForce;
+    [Export] public float BoostingForce = NitroDefaults.BoostingForce;
     
     public override void _Ready()
     {
@@ -22,12 +31,12 @@ public partial class Nitro : CharacterBody2D
         
         if (Input.IsActionPressed("D_Pad_Left"))
         {
-            // NitroAnimations.FlipH = true;
+            NitroAnimations.Scale = new Vector2(-1, NitroAnimations.Scale.Y);
             velocity.X = -MovementSpeed;
         }
         else if (Input.IsActionPressed("D_Pad_Right", false))
         {
-            // NitroAnimations.FlipH = false;
+            NitroAnimations.Scale = new Vector2(1, NitroAnimations.Scale.Y);
             velocity.X = MovementSpeed;
         }
         else
@@ -43,11 +52,11 @@ public partial class Nitro : CharacterBody2D
             }
             else
             {
-                velocity.Y = Velocity.Y - BoostingForce;
+                velocity.Y -= BoostingForce;
                 
-                if (Velocity.Y < MaxRisingVelocity)
+                if (velocity.Y < MaxRisingVelocity)
                 {
-                    velocity.Y = Velocity.Y - MaxRisingVelocity;
+                    velocity.Y = MaxRisingVelocity;
                 }
             }
         }
@@ -59,9 +68,9 @@ public partial class Nitro : CharacterBody2D
             }
             else
             {
-                velocity.Y = Velocity.Y + FallingForce;
+                velocity.Y += FallingForce;
 
-                if (Velocity.Y > MaxFallingVelocity)
+                if (velocity.Y > MaxFallingVelocity)
                 {
                     velocity.Y = MaxFallingVelocity;
                 }

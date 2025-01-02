@@ -605,13 +605,13 @@ autoplay = "default"
 frame_progress = 0.00487427
 
 [node name="Nitro" parent="." instance=ExtResource("2_62u0d")]
-position = Vector2(400, -728)
+position = Vector2(264, -760)
 
 [node name="CameraMover" type="RemoteTransform2D" parent="Nitro"]
 remote_path = NodePath("../../Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(400, -728)
+position = Vector2(264, -760)
 offset = Vector2(0, -22)
 zoom = Vector2(3, 3)
 limit_left = 0
