@@ -1,5 +1,6 @@
-[gd_scene load_steps=59 format=3 uid="uid://bgqvpwelbpjjl"]
+[gd_scene load_steps=60 format=3 uid="uid://bgqvpwelbpjjl"]
 
+[ext_resource type="Script" path="res://Levels/Mission001/Mission001.cs" id="1_642j5"]
 [ext_resource type="Texture2D" uid="uid://curx4rv8nsi4n" path="res://Levels/Mission001/Mission001.png" id="1_wft4v"]
 [ext_resource type="PackedScene" uid="uid://c4y5ipx1wva21" path="res://Objects/Characters/Nitro/Nitro.tscn" id="2_62u0d"]
 [ext_resource type="Texture2D" uid="uid://bue7ewd5fp6qx" path="res://Levels/Mission001/claxon-main-animation.png" id="2_iaiyu"]
@@ -247,6 +248,7 @@ animations = [{
 }]
 
 [node name="Mission001" type="Node2D"]
+script = ExtResource("1_642j5")
 
 [node name="BackgroundColor" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 1)
@@ -595,13 +597,13 @@ autoplay = "default"
 frame_progress = 0.00487427
 
 [node name="Nitro" parent="." instance=ExtResource("2_62u0d")]
-position = Vector2(208, 264)
+position = Vector2(760, 328)
 
 [node name="CameraMover" type="RemoteTransform2D" parent="Nitro"]
 remote_path = NodePath("../../Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(208, 264)
+position = Vector2(760, 328)
 offset = Vector2(0, -22)
 zoom = Vector2(3, 3)
 limit_left = 0
