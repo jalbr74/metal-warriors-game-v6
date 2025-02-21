@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Security.Cryptography;
 
 public static class NitroDefaults
 {
@@ -24,7 +25,7 @@ public partial class Nitro : CharacterBody2D
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
     }
-
+    
     public override void _PhysicsProcess(double delta)
     {
         var velocity = Velocity;
@@ -32,6 +33,8 @@ public partial class Nitro : CharacterBody2D
         if (Input.IsActionPressed("D_Pad_Left"))
         {
             NitroAnimations.Scale = new Vector2(-1, NitroAnimations.Scale.Y);
+            NitroAnimations.Play("walking", 1f, false);
+            
             velocity.X = -MovementSpeed;
         }
         else if (Input.IsActionPressed("D_Pad_Right", false))

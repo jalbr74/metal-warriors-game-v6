@@ -12,7 +12,7 @@ public class NitroTest
     public void Nitro_should_rise_constantly_when_jetting()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithActionPressed("Button_B")
             .WithOnFloor(true)
             .Build();
@@ -24,14 +24,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().Be(NitroDefaults.MaxRisingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithVelocity(new Vector2(0, NitroDefaults.MaxRisingVelocity))
             .Build();
@@ -44,14 +44,14 @@ public class NitroTest
         nitro.Velocity.Y.Should().BeLessThan(0);
         nitro.Velocity.Y.Should().BeGreaterThan(NitroDefaults.MaxRisingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_accelerate_when_jetting_is_started_again()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithActionPressed("Button_B")
             .WithVelocity(new Vector2(0, NitroDefaults.MaxFallingVelocity))
@@ -65,14 +65,14 @@ public class NitroTest
         nitro.Velocity.Y.Should().BeGreaterThan(0);
         nitro.Velocity.Y.Should().BeLessThan(NitroDefaults.MaxFallingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_fall_when_no_longer_decelerating()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithVelocity(new Vector2(0, 0))
             .Build();
@@ -84,14 +84,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().BeGreaterThan(0);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_not_fall_too_fast()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithVelocity(new Vector2(0, NitroDefaults.MaxFallingVelocity + 10))
             .Build();
@@ -103,14 +103,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().Be(NitroDefaults.MaxFallingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_not_accelerate_too_fast()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithActionPressed("Button_B")
             .WithVelocity(new Vector2(0, NitroDefaults.MaxRisingVelocity + 10))
@@ -123,14 +123,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().Be(NitroDefaults.MaxRisingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_not_exceed_max_rising_velocity()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(false)
             .WithActionPressed("Button_B")
             .WithVelocity(new Vector2(0, NitroDefaults.MaxRisingVelocity - 10))
@@ -143,14 +143,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().Be(NitroDefaults.MaxRisingVelocity);
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(0, 0))
             .Build();
@@ -162,17 +162,19 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0);
         nitro.Velocity.Y.Should().Be(0, because: "he can't go down more if he's on the floor");
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var mockedAnimations = new Mock<AnimatedSprite2D> { CallBase = true };
+        
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(0, 0))
-            .WithAnimations(new AnimatedSprite2D())
+            .WithAnimations(mockedAnimations.Object)
             .WithActionPressed("D_Pad_Left")
             .Build();
     
@@ -184,14 +186,15 @@ public class NitroTest
         nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
         nitro.NitroAnimations.Scale.X.Should().BeNegative(because: "he's moving left");
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
+        mockedAnimations.Verify(x => x.Play("walking", 1f, false), Times.Once);
     }
 
     [Test]
     public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(-NitroDefaults.MovementSpeed, 0))
             .Build();
@@ -203,14 +206,14 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0, because: "the left D_Pad is not being pressed");
         nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(0, 0))
             .WithAnimations(new AnimatedSprite2D())
@@ -225,14 +228,14 @@ public class NitroTest
         nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
         nitro.NitroAnimations.Scale.X.Should().BePositive(because: "he's moving right");
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 
     [Test]
     public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
     {
         // Arrange
-        var (nitro, nitroBehavior) = new NitroBuilder()
+        var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(NitroDefaults.MovementSpeed, 0))
             .Build();
@@ -244,6 +247,6 @@ public class NitroTest
         nitro.Velocity.X.Should().Be(0, because: "the right D_Pad is not being pressed");
         nitro.Velocity.Y.Should().Be(0, because: "he's on the floor");
     
-        nitroBehavior.Verify(x => x.MoveAndSlide(), Times.Once);
+        nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
     }
 }
