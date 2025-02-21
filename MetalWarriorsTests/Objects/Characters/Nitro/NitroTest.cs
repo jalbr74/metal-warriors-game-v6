@@ -187,7 +187,7 @@ public class NitroTest
         nitro.NitroAnimations.Scale.X.Should().BeNegative(because: "he's moving left");
     
         nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
-        mockedAnimations.Verify(x => x.Play("walking", 1f, false), Times.Once);
+        mockedAnimations.Verify(x => x.Play("walking", 1f, false), Times.Once, "the walking animation should be played");
     }
 
     [Test]
@@ -212,11 +212,13 @@ public class NitroTest
     [Test]
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
+        var mockedAnimations = new Mock<AnimatedSprite2D> { CallBase = true };
+        
         // Arrange
         var (nitro, nitroSpy) = new NitroBuilder()
             .WithOnFloor(true)
             .WithVelocity(new Vector2(0, 0))
-            .WithAnimations(new AnimatedSprite2D())
+            .WithAnimations(mockedAnimations.Object)
             .WithActionPressed("D_Pad_Right")
             .Build();
     
@@ -229,6 +231,7 @@ public class NitroTest
         nitro.NitroAnimations.Scale.X.Should().BePositive(because: "he's moving right");
     
         nitroSpy.Verify(x => x.MoveAndSlide(), Times.Once);
+        mockedAnimations.Verify(x => x.Play("walking", 1f, false), Times.Once, "the walking animation should be played");
     }
 
     [Test]

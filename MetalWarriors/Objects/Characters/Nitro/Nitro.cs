@@ -33,13 +33,15 @@ public partial class Nitro : CharacterBody2D
         if (Input.IsActionPressed("D_Pad_Left"))
         {
             NitroAnimations.Scale = new Vector2(-1, NitroAnimations.Scale.Y);
-            NitroAnimations.Play("walking", 1f, false);
+            NitroAnimations.Play("walking");
             
             velocity.X = -MovementSpeed;
         }
         else if (Input.IsActionPressed("D_Pad_Right", false))
         {
             NitroAnimations.Scale = new Vector2(1, NitroAnimations.Scale.Y);
+            NitroAnimations.Play("walking");
+            
             velocity.X = MovementSpeed;
         }
         else
