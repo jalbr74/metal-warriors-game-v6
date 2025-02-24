@@ -8,6 +8,7 @@ public class NitroBuilder
 {
     private readonly Mock<global::Nitro> _nitro = new() { CallBase = true };
     private readonly Mock<IInputState> _inputState = new();
+    private readonly Mock<AnimatedSprite2D> _animations = new() { CallBase = true };
 
     public NitroBuilder()
     {
@@ -16,6 +17,8 @@ public class NitroBuilder
 
     public (global::Nitro nitro, Mock<global::Nitro> nitroBehavior) Build()
     {
+        _nitro.Object.NitroAnimations = _animations.Object;
+        
         return (_nitro.Object, _nitro);
     }
 
@@ -57,13 +60,6 @@ public class NitroBuilder
     public NitroBuilder WithVelocity(Vector2 velocity)
     {
         _nitro.Object.Velocity = velocity;
-        
-        return this;
-    }
-
-    public NitroBuilder WithAnimations(AnimatedSprite2D animations)
-    {
-        _nitro.Object.NitroAnimations = animations;
         
         return this;
     }

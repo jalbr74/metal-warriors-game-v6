@@ -11,6 +11,8 @@ public static class NitroDefaults
     public const float BoostingForce = 10.0f;
 }
 
+public enum NitroDirection { Left, Right }
+
 public partial class Nitro : CharacterBody2D
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
@@ -20,6 +22,11 @@ public partial class Nitro : CharacterBody2D
     [Export] public float MaxRisingVelocity = NitroDefaults.MaxRisingVelocity;
     [Export] public float FallingForce = NitroDefaults.FallingForce;
     [Export] public float BoostingForce = NitroDefaults.BoostingForce;
+
+    // These are currently only used for testing, so maybe we should move them to be extension methods
+    public NitroDirection Direction => NitroAnimations.Scale.X > 0 ? NitroDirection.Right : NitroDirection.Left;
+    public string CurrentAnimation => NitroAnimations.Animation;
+    // End of testing properties
     
     public override void _Ready()
     {
@@ -46,6 +53,7 @@ public partial class Nitro : CharacterBody2D
         }
         else
         {
+            NitroAnimations.Play("idle");
             velocity.X = 0;
         }
 
@@ -54,6 +62,7 @@ public partial class Nitro : CharacterBody2D
             if (IsOnFloor())
             {
                 velocity.Y = MaxRisingVelocity;
+                NitroAnimations.Play("launching");
             }
             else
             {
@@ -79,6 +88,8 @@ public partial class Nitro : CharacterBody2D
                 {
                     velocity.Y = MaxFallingVelocity;
                 }
+                
+                NitroAnimations.Play("falling");
             }
         }
 
