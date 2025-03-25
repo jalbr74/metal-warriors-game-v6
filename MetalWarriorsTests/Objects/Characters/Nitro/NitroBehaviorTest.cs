@@ -15,9 +15,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
         
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
     
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -36,9 +37,10 @@ public class NitroBehaviorTest
         };
 
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -56,9 +58,10 @@ public class NitroBehaviorTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -76,9 +79,10 @@ public class NitroBehaviorTest
         };
         
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -96,9 +100,10 @@ public class NitroBehaviorTest
         };
         
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -115,9 +120,10 @@ public class NitroBehaviorTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -134,9 +140,10 @@ public class NitroBehaviorTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -155,9 +162,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -176,9 +184,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadLeftPressed: true);
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
         
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(-NitroDefaults.MovementSpeed);
@@ -199,9 +208,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0, customMessage: "the left D_Pad is not being pressed");
@@ -221,9 +231,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadRightPressed: true);
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(NitroDefaults.MovementSpeed);
@@ -245,9 +256,10 @@ public class NitroBehaviorTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-    
+        var nitroBehavior = new NitroBehavior(snesController, nitro);
+        
         // Act
-        new NitroBehavior(snesController, nitro).PhysicsProcess(0.1f);
+        nitroBehavior.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0, customMessage: "the right D_Pad is not being pressed");
