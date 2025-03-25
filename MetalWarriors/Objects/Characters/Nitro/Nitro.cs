@@ -16,18 +16,18 @@ public partial class Nitro : CharacterBody2D, INitro
     
     public string CurrentAnimation => NitroAnimations.Animation;
 
-    private NitroBehavior _nitroBehavior;
+    private NitroHandler _nitroHandler;
     
     public override void _Ready()
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _nitroBehavior = new NitroBehavior(new SnesController(), this);
+        _nitroHandler = new NitroHandler(new SnesController(), this);
     }
     
     public override void _PhysicsProcess(double delta)
     {
-        _nitroBehavior.PhysicsProcess(delta);
+        _nitroHandler.PhysicsProcess(delta);
         MoveAndSlide();
     }
 

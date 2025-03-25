@@ -3,6 +3,18 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
 
+public enum NitroDirection { Left, Right }
+
+// Represents Nitro as a concept, and doesn't worry about the implementation details.
+public interface INitro
+{
+    Vector2 Velocity { get; set; }
+    NitroDirection Direction { get; set; }
+    bool IsOnFloor();
+    void PlayAnimation(string animation);
+    string CurrentAnimation { get; }
+}
+
 public static class NitroDefaults
 {
     public const float MovementSpeed = 120.0f;
@@ -12,10 +24,8 @@ public static class NitroDefaults
     public const float BoostingForce = 10.0f;
 }
 
-public enum NitroDirection { Left, Right }
-
-// The behavior manager must operate on the INitro interface, so that it can be used with any implementation of INitro (useful for doing TDD).
-public class NitroBehavior(ISnesController snesController, INitro nitro)
+// This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
+public class NitroHandler(ISnesController snesController, INitro nitro)
 {
     [Export] public float MovementSpeed = NitroDefaults.MovementSpeed;
     [Export] public float MaxFallingVelocity = NitroDefaults.MaxFallingVelocity;
