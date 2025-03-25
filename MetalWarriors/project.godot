@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Metal Warriors"
 run/main_scene="res://Levels/Mission001/Mission001.tscn"
-config/features=PackedStringArray("4.3", "C#", "Mobile")
+config/features=PackedStringArray("4.4", "C#", "Mobile")
 config/icon="res://icon.svg"
 
 [display]

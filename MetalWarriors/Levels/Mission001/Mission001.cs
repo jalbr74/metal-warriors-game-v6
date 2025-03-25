@@ -4,13 +4,13 @@ using MetalWarriors.Utils;
 
 public partial class Mission001 : Node2D
 {
-    public Nitro Nitro { get; set; }
+    public MetalWarriors.Objects.Characters.Nitro.Nitro Nitro { get; set; }
     public Label VelocityLabel { get; set; }
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        Nitro = GetNode<Nitro>("Nitro");
+        Nitro = GetNode<MetalWarriors.Objects.Characters.Nitro.Nitro>("Nitro");
         VelocityLabel = GetNode<Label>("DebugText/VelocityLabel");
         
         if (OS.GetName() == "Android")

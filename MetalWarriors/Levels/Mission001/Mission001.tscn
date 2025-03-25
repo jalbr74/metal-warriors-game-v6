@@ -1,6 +1,6 @@
 [gd_scene load_steps=61 format=3 uid="uid://bgqvpwelbpjjl"]
 
-[ext_resource type="Script" path="res://Levels/Mission001/Mission001.cs" id="1_642j5"]
+[ext_resource type="Script" uid="uid://cv7v68j01hwcl" path="res://Levels/Mission001/Mission001.cs" id="1_642j5"]
 [ext_resource type="Texture2D" uid="uid://curx4rv8nsi4n" path="res://Levels/Mission001/Mission001.png" id="1_wft4v"]
 [ext_resource type="PackedScene" uid="uid://c4y5ipx1wva21" path="res://Objects/Characters/Nitro/Nitro.tscn" id="2_62u0d"]
 [ext_resource type="Texture2D" uid="uid://bue7ewd5fp6qx" path="res://Levels/Mission001/claxon-main-animation.png" id="2_iaiyu"]

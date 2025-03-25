@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://c4y5ipx1wva21"]
 
-[ext_resource type="Script" path="res://Objects/Characters/Nitro/Nitro.cs" id="1_g5dot"]
+[ext_resource type="Script" uid="uid://s85mw8snbr6m" path="res://Objects/Characters/Nitro/Nitro.cs" id="1_g5dot"]
 [ext_resource type="Texture2D" uid="uid://dld8wgs2drbhq" path="res://Objects/Characters/Nitro/nitro-red-walking-Sheet.png" id="1_mrnoq"]
 [ext_resource type="Texture2D" uid="uid://ceh3ig7i3xkr7" path="res://Objects/Characters/Nitro/nitro_red_falling.png" id="2_hxpym"]
 [ext_resource type="Texture2D" uid="uid://c0jolw6a30ux1" path="res://Objects/Characters/Nitro/nitro_red_flying.png" id="3_bnnru"]

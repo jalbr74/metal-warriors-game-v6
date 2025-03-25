@@ -1,26 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentAssertions" Version="7.0.0" />
       <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-      <PackageReference Include="Moq" Version="4.20.72" />
-      <PackageReference Include="NUnit" Version="4.3.2" />
+      <PackageReference Include="NSubstitute" Version="5.3.0" />
+      <PackageReference Include="Shouldly" Version="4.3.0" />
+      <PackageReference Include="xunit" Version="2.9.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\MetalWarriors\Metal Warriors.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="..\MetalWarriors\Objects\Characters\Nitro\Nitro.cs">
-        <Link>Objects\Characters\Nitro\Nitro.cs</Link>
-      </Compile>
     </ItemGroup>
 
 </Project>
