@@ -3,11 +3,14 @@ using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriorsTests.Utils;
 using Shouldly;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
-public class NitroHandlerTest
+public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
 {
+    private readonly TestOutputConsolePrinter _consolePrinter = new(testOutputHelper);
+    
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
     {
@@ -15,7 +18,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -25,17 +28,18 @@ public class NitroHandlerTest
         nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
         nitro.Direction.ShouldBe(NitroDirection.Right);
         nitro.CurrentAnimation.ShouldBe("launching");
+        nitroHandler.NitroState.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
-    public void Nitro_should_keep_rise_constantly_when_launching()
+    public void Nitro_should_keep_rising_constantly_when_launching()
     {
         var nitro = new NitroTestImpl();
         nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
         nitro.SetIsOnFloor(false);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -48,7 +52,27 @@ public class NitroHandlerTest
         nitro.PlayedAnimations.ShouldBe(["launching"]);
     }
 
-    // Nitro should change from launching to jetting after the boosting animation is finished
+    [Fact]
+    public void Nitro_should_change_from_launching_to_jetting_after_the_launching_animation_is_finished()
+    {
+        var nitro = new NitroTestImpl();
+        nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        nitro.SetIsOnFloor(false);
+
+        var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        
+        // Act
+        nitroHandler.LaunchingAnimationFinished();
+        nitroHandler.PhysicsProcess(0.1f);
+    
+        // Assert
+        nitro.Velocity.X.ShouldBe(0);
+        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
+        nitro.Direction.ShouldBe(NitroDirection.Right);
+        nitro.CurrentAnimation.ShouldBe("flying");
+        nitro.PlayedAnimations.ShouldBe(["flying"]);
+    }
 
     [Fact]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
@@ -60,7 +84,7 @@ public class NitroHandlerTest
         };
 
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -81,7 +105,7 @@ public class NitroHandlerTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -102,7 +126,7 @@ public class NitroHandlerTest
         };
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -123,7 +147,7 @@ public class NitroHandlerTest
         };
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -143,7 +167,7 @@ public class NitroHandlerTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -163,7 +187,7 @@ public class NitroHandlerTest
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -185,7 +209,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -207,7 +231,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadLeftPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -231,7 +255,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -254,7 +278,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadRightPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);
@@ -279,7 +303,7 @@ public class NitroHandlerTest
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro);
+        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
         
         // Act
         nitroHandler.PhysicsProcess(0.1f);

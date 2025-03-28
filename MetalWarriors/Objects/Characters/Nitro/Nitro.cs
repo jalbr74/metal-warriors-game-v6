@@ -22,13 +22,22 @@ public partial class Nitro : CharacterBody2D, INitro
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _nitroHandler = new NitroHandler(new SnesController(), this);
+        _nitroHandler = new NitroHandler(new SnesController(), this, new ConsolePrinter());
     }
     
     public override void _PhysicsProcess(double delta)
     {
         _nitroHandler.PhysicsProcess(delta);
         MoveAndSlide();
+    }
+
+    public void AnimationFinished()
+    {
+        GD.Print("Animation finished");
+
+        if (NitroAnimations.Animation != "launching") return;
+        
+        _nitroHandler.LaunchingAnimationFinished();
     }
 
     public void PlayAnimation(string animation)

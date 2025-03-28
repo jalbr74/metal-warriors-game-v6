@@ -149,7 +149,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jfo7s")
 }],
-"loop": true,
+"loop": false,
 "name": &"launching",
 "speed": 5.0
 }, {
@@ -193,11 +193,11 @@ script = ExtResource("1_g5dot")
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"walking"
+animation = &"launching"
 autoplay = "idle"
-frame = 1
-frame_progress = 0.725922
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_mm4ra")
+
+[connection signal="animation_finished" from="NitroAnimations" to="." method="AnimationFinished"]

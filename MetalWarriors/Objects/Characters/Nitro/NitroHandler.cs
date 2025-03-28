@@ -24,14 +24,26 @@ public static class NitroDefaults
     public const float BoostingForce = 10.0f;
 }
 
-// This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
-public class NitroHandler(ISnesController snesController, INitro nitro)
+public enum NitroState
 {
+    Idle,
+    Walking,
+    Launching,
+    Falling,
+    Flying
+}
+
+// This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
+public class NitroHandler(ISnesController snesController, INitro nitro, IConsolePrinter consolePrinter)
+{
+    // Not sure if Export makes sense any more, since this isn't a Godot Node.
     [Export] public float MovementSpeed = NitroDefaults.MovementSpeed;
     [Export] public float MaxFallingVelocity = NitroDefaults.MaxFallingVelocity;
     [Export] public float MaxRisingVelocity = NitroDefaults.MaxRisingVelocity;
     [Export] public float FallingForce = NitroDefaults.FallingForce;
     [Export] public float BoostingForce = NitroDefaults.BoostingForce;
+    
+    public NitroState NitroState { get; set; } = NitroState.Idle;
 
     public void PhysicsProcess(double delta)
     {
@@ -64,6 +76,7 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
             {
                 velocity.Y = MaxRisingVelocity;
                 animation = "launching";
+                NitroState = NitroState.Launching;
             }
             else
             {
@@ -73,8 +86,8 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
                 {
                     velocity.Y = MaxRisingVelocity;
                 }
-                
-                animation = "launching";
+
+                animation = NitroState == NitroState.Flying ? "flying" : "launching";
             }
         }
         else
@@ -98,5 +111,12 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
         
         nitro.PlayAnimation(animation);
         nitro.Velocity = velocity;
+    }
+
+    public void LaunchingAnimationFinished()
+    {
+        consolePrinter.Print("Launching animation finished, transitioning to flying.");
+
+        NitroState = NitroState.Flying;
     }
 }
