@@ -33,6 +33,7 @@ public partial class Nitro : CharacterBody2D, INitro
 
     public void PlayAnimation(string animation)
     {
+        GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);
     }
 }

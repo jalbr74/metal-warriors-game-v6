@@ -3,7 +3,7 @@ using MetalWarriors.Objects.Characters.Nitro;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
-public class NitroImpl : INitro
+public class NitroTestImpl : INitro
 {
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.Right;

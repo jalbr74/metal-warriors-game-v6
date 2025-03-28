@@ -628,3 +628,10 @@ offset_top = 16.0
 offset_right = 86.0
 offset_bottom = 39.0
 text = "Velocity: "
+
+[node name="AnimationLabel" type="Label" parent="DebugText"]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 86.0
+offset_bottom = 71.0
+text = "Animation: "

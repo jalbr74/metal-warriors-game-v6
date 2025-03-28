@@ -72,6 +72,8 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
                 {
                     velocity.Y = MaxRisingVelocity;
                 }
+                
+                nitro.PlayAnimation("launching");
             }
         }
         else

@@ -9,9 +9,9 @@ namespace MetalWarriorsTests.Objects.Characters.Nitro;
 public class NitroHandlerTest
 {
     [Fact]
-    public void Nitro_should_rise_constantly_when_jetting()
+    public void Nitro_should_rise_constantly_when_launching()
     {
-        var nitro = new NitroImpl();
+        var nitro = new NitroTestImpl();
         nitro.SetIsOnFloor(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
@@ -28,10 +28,32 @@ public class NitroHandlerTest
     }
 
     [Fact]
+    public void Nitro_should_keep_rise_constantly_when_launching()
+    {
+        var nitro = new NitroTestImpl();
+        nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        nitro.SetIsOnFloor(false);
+
+        var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        var nitroHandler = new NitroHandler(snesController, nitro);
+        
+        // Act
+        nitroHandler.PhysicsProcess(0.1f);
+    
+        // Assert
+        nitro.Velocity.X.ShouldBe(0);
+        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
+        nitro.Direction.ShouldBe(NitroDirection.Right);
+        nitro.CurrentAnimation.ShouldBe("launching");
+    }
+
+    // Nitro should change from launching to jetting after the boosting animation is finished
+
+    [Fact]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity)
         };
@@ -52,7 +74,7 @@ public class NitroHandlerTest
     public void Nitro_should_accelerate_when_jetting_is_started_again()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity)
         };
@@ -73,7 +95,7 @@ public class NitroHandlerTest
     public void Nitro_should_fall_when_no_longer_decelerating()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -94,7 +116,7 @@ public class NitroHandlerTest
     public void Nitro_should_not_fall_too_fast()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity + 10)
         };
@@ -114,7 +136,7 @@ public class NitroHandlerTest
     public void Nitro_should_not_accelerate_too_fast()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity + 10)
         };
@@ -134,7 +156,7 @@ public class NitroHandlerTest
     public void Nitro_should_not_exceed_max_rising_velocity()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity - 10)
         };
@@ -154,7 +176,7 @@ public class NitroHandlerTest
     public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -176,7 +198,7 @@ public class NitroHandlerTest
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -200,7 +222,7 @@ public class NitroHandlerTest
     public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(-NitroDefaults.MovementSpeed, 0)
         };
@@ -223,7 +245,7 @@ public class NitroHandlerTest
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -248,7 +270,7 @@ public class NitroHandlerTest
     public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroImpl
+        var nitro = new NitroTestImpl
         {
             Velocity = new Vector2(NitroDefaults.MovementSpeed, 0)
         };
