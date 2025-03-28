@@ -33,6 +33,8 @@ public partial class Nitro : CharacterBody2D, INitro
 
     public void PlayAnimation(string animation)
     {
+        if (NitroAnimations.Animation == animation) return;
+
         GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);
     }

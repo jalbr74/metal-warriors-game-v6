@@ -45,6 +45,7 @@ public class NitroHandlerTest
         nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
         nitro.Direction.ShouldBe(NitroDirection.Right);
         nitro.CurrentAnimation.ShouldBe("launching");
+        nitro.PlayedAnimations.ShouldBe(["launching"]);
     }
 
     // Nitro should change from launching to jetting after the boosting animation is finished

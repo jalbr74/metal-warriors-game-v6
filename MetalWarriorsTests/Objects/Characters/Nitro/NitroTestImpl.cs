@@ -8,6 +8,7 @@ public class NitroTestImpl : INitro
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.Right;
     public string CurrentAnimation { get; private set; } = "";
+    public List<string> PlayedAnimations { get; } = [];
     
     private bool _isOnFloor;
     
@@ -24,5 +25,7 @@ public class NitroTestImpl : INitro
     public void PlayAnimation(string animation)
     {
         CurrentAnimation = animation;
+        
+        PlayedAnimations.Add(animation);
     }
 }

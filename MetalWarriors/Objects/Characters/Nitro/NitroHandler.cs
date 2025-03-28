@@ -36,24 +36,25 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
     public void PhysicsProcess(double delta)
     {
         var velocity = nitro.Velocity;
+        var animation = nitro.CurrentAnimation;
         
         if (snesController.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
-            nitro.PlayAnimation("walking");
+            animation = "walking";
         
             velocity.X = -MovementSpeed;
         }
         else if (snesController.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
-            nitro.PlayAnimation("walking");
+            animation = "walking";
         
             velocity.X = MovementSpeed;
         }
         else
         {
-            nitro.PlayAnimation("idle");
+            animation = "idle";
             velocity.X = 0;
         }
         
@@ -62,7 +63,7 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
             if (nitro.IsOnFloor())
             {
                 velocity.Y = MaxRisingVelocity;
-                nitro.PlayAnimation("launching");
+                animation = "launching";
             }
             else
             {
@@ -73,7 +74,7 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
                     velocity.Y = MaxRisingVelocity;
                 }
                 
-                nitro.PlayAnimation("launching");
+                animation = "launching";
             }
         }
         else
@@ -91,10 +92,11 @@ public class NitroHandler(ISnesController snesController, INitro nitro)
                     velocity.Y = MaxFallingVelocity;
                 }
         
-                nitro.PlayAnimation("falling");
+                animation = "falling";
             }
         }
         
+        nitro.PlayAnimation(animation);
         nitro.Velocity = velocity;
     }
 }
