@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3 uid="uid://bkt22d76oj45i"]
+
+[ext_resource type="PackedScene" uid="uid://bgqvpwelbpjjl" path="res://Levels/Mission001/Mission001.tscn" id="1_v7uwk"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_v7uwk"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_xseyk"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_8xinv"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_nq4nd"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_4yidk"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_trm7v"]
+
+[node name="GameConsole" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+offset_left = 480.0
+offset_right = 1760.0
+offset_bottom = 1120.0
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+handle_input_locally = false
+canvas_item_default_texture_filter = 0
+size = Vector2i(1280, 1120)
+render_target_update_mode = 4
+
+[node name="Mission001" parent="CanvasLayer/SubViewportContainer/SubViewport" instance=ExtResource("1_v7uwk")]
+
+[node name="Controller" type="Node2D" parent="CanvasLayer"]
+
+[node name="D-Pad" type="Node2D" parent="CanvasLayer/Controller"]
+
+[node name="DPadLeft" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
+position = Vector2(48, 800)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_v7uwk")
+
+[node name="DPadRight" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
+position = Vector2(320, 800)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_xseyk")
+
+[node name="DPadUp" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
+position = Vector2(192, 640)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_8xinv")
+
+[node name="DPadDown" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
+position = Vector2(192, 960)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_nq4nd")
+
+[node name="Buttons" type="Node2D" parent="CanvasLayer/Controller"]
+
+[node name="ButtonB" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
+position = Vector2(1856, 944)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_4yidk")
+
+[node name="ButtonA" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
+position = Vector2(2096, 784)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_trm7v")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 2240.0
+offset_bottom = 1120.0
+color = Color(0, 0, 0, 1)

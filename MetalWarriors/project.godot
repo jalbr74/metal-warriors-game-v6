@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="Metal Warriors"
-run/main_scene="res://Levels/Mission001/Mission001.tscn"
+run/main_scene="uid://bkt22d76oj45i"
 config/features=PackedStringArray("4.4", "C#", "Mobile")
 config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=2240
+window/size/viewport_height=1120
 window/stretch/mode="viewport"
 
 [dotnet]
