@@ -6,7 +6,7 @@ namespace MetalWarriors.Objects.Characters.Nitro;
 public enum NitroDirection { Left, Right }
 
 // Represents Nitro as a concept, and doesn't worry about the implementation details.
-public interface INitro
+public interface INitroCharacter
 {
     Vector2 Velocity { get; set; }
     NitroDirection Direction { get; set; }
@@ -34,7 +34,7 @@ public enum NitroState
 }
 
 // This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
-public class NitroHandler(ISnesController snesController, INitro nitro, IConsolePrinter consolePrinter)
+public class NitroCharacterHandler(ISnesController snesController, INitroCharacter nitroCharacter, IConsolePrinter consolePrinter)
 {
     // Not sure if Export makes sense any more, since this isn't a Godot Node.
     [Export] public float MovementSpeed = NitroDefaults.MovementSpeed;
@@ -47,19 +47,19 @@ public class NitroHandler(ISnesController snesController, INitro nitro, IConsole
 
     public void PhysicsProcess(double delta)
     {
-        var velocity = nitro.Velocity;
-        var animation = nitro.CurrentAnimation;
+        var velocity = nitroCharacter.Velocity;
+        var animation = nitroCharacter.CurrentAnimation;
         
         if (snesController.IsDPadLeftPressed)
         {
-            nitro.Direction = NitroDirection.Left;
+            nitroCharacter.Direction = NitroDirection.Left;
             animation = "walking";
         
             velocity.X = -MovementSpeed;
         }
         else if (snesController.IsDPadRightPressed)
         {
-            nitro.Direction = NitroDirection.Right;
+            nitroCharacter.Direction = NitroDirection.Right;
             animation = "walking";
         
             velocity.X = MovementSpeed;
@@ -72,7 +72,7 @@ public class NitroHandler(ISnesController snesController, INitro nitro, IConsole
         
         if (snesController.IsButtonBPressed)
         {
-            if (nitro.IsOnFloor())
+            if (nitroCharacter.IsOnFloor())
             {
                 velocity.Y = MaxRisingVelocity;
                 animation = "launching";
@@ -92,7 +92,7 @@ public class NitroHandler(ISnesController snesController, INitro nitro, IConsole
         }
         else
         {
-            if (nitro.IsOnFloor())
+            if (nitroCharacter.IsOnFloor())
             {
                 velocity.Y = 0;
             }
@@ -109,8 +109,8 @@ public class NitroHandler(ISnesController snesController, INitro nitro, IConsole
             }
         }
         
-        nitro.PlayAnimation(animation);
-        nitro.Velocity = velocity;
+        nitroCharacter.PlayAnimation(animation);
+        nitroCharacter.Velocity = velocity;
     }
 
     public void LaunchingAnimationFinished()

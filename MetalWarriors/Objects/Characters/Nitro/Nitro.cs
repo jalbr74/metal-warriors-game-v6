@@ -4,7 +4,7 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
 
-public partial class Nitro : CharacterBody2D, INitro
+public partial class Nitro : CharacterBody2D, INitroCharacter
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
 
@@ -16,18 +16,18 @@ public partial class Nitro : CharacterBody2D, INitro
     
     public string CurrentAnimation => NitroAnimations.Animation;
 
-    private NitroHandler _nitroHandler;
+    private NitroCharacterHandler _nitroCharacterHandler;
     
     public override void _Ready()
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _nitroHandler = new NitroHandler(new SnesController(), this, new ConsolePrinter());
+        _nitroCharacterHandler = new NitroCharacterHandler(new SnesController(), this, new ConsolePrinter());
     }
     
     public override void _PhysicsProcess(double delta)
     {
-        _nitroHandler.PhysicsProcess(delta);
+        _nitroCharacterHandler.PhysicsProcess(delta);
         MoveAndSlide();
     }
 
@@ -37,7 +37,7 @@ public partial class Nitro : CharacterBody2D, INitro
 
         if (NitroAnimations.Animation != "launching") return;
         
-        _nitroHandler.LaunchingAnimationFinished();
+        _nitroCharacterHandler.LaunchingAnimationFinished();
     }
 
     public void PlayAnimation(string animation)

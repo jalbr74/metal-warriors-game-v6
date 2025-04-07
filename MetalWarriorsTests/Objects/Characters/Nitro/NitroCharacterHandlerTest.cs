@@ -7,42 +7,42 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
-public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
+public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
 {
     private readonly TestOutputConsolePrinter _consolePrinter = new(testOutputHelper);
     
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
     {
-        var nitro = new NitroTestImpl();
+        var nitro = new NitroCharacterImpl();
         nitro.SetIsOnFloor(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
         nitro.Velocity.X.ShouldBe(0);
         nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
         nitro.Direction.ShouldBe(NitroDirection.Right);
         nitro.CurrentAnimation.ShouldBe("launching");
-        nitroHandler.NitroState.ShouldBe(NitroState.Launching);
+        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
     public void Nitro_should_keep_rising_constantly_when_launching()
     {
-        var nitro = new NitroTestImpl();
+        var nitro = new NitroCharacterImpl();
         nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
         nitro.SetIsOnFloor(false);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -55,16 +55,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     [Fact]
     public void Nitro_should_change_from_launching_to_jetting_after_the_launching_animation_is_finished()
     {
-        var nitro = new NitroTestImpl();
+        var nitro = new NitroCharacterImpl();
         nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
         nitro.SetIsOnFloor(false);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.LaunchingAnimationFinished();
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.LaunchingAnimationFinished();
+        nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -78,16 +78,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity)
         };
 
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -99,16 +99,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_accelerate_when_jetting_is_started_again()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -120,16 +120,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_fall_when_no_longer_decelerating()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, 0)
         };
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -141,16 +141,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_not_fall_too_fast()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity + 10)
         };
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -161,16 +161,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_not_accelerate_too_fast()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity + 10)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -181,16 +181,16 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_not_exceed_max_rising_velocity()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity - 10)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -201,7 +201,7 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -209,10 +209,10 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
@@ -223,7 +223,7 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -231,10 +231,10 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadLeftPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(-NitroDefaults.MovementSpeed);
@@ -247,7 +247,7 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(-NitroDefaults.MovementSpeed, 0)
         };
@@ -255,10 +255,10 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0, customMessage: "the left D_Pad is not being pressed");
@@ -270,7 +270,7 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(0, 0)
         };
@@ -278,10 +278,10 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl(isDPadRightPressed: true);
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(NitroDefaults.MovementSpeed);
@@ -295,7 +295,7 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
     public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroTestImpl
+        var nitro = new NitroCharacterImpl
         {
             Velocity = new Vector2(NitroDefaults.MovementSpeed, 0)
         };
@@ -303,10 +303,10 @@ public class NitroHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.SetIsOnFloor(true);
         
         var snesController = new SnesControllerImpl();
-        var nitroHandler = new NitroHandler(snesController, nitro, _consolePrinter);
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroHandler.PhysicsProcess(0.1f);
+        nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
         nitro.Velocity.X.ShouldBe(0, customMessage: "the right D_Pad is not being pressed");
