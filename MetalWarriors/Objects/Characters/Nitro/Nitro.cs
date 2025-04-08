@@ -27,10 +27,12 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public override void _PhysicsProcess(double delta)
     {
+        NitroAnimations.Offset = DetermineAnimationPositionOffset();
+        
         _nitroCharacterHandler.PhysicsProcess(delta);
         MoveAndSlide();
     }
-
+    
     public void AnimationFinished()
     {
         GD.Print("Animation finished");
@@ -46,5 +48,16 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
 
         GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);
+    }
+    
+    private Vector2 DetermineAnimationPositionOffset()
+    {
+        return NitroAnimations.Animation.ToString() switch
+        {
+            "flying" => new Vector2(-10, 4),
+            "landing" => new Vector2(-4, 0),
+            "launching" => new Vector2(-8, 5),
+            _ => new Vector2(0, 0)
+        };
     }
 }
