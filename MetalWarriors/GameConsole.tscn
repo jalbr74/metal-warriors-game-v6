@@ -44,24 +44,28 @@ render_target_update_mode = 4
 position = Vector2(48, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_v7uwk")
+passby_press = true
 action = "D_Pad_Left"
 
 [node name="DPadRight" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(320, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_xseyk")
+passby_press = true
 action = "D_Pad_Right"
 
 [node name="DPadUp" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(192, 640)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_8xinv")
+passby_press = true
 action = "D_Pad_Up"
 
 [node name="DPadDown" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(192, 960)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_nq4nd")
+passby_press = true
 action = "D_Pad_Down"
 
 [node name="Buttons" type="Node2D" parent="CanvasLayer/Controller"]
@@ -70,22 +74,26 @@ action = "D_Pad_Down"
 position = Vector2(1808, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_4yidk")
+passby_press = true
 action = "Button_Y"
 
 [node name="ButtonX" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
 position = Vector2(1950, 640)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_4yidk")
+passby_press = true
 action = "Button_X"
 
 [node name="ButtonB" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
 position = Vector2(1950, 958)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_4yidk")
+passby_press = true
 action = "Button_B"
 
 [node name="ButtonA" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
 position = Vector2(2096, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_trm7v")
+passby_press = true
 action = "Button_A"
