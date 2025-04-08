@@ -16,6 +16,11 @@
 
 [node name="GameConsole" type="Node2D"]
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 2240.0
+offset_bottom = 1120.0
+color = Color(0, 0, 0, 1)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
@@ -39,35 +44,48 @@ render_target_update_mode = 4
 position = Vector2(48, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_v7uwk")
+action = "D_Pad_Left"
 
 [node name="DPadRight" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(320, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_xseyk")
+action = "D_Pad_Right"
 
 [node name="DPadUp" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(192, 640)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_8xinv")
+action = "D_Pad_Up"
 
 [node name="DPadDown" type="TouchScreenButton" parent="CanvasLayer/Controller/D-Pad"]
 position = Vector2(192, 960)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_nq4nd")
+action = "D_Pad_Down"
 
 [node name="Buttons" type="Node2D" parent="CanvasLayer/Controller"]
 
-[node name="ButtonB" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
-position = Vector2(1856, 944)
+[node name="ButtonY" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
+position = Vector2(1808, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_4yidk")
+action = "Button_Y"
+
+[node name="ButtonX" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
+position = Vector2(1950, 640)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_4yidk")
+action = "Button_X"
+
+[node name="ButtonB" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
+position = Vector2(1950, 958)
+scale = Vector2(100, 100)
+texture_normal = SubResource("CanvasTexture_4yidk")
+action = "Button_B"
 
 [node name="ButtonA" type="TouchScreenButton" parent="CanvasLayer/Controller/Buttons"]
-position = Vector2(2096, 784)
+position = Vector2(2096, 800)
 scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_trm7v")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 2240.0
-offset_bottom = 1120.0
-color = Color(0, 0, 0, 1)
+action = "Button_A"
