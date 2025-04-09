@@ -4,11 +4,13 @@ using MetalWarriors.Utils;
 namespace MetalWarriors.Objects.Characters.Nitro;
 
 public enum NitroDirection { Left, Right }
+public enum NitroState { Idle, Walking, Launching, Falling, Flying }
 
-// Represents Nitro as a concept, and doesn't worry about the implementation details.
+// Represents Nitro as a concept, and doesn't worry about the implementation details (scene/script stuff).
 public interface INitroCharacter
 {
     Vector2 Velocity { get; set; }
+    NitroState State { get; set; }
     NitroDirection Direction { get; set; }
     string CurrentAnimation { get; }
 
@@ -16,35 +18,14 @@ public interface INitroCharacter
     void PlayAnimation(string animation);
 }
 
-public static class NitroDefaults
+// This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
+public class NitroCharacterHandler(ISnesController snesController, INitroCharacter nitroCharacter, IConsolePrinter consolePrinter)
 {
     public const float MovementSpeed = 120.0f;
     public const float MaxFallingVelocity = 300.0f;
     public const float MaxRisingVelocity = -135.0f;
     public const float FallingForce = 10.0f;
     public const float BoostingForce = 10.0f;
-}
-
-public enum NitroState
-{
-    Idle,
-    Walking,
-    Launching,
-    Falling,
-    Flying
-}
-
-// This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
-public class NitroCharacterHandler(ISnesController snesController, INitroCharacter nitroCharacter, IConsolePrinter consolePrinter)
-{
-    // Not sure if Export makes sense any more, since this isn't a Godot Node.
-    [Export] public float MovementSpeed = NitroDefaults.MovementSpeed;
-    [Export] public float MaxFallingVelocity = NitroDefaults.MaxFallingVelocity;
-    [Export] public float MaxRisingVelocity = NitroDefaults.MaxRisingVelocity;
-    [Export] public float FallingForce = NitroDefaults.FallingForce;
-    [Export] public float BoostingForce = NitroDefaults.BoostingForce;
-    
-    public NitroState NitroState { get; set; } = NitroState.Idle;
 
     public void PhysicsProcess(double delta)
     {
@@ -77,7 +58,7 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
             {
                 velocity.Y = MaxRisingVelocity;
                 animation = "launching";
-                NitroState = NitroState.Launching;
+                nitroCharacter.State = NitroState.Launching;
             }
             else
             {
@@ -88,7 +69,7 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                     velocity.Y = MaxRisingVelocity;
                 }
 
-                animation = NitroState == NitroState.Flying ? "flying" : "launching";
+                animation = nitroCharacter.State == NitroState.Flying ? "flying" : "launching";
             }
         }
         else
@@ -107,6 +88,7 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                 }
         
                 animation = "falling";
+                nitroCharacter.State = NitroState.Falling;
             }
         }
         
@@ -118,6 +100,6 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
     {
         consolePrinter.Print("Launching animation finished, transitioning to flying.");
 
-        NitroState = NitroState.Flying;
+        nitroCharacter.State = NitroState.Flying;
     }
 }

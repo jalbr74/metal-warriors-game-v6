@@ -17,6 +17,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     {
         // Arrange
         var nitro = Substitute.For<INitroCharacter>();
+        nitro.State = NitroState.Idle;
         nitro.IsOnFloor().Returns(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
@@ -27,50 +28,49 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     
         // Assert
         nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
         
         nitro.Received(1).PlayAnimation(Arg.Any<string>());
         nitro.Received().PlayAnimation("launching");
         
         nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
 
-        sut.NitroState.ShouldBe(NitroState.Launching);
+        nitro.State.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
     public void Nitro_should_keep_rising_constantly_when_launching()
     {
         var nitro = Substitute.For<INitroCharacter>();
+        nitro.State = NitroState.Launching;
         nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
+        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
 
         // Act
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter)
-        {
-            NitroState = NitroState.Launching
-        };
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
         nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
         
         nitro.Received(1).PlayAnimation(Arg.Any<string>());
         nitro.Received().PlayAnimation("launching");
         
         nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
         
-        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Launching);
+        nitro.State.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
     public void Nitro_should_change_from_launching_to_jetting_after_the_launching_animation_is_finished()
     {
         var nitro = Substitute.For<INitroCharacter>();
+        nitro.State = NitroState.Launching;
         nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
+        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
         
@@ -81,14 +81,14 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     
         // Assert
         nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
         
         nitro.Received(1).PlayAnimation(Arg.Any<string>());
         nitro.Received().PlayAnimation("flying");
         
         nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
         
-        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Flying);
+        nitro.State.ShouldBe(NitroState.Flying);
     }
 
     [Fact]
@@ -96,8 +96,9 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     {
         // Arrange
         var nitro = Substitute.For<INitroCharacter>();
+        nitro.State = NitroState.Flying;
         nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
+        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
         
         var snesController = new SnesControllerImpl();
         
@@ -110,7 +111,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         nitro.Received().Velocity = Arg.Is<Vector2>(velocity => 
             velocity.X == 0 &&
             velocity.Y < 0 &&
-            velocity.Y > NitroDefaults.MaxRisingVelocity
+            velocity.Y > NitroCharacterHandler.MaxRisingVelocity
         );
         
         nitro.Received(1).PlayAnimation(Arg.Any<string>());
@@ -118,7 +119,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         
         nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
         
-        // nitroCharacterHandler.NitroState.ShouldBe(NitroState.Flying);
+        nitro.State.ShouldBe(NitroState.Falling);
     }
     
     [Fact]
@@ -127,7 +128,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity)
+            Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
@@ -139,7 +140,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Assert
         nitro.Velocity.X.ShouldBe(0);
         nitro.Velocity.Y.ShouldBeGreaterThan(0);
-        nitro.Velocity.Y.ShouldBeLessThan(NitroDefaults.MaxFallingVelocity);
+        nitro.Velocity.Y.ShouldBeLessThan(NitroCharacterHandler.MaxFallingVelocity);
     }
     
     [Fact]
@@ -169,7 +170,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(0, NitroDefaults.MaxFallingVelocity + 10)
+            Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity + 10)
         };
         
         var snesController = new SnesControllerImpl();
@@ -180,7 +181,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxFallingVelocity);
+        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxFallingVelocity);
     }
     
     [Fact]
@@ -189,7 +190,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity + 10)
+            Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity + 10)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
@@ -200,7 +201,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
+        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxRisingVelocity);
     }
     
     [Fact]
@@ -209,7 +210,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity - 10)
+            Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity - 10)
         };
         
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
@@ -220,7 +221,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         
         // Assert
         nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
+        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxRisingVelocity);
     }
     
     [Fact]
@@ -263,7 +264,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(-NitroDefaults.MovementSpeed);
+        nitro.Velocity.X.ShouldBe(-NitroCharacterHandler.MovementSpeed);
         nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
         nitro.Direction.ShouldBe(NitroDirection.Left, customMessage: "he should be moving left");
         nitro.CurrentAnimation.ShouldBe("walking");
@@ -275,7 +276,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(-NitroDefaults.MovementSpeed, 0)
+            Velocity = new Vector2(-NitroCharacterHandler.MovementSpeed, 0)
         };
         
         nitro.SetIsOnFloor(true);
@@ -310,7 +311,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(NitroDefaults.MovementSpeed);
+        nitro.Velocity.X.ShouldBe(NitroCharacterHandler.MovementSpeed);
         nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
         nitro.Direction.ShouldBe(NitroDirection.Right, customMessage: "he should be moving right");
     
@@ -323,7 +324,7 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         var nitro = new NitroCharacterImpl
         {
-            Velocity = new Vector2(NitroDefaults.MovementSpeed, 0)
+            Velocity = new Vector2(NitroCharacterHandler.MovementSpeed, 0)
         };
         
         nitro.SetIsOnFloor(true);

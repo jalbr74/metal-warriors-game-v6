@@ -9,6 +9,7 @@ public class NitroCharacterImpl : INitroCharacter
     public NitroDirection Direction { get; set; } = NitroDirection.Right;
     public string CurrentAnimation { get; private set; } = "";
     public List<string> PlayedAnimations { get; } = [];
+    public NitroState State { get; set; }
     
     private bool _isOnFloor;
     
