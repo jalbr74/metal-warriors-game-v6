@@ -10,9 +10,10 @@ public interface INitroCharacter
 {
     Vector2 Velocity { get; set; }
     NitroDirection Direction { get; set; }
+    string CurrentAnimation { get; }
+
     bool IsOnFloor();
     void PlayAnimation(string animation);
-    string CurrentAnimation { get; }
 }
 
 public static class NitroDefaults

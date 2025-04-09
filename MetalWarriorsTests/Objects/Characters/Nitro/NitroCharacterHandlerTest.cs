@@ -1,6 +1,7 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriorsTests.Utils;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
@@ -14,85 +15,110 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
     {
-        var nitro = new NitroCharacterImpl();
-        nitro.SetIsOnFloor(true);
+        // Arrange
+        var nitro = Substitute.For<INitroCharacter>();
+        nitro.IsOnFloor().Returns(true);
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
-        nitro.Direction.ShouldBe(NitroDirection.Right);
-        nitro.CurrentAnimation.ShouldBe("launching");
-        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Launching);
+        nitro.Received(1).Velocity = Arg.Any<Vector2>();
+        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        
+        nitro.Received(1).PlayAnimation(Arg.Any<string>());
+        nitro.Received().PlayAnimation("launching");
+        
+        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+
+        sut.NitroState.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
     public void Nitro_should_keep_rising_constantly_when_launching()
     {
-        var nitro = new NitroCharacterImpl();
-        nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
-        nitro.SetIsOnFloor(false);
+        var nitro = Substitute.For<INitroCharacter>();
+        nitro.IsOnFloor().Returns(false);
+        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
 
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
-        
+
         // Act
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter)
+        {
+            NitroState = NitroState.Launching
+        };
         nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
-        nitro.Direction.ShouldBe(NitroDirection.Right);
-        nitro.CurrentAnimation.ShouldBe("launching");
-        nitro.PlayedAnimations.ShouldBe(["launching"]);
+        nitro.Received(1).Velocity = Arg.Any<Vector2>();
+        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        
+        nitro.Received(1).PlayAnimation(Arg.Any<string>());
+        nitro.Received().PlayAnimation("launching");
+        
+        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+        
+        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Launching);
     }
 
     [Fact]
     public void Nitro_should_change_from_launching_to_jetting_after_the_launching_animation_is_finished()
     {
-        var nitro = new NitroCharacterImpl();
-        nitro.Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
-        nitro.SetIsOnFloor(false);
-
+        var nitro = Substitute.For<INitroCharacter>();
+        nitro.IsOnFloor().Returns(false);
+        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
+        
         var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         nitroCharacterHandler.LaunchingAnimationFinished();
         nitroCharacterHandler.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroDefaults.MaxRisingVelocity);
-        nitro.Direction.ShouldBe(NitroDirection.Right);
-        nitro.CurrentAnimation.ShouldBe("flying");
-        nitro.PlayedAnimations.ShouldBe(["flying"]);
+        nitro.Received(1).Velocity = Arg.Any<Vector2>();
+        nitro.Received().Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity);
+        
+        nitro.Received(1).PlayAnimation(Arg.Any<string>());
+        nitro.Received().PlayAnimation("flying");
+        
+        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+        
+        nitroCharacterHandler.NitroState.ShouldBe(NitroState.Flying);
     }
 
     [Fact]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, NitroDefaults.MaxRisingVelocity)
-        };
-
+        var nitro = Substitute.For<INitroCharacter>();
+        nitro.IsOnFloor().Returns(false);
+        nitro.Velocity.Returns(new Vector2(0, NitroDefaults.MaxRisingVelocity));
+        
         var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         
         // Act
+        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
         nitroCharacterHandler.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBeLessThan(0);
-        nitro.Velocity.Y.ShouldBeGreaterThan(NitroDefaults.MaxRisingVelocity);
+        nitro.Received(1).Velocity = Arg.Any<Vector2>();
+        nitro.Received().Velocity = Arg.Is<Vector2>(velocity => 
+            velocity.X == 0 &&
+            velocity.Y < 0 &&
+            velocity.Y > NitroDefaults.MaxRisingVelocity
+        );
+        
+        nitro.Received(1).PlayAnimation(Arg.Any<string>());
+        nitro.Received().PlayAnimation("falling");
+        
+        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+        
+        // nitroCharacterHandler.NitroState.ShouldBe(NitroState.Flying);
     }
     
     [Fact]
