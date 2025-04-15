@@ -3,26 +3,20 @@ using MetalWarriors.Objects.Characters.Nitro;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
-public class NitroCharacterImpl : INitroCharacter
+public class NitroCharacterImplForTesting : INitroCharacter
 {
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.Right;
     public string CurrentAnimation { get; private set; } = "";
     public List<string> PlayedAnimations { get; } = [];
     public NitroState State { get; set; }
-    
-    private bool _isOnFloor;
+    public bool OnFloor { get; set; }
     
     public bool IsOnFloor()
     {
-        return _isOnFloor;
+        return OnFloor;
     }
     
-    public void SetIsOnFloor(bool isOnFloor)
-    {
-        _isOnFloor = isOnFloor;
-    }
-
     public void PlayAnimation(string animation)
     {
         CurrentAnimation = animation;

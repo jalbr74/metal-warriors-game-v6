@@ -1,5 +1,6 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters.Nitro;
+using MetalWarriors.Utils;
 using MetalWarriorsTests.Utils;
 using NSubstitute;
 using Shouldly;
@@ -12,331 +13,439 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
 {
     private readonly TestOutputConsolePrinter _consolePrinter = new(testOutputHelper);
     
+    private readonly ISnesController _controller = Substitute.For<ISnesController>();
+    private readonly INitroCharacter _nitroCharacter = Substitute.For<INitroCharacter>();
+    
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
     {
         // Arrange
-        var nitro = Substitute.For<INitroCharacter>();
-        nitro.State = NitroState.Idle;
-        nitro.IsOnFloor().Returns(true);
+        _controller.IsButtonBPressed.Returns(true);
 
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        
+        _nitroCharacter.State.Returns(NitroState.Idle);
+        _nitroCharacter.IsOnFloor().Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
         sut.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+        VerifyMutatorsWereOnlyCalledOnce();
         
-        nitro.Received(1).PlayAnimation(Arg.Any<string>());
-        nitro.Received().PlayAnimation("launching");
-        
-        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
-
-        nitro.State.ShouldBe(NitroState.Launching);
+        _nitroCharacter.Received().Direction = NitroDirection.Right;
+        _nitroCharacter.Received().State = NitroState.Launching;
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+        _nitroCharacter.Received().PlayAnimation("launching");
     }
 
     [Fact]
     public void Nitro_should_keep_rising_constantly_when_launching()
     {
-        var nitro = Substitute.For<INitroCharacter>();
-        nitro.State = NitroState.Launching;
-        nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
-
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        _controller.IsButtonBPressed.Returns(true);
+        
+        _nitroCharacter.State.Returns(NitroState.Launching);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
 
         // Act
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
         
-        nitro.Received(1).PlayAnimation(Arg.Any<string>());
-        nitro.Received().PlayAnimation("launching");
-        
-        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
-        
-        nitro.State.ShouldBe(NitroState.Launching);
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("launching");
     }
 
     [Fact]
-    public void Nitro_should_change_from_launching_to_jetting_after_the_launching_animation_is_finished()
+    public void Nitro_should_change_from_launching_to_flying_after_the_launching_animation_is_finished()
     {
-        var nitro = Substitute.For<INitroCharacter>();
-        nitro.State = NitroState.Launching;
-        nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
+        _controller.IsButtonBPressed.Returns(true);
         
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
+        _nitroCharacter.State.Returns(NitroState.Launching);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
         
         // Act
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
-        nitroCharacterHandler.LaunchingAnimationFinished();
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.LaunchingAnimationFinished();
+        sut.PhysicsProcess(0.1f);
     
         // Assert
-        nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
         
-        nitro.Received(1).PlayAnimation(Arg.Any<string>());
-        nitro.Received().PlayAnimation("flying");
-        
-        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
-        
-        nitro.State.ShouldBe(NitroState.Flying);
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Flying;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("flying");
     }
 
     [Fact]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        var nitro = Substitute.For<INitroCharacter>();
-        nitro.State = NitroState.Flying;
-        nitro.IsOnFloor().Returns(false);
-        nitro.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
-        
-        var snesController = new SnesControllerImpl();
+        _nitroCharacter.State.Returns(NitroState.Flying);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity));
         
         // Act
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Received(1).Velocity = Arg.Any<Vector2>();
-        nitro.Received().Velocity = Arg.Is<Vector2>(velocity => 
-            velocity.X == 0 &&
-            velocity.Y < 0 &&
-            velocity.Y > NitroCharacterHandler.MaxRisingVelocity
-        );
         
-        nitro.Received(1).PlayAnimation(Arg.Any<string>());
-        nitro.Received().PlayAnimation("falling");
-        
-        nitro.DidNotReceive().Direction = Arg.Any<NitroDirection>();
-        
-        nitro.State.ShouldBe(NitroState.Falling);
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Falling;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity + NitroCharacterHandler.FallingForce);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("falling");
     }
     
     [Fact]
     public void Nitro_should_accelerate_when_jetting_is_started_again()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity)
-        };
         
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _controller.IsButtonBPressed.Returns(true);
+        
+        _nitroCharacter.State.Returns(NitroState.Flying);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxFallingVelocity));
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBeGreaterThan(0);
-        nitro.Velocity.Y.ShouldBeLessThan(NitroCharacterHandler.MaxFallingVelocity);
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity - NitroCharacterHandler.BoostingForce);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("flying");
     }
     
     [Fact]
-    public void Nitro_should_fall_when_no_longer_decelerating()
+    public void Nitro_should_fall_after_reaching_the_apex_after_thrust_is_cut()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, 0)
-        };
-        
-        var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.State.Returns(NitroState.Flying);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, 0));
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBeGreaterThan(0);
-        nitro.CurrentAnimation.ShouldBe("falling");
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Falling;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.FallingForce);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("falling");
     }
     
     [Fact]
     public void Nitro_should_not_fall_too_fast()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity + 10)
-        };
-        
-        var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.State.Returns(NitroState.Falling);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxFallingVelocity + 10));
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxFallingVelocity);
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Falling;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxFallingVelocity);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("falling");
     }
     
     [Fact]
     public void Nitro_should_not_accelerate_too_fast()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity + 10)
-        };
+        _controller.IsButtonBPressed.Returns(true);
         
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.State.Returns(NitroState.Flying);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity + 10)); // Just under max rising velocity
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxRisingVelocity);
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("flying");
     }
     
     [Fact]
     public void Nitro_should_not_exceed_max_rising_velocity()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity - 10)
-        };
+        _controller.IsButtonBPressed.Returns(true);
         
-        var snesController = new SnesControllerImpl(isButtonBPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(false);
+        _nitroCharacter.State.Returns(NitroState.Flying);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, NitroCharacterHandler.MaxRisingVelocity - 10)); // Just over max rising velocity
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(NitroCharacterHandler.MaxRisingVelocity);
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, NitroCharacterHandler.MaxRisingVelocity);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("flying");
     }
     
     [Fact]
     public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, 0)
-        };
-        
-        nitro.SetIsOnFloor(true);
-        
-        var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(true);
+        _nitroCharacter.State.Returns(NitroState.Idle);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, 0)); // Just over max rising velocity
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0);
-        nitro.Velocity.Y.ShouldBe(0, customMessage: "he can't go down more if he's on the floor");
+
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>(); // No direction was given
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, 0);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("idle");
     }
     
     [Fact]
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, 0)
-        };
+        _controller.IsDPadLeftPressed.Returns(true);
         
-        nitro.SetIsOnFloor(true);
-        
-        var snesController = new SnesControllerImpl(isDPadLeftPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(true);
+        _nitroCharacter.State.Returns(NitroState.Idle);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, 0)); // Just over max rising velocity
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(-NitroCharacterHandler.MovementSpeed);
-        nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
-        nitro.Direction.ShouldBe(NitroDirection.Left, customMessage: "he should be moving left");
-        nitro.CurrentAnimation.ShouldBe("walking");
+        
+        // Assert mutations to Direction
+        _nitroCharacter.Received(1).Direction = Arg.Any<NitroDirection>();
+        _nitroCharacter.Received().Direction = NitroDirection.Left;
+
+        // Assert mutations to State
+        _nitroCharacter.DidNotReceive().State = Arg.Any<NitroState>();
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(-NitroCharacterHandler.MovementSpeed, 0);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("walking");
     }
     
     [Fact]
     public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(-NitroCharacterHandler.MovementSpeed, 0)
-        };
+        _controller.IsDPadLeftPressed.Returns(false);
         
-        nitro.SetIsOnFloor(true);
-        
-        var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
-        
+        _nitroCharacter.IsOnFloor().Returns(true);
+        _nitroCharacter.State.Returns(NitroState.Walking);
+        _nitroCharacter.Velocity.Returns(new Vector2(-NitroCharacterHandler.MovementSpeed, 0)); // Just over max rising velocity
+
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0, customMessage: "the left D_Pad is not being pressed");
-        nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
-        nitro.CurrentAnimation.ShouldBe("idle");
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Idle;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, 0);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("idle");
     }
     
     [Fact]
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(0, 0)
-        };
+        _controller.IsDPadRightPressed.Returns(true);
         
-        nitro.SetIsOnFloor(true);
-        
-        var snesController = new SnesControllerImpl(isDPadRightPressed: true);
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(true);
+        _nitroCharacter.State.Returns(NitroState.Idle);
+        _nitroCharacter.Velocity.Returns(new Vector2(0, 0));
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(NitroCharacterHandler.MovementSpeed);
-        nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
-        nitro.Direction.ShouldBe(NitroDirection.Right, customMessage: "he should be moving right");
-    
-        nitro.CurrentAnimation.ShouldBe("walking");
+        
+        // Assert mutations to Direction
+        _nitroCharacter.Received(1).Direction = Arg.Any<NitroDirection>();
+        _nitroCharacter.Received().Direction = NitroDirection.Right;
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Walking;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(NitroCharacterHandler.MovementSpeed, 0);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("walking");
     }
     
     [Fact]
     public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
     {
         // Arrange
-        var nitro = new NitroCharacterImpl
-        {
-            Velocity = new Vector2(NitroCharacterHandler.MovementSpeed, 0)
-        };
-        
-        nitro.SetIsOnFloor(true);
-        
-        var snesController = new SnesControllerImpl();
-        var nitroCharacterHandler = new NitroCharacterHandler(snesController, nitro, _consolePrinter);
+        _nitroCharacter.IsOnFloor().Returns(true);
+        _nitroCharacter.State.Returns(NitroState.Walking);
+        _nitroCharacter.Velocity.Returns(new Vector2(NitroCharacterHandler.MovementSpeed, 0));
         
         // Act
-        nitroCharacterHandler.PhysicsProcess(0.1f);
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        sut.PhysicsProcess(0.1f);
         
         // Assert
-        nitro.Velocity.X.ShouldBe(0, customMessage: "the right D_Pad is not being pressed");
-        nitro.Velocity.Y.ShouldBe(0, customMessage: "he's on the floor");
+        
+        // Assert mutations to Direction
+        _nitroCharacter.DidNotReceive().Direction = Arg.Any<NitroDirection>();
+
+        // Assert mutations to State
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received().State = NitroState.Idle;
+
+        // Assert mutations to Velocity 
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>(); // The Velocity was only set once
+        _nitroCharacter.Received().Velocity = new Vector2(0, 0);
+
+        // Assert calls to PlayAnimation
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>()); // The animation was only changed once
+        _nitroCharacter.Received().PlayAnimation("idle");
+    }
+    
+    private void VerifyMutatorsWereOnlyCalledOnce()
+    {
+        _nitroCharacter.Received(1).Direction = Arg.Any<NitroDirection>();
+        _nitroCharacter.Received(1).State = Arg.Any<NitroState>();
+        _nitroCharacter.Received(1).Velocity = Arg.Any<Vector2>();
+        _nitroCharacter.Received(1).PlayAnimation(Arg.Any<string>());
     }
 }

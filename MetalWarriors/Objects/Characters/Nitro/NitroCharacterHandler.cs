@@ -3,7 +3,7 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
 
-public enum NitroDirection { Left, Right }
+public enum NitroDirection { Right, Left }
 public enum NitroState { Idle, Walking, Launching, Falling, Flying }
 
 // Represents Nitro as a concept, and doesn't worry about the implementation details (scene/script stuff).
@@ -29,27 +29,30 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
 
     public void PhysicsProcess(double delta)
     {
+        var direction = nitroCharacter.Direction;
+        var state = nitroCharacter.State;
         var velocity = nitroCharacter.Velocity;
         var animation = nitroCharacter.CurrentAnimation;
         
         if (snesController.IsDPadLeftPressed)
         {
-            nitroCharacter.Direction = NitroDirection.Left;
-            animation = "walking";
-        
+            direction = NitroDirection.Left;
             velocity.X = -MovementSpeed;
+            animation = "walking";
+            state = NitroState.Walking;
         }
         else if (snesController.IsDPadRightPressed)
         {
-            nitroCharacter.Direction = NitroDirection.Right;
-            animation = "walking";
-        
+            direction = NitroDirection.Right;
             velocity.X = MovementSpeed;
+            animation = "walking";
+            state = NitroState.Walking;
         }
         else
         {
-            animation = "idle";
             velocity.X = 0;
+            animation = "idle";
+            state = NitroState.Idle;
         }
         
         if (snesController.IsButtonBPressed)
@@ -58,7 +61,7 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
             {
                 velocity.Y = MaxRisingVelocity;
                 animation = "launching";
-                nitroCharacter.State = NitroState.Launching;
+                state = NitroState.Launching;
             }
             else
             {
@@ -69,7 +72,7 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                     velocity.Y = MaxRisingVelocity;
                 }
 
-                animation = nitroCharacter.State == NitroState.Flying ? "flying" : "launching";
+                animation = state == NitroState.Flying ? "flying" : "launching";
             }
         }
         else
@@ -88,12 +91,14 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                 }
         
                 animation = "falling";
-                nitroCharacter.State = NitroState.Falling;
+                state = NitroState.Falling;
             }
         }
         
-        nitroCharacter.PlayAnimation(animation);
+        nitroCharacter.Direction = direction;
+        nitroCharacter.State = state;
         nitroCharacter.Velocity = velocity;
+        nitroCharacter.PlayAnimation(animation);
     }
 
     public void LaunchingAnimationFinished()
