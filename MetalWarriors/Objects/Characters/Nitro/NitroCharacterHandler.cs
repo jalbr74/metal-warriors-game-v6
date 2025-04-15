@@ -13,8 +13,8 @@ public interface INitroCharacter
     NitroState State { get; set; }
     NitroDirection Direction { get; set; }
     string CurrentAnimation { get; }
-
-    bool IsOnFloor();
+    bool OnFloor { get; }
+    
     void PlayAnimation(string animation);
 }
 
@@ -29,39 +29,41 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
 
     public void PhysicsProcess(double delta)
     {
-        var direction = nitroCharacter.Direction;
-        var state = nitroCharacter.State;
         var velocity = nitroCharacter.Velocity;
         var animation = nitroCharacter.CurrentAnimation;
         
         if (snesController.IsDPadLeftPressed)
         {
-            direction = NitroDirection.Left;
+            nitroCharacter.Direction = NitroDirection.Left;
             velocity.X = -MovementSpeed;
             animation = "walking";
-            state = NitroState.Walking;
+            nitroCharacter.State = NitroState.Walking;
         }
         else if (snesController.IsDPadRightPressed)
         {
-            direction = NitroDirection.Right;
+            nitroCharacter.Direction = NitroDirection.Right;
             velocity.X = MovementSpeed;
             animation = "walking";
-            state = NitroState.Walking;
+            nitroCharacter.State = NitroState.Walking;
         }
         else
         {
             velocity.X = 0;
             animation = "idle";
-            state = NitroState.Idle;
+            
+            if (nitroCharacter.OnFloor)
+            {
+                nitroCharacter.State = NitroState.Idle;
+            }
         }
         
         if (snesController.IsButtonBPressed)
         {
-            if (nitroCharacter.IsOnFloor())
+            if (nitroCharacter.OnFloor)
             {
                 velocity.Y = MaxRisingVelocity;
                 animation = "launching";
-                state = NitroState.Launching;
+                nitroCharacter.State = NitroState.Launching;
             }
             else
             {
@@ -72,12 +74,12 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                     velocity.Y = MaxRisingVelocity;
                 }
 
-                animation = state == NitroState.Flying ? "flying" : "launching";
+                animation = nitroCharacter.State == NitroState.Flying ? "flying" : "launching";
             }
         }
         else
         {
-            if (nitroCharacter.IsOnFloor())
+            if (nitroCharacter.OnFloor)
             {
                 velocity.Y = 0;
             }
@@ -91,12 +93,10 @@ public class NitroCharacterHandler(ISnesController snesController, INitroCharact
                 }
         
                 animation = "falling";
-                state = NitroState.Falling;
+                nitroCharacter.State = NitroState.Falling;
             }
         }
         
-        nitroCharacter.Direction = direction;
-        nitroCharacter.State = state;
         nitroCharacter.Velocity = velocity;
         nitroCharacter.PlayAnimation(animation);
     }
