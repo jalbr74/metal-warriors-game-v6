@@ -12,11 +12,17 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public bool OnFloor { get; set; }
 
     public List<string> PlayedAnimations { get; } = [];
+    public bool AnimationWasPaused { get; private set; }
     
     public void PlayAnimation(string animation)
     {
         CurrentAnimation = animation;
         
         PlayedAnimations.Add(animation);
+    }
+
+    public void PauseAnimation()
+    {
+        AnimationWasPaused = true;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Godot;
+using MetalWarriors.Objects.Characters.Nitro.States;
 using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
@@ -16,95 +17,30 @@ public interface INitroCharacter
     bool OnFloor { get; }
     
     void PlayAnimation(string animation);
+    void PauseAnimation();
 }
 
 // This class operates on the INitro interface so that it can be used with any implementation of INitro (useful for doing TDD).
-public class NitroCharacterHandler(ISnesController snesController, INitroCharacter nitroCharacter, IConsolePrinter consolePrinter)
+public class NitroCharacterHandler(ISnesController controller, INitroCharacter nitro, IConsolePrinter console)
 {
-    public const float MovementSpeed = 120.0f;
-    public const float MaxFallingVelocity = 300.0f;
-    public const float MaxRisingVelocity = -135.0f;
-    public const float FallingForce = 10.0f;
-    public const float BoostingForce = 10.0f;
-
+    private readonly StateMachine _stateMachine = new StateMachine(new System.Collections.Generic.Dictionary<string, State>
+    {
+        { "idle", new NitroIdleState(controller, nitro, console) },
+        {"walking", new NitroWalkingState(controller, nitro, console)},
+        {"launching", new NitroLaunchingState(controller, nitro, console)},
+        {"falling", new NitroFallingState(controller, nitro, console)},
+        {"flying", new NitroFlyingState(controller, nitro, console)},
+    }, "idle");
+    
     public void PhysicsProcess(double delta)
     {
-        var velocity = nitroCharacter.Velocity;
-        var animation = nitroCharacter.CurrentAnimation;
-        
-        if (snesController.IsDPadLeftPressed)
-        {
-            nitroCharacter.Direction = NitroDirection.Left;
-            velocity.X = -MovementSpeed;
-            animation = "walking";
-            nitroCharacter.State = NitroState.Walking;
-        }
-        else if (snesController.IsDPadRightPressed)
-        {
-            nitroCharacter.Direction = NitroDirection.Right;
-            velocity.X = MovementSpeed;
-            animation = "walking";
-            nitroCharacter.State = NitroState.Walking;
-        }
-        else
-        {
-            velocity.X = 0;
-            animation = "idle";
-            
-            if (nitroCharacter.OnFloor)
-            {
-                nitroCharacter.State = NitroState.Idle;
-            }
-        }
-        
-        if (snesController.IsButtonBPressed)
-        {
-            if (nitroCharacter.OnFloor)
-            {
-                velocity.Y = MaxRisingVelocity;
-                animation = "launching";
-                nitroCharacter.State = NitroState.Launching;
-            }
-            else
-            {
-                velocity.Y -= BoostingForce;
-        
-                if (velocity.Y < MaxRisingVelocity)
-                {
-                    velocity.Y = MaxRisingVelocity;
-                }
-
-                animation = nitroCharacter.State == NitroState.Flying ? "flying" : "launching";
-            }
-        }
-        else
-        {
-            if (nitroCharacter.OnFloor)
-            {
-                velocity.Y = 0;
-            }
-            else
-            {
-                velocity.Y += FallingForce;
-        
-                if (velocity.Y > MaxFallingVelocity)
-                {
-                    velocity.Y = MaxFallingVelocity;
-                }
-        
-                animation = "falling";
-                nitroCharacter.State = NitroState.Falling;
-            }
-        }
-        
-        nitroCharacter.Velocity = velocity;
-        nitroCharacter.PlayAnimation(animation);
+        _stateMachine.PhysicsProcess(delta);
     }
-
+    
     public void LaunchingAnimationFinished()
     {
-        consolePrinter.Print("Launching animation finished, transitioning to flying.");
+        console.Print("Launching animation finished, transitioning to flying.");
 
-        nitroCharacter.State = NitroState.Flying;
+        nitro.State = NitroState.Flying;
     }
 }

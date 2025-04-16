@@ -52,6 +52,11 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
         NitroAnimations.Play(animation);
     }
     
+    public void PauseAnimation()
+    {
+        NitroAnimations.Pause();
+    }
+    
     private Vector2 DetermineAnimationPositionOffset()
     {
         return NitroAnimations.Animation.ToString() switch
