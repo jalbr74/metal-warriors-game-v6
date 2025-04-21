@@ -10,7 +10,6 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         console.Print("Entering Walking State");
         
         nitro.PlayAnimation("walking");
-        nitro.PauseAnimation();
     }
     
     public override void HandleState(double delta)

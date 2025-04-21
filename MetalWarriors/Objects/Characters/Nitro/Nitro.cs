@@ -37,7 +37,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public void AnimationFinished()
     {
-        GD.Print("Animation finished");
+        // GD.Print("Animation finished");
 
         if (NitroAnimations.Animation != "launching") return;
         
@@ -53,7 +53,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
             IsLaunchingAnimationComplete = false;
         }
 
-        GD.Print($"Playing animation: {animation}");
+        // GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);
     }
     

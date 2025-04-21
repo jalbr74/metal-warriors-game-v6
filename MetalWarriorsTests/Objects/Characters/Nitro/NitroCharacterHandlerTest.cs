@@ -360,7 +360,6 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
     
-        
     [Fact]
     public void Nitro_should_fall_if_idle_and_no_buttons_pressed()
     {
@@ -383,5 +382,51 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _nitroCharacter.CurrentAnimation.ShouldBe("falling");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
-
+    
+    [Fact]
+    public void Nitro_should_stop_falling_if_on_the_floor()
+    {
+        // Arrange
+        _nitroCharacter.OnFloor = true;
+        _nitroCharacter.Direction = NitroDirection.Right;
+        _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
+        
+        // Controller not being used
+        // _controller
+        
+        // Act
+        const string currentState = "falling";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
+        sut.PhysicsProcess(0.1f);
+        
+        // Assert
+        _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        _nitroCharacter.Velocity.ShouldBe(Vector2.Zero);
+        _nitroCharacter.CurrentAnimation.ShouldBe("idle");
+        _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+    }
+    
+    [Fact]
+    public void Nitro_walking_animation_should_continually_play()
+    {
+        // Arrange
+        _nitroCharacter.OnFloor = true;
+        _nitroCharacter.Direction = NitroDirection.Right;
+        _nitroCharacter.Velocity = Vector2.Zero;
+        
+        // Controller not being used
+        _controller.IsDPadRightPressed.Returns(true);
+        
+        // Act
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
+        sut.PhysicsProcess(0.1f);
+        
+        // Assert
+        _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        _nitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
+        _nitroCharacter.CurrentAnimation.ShouldBe("walking");
+        _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        _nitroCharacter.AnimationWasPaused.ShouldBe(false);
+    }
 }

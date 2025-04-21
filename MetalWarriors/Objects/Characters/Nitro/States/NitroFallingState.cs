@@ -15,6 +15,7 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
     
     public override void HandleState(double delta)
     {
+        // Nitro should be able to steer when falling
         if (controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
@@ -28,12 +29,9 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
         else
         {
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
-            
-            if (nitro.OnFloor)
-            {
-                // nitro.State = NitroState.Idle;
-            }
         }
+        
+        // Nitro should stop falling if on the floor
         
         if (controller.IsButtonBPressed)
         {
@@ -56,7 +54,8 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
         {
             if (nitro.OnFloor)
             {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
+                StateMachine.TransitionTo("idle", delta);
+                return;
             }
             else
             {
