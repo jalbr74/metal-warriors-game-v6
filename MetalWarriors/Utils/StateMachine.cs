@@ -3,38 +3,45 @@ using Godot;
 
 namespace MetalWarriors.Utils;
 
-public class StateMachine(Dictionary<string, State> states, string initialState)
+public class StateMachine
 {
-    private State _currentState = states[initialState];
-
-    public void TransitionTo(string newState)
+    private readonly Dictionary<string, State> _states;
+    private State _currentState;
+    private IConsolePrinter _console;
+    
+    public StateMachine(Dictionary<string, State> states, string initialState, IConsolePrinter console)
     {
-        _currentState?.Exit();
+        _states = states;
+        _console = console;
 
-        if (states.TryGetValue(newState, out _currentState))
+        foreach (var state in states.Values)
         {
-            GD.Print("Transitioning to state: " + newState);
-            _currentState.Enter();    
+            state.StateMachine = this;
+        }
+        
+        _currentState = _states[initialState];
+    }
+
+    public void TransitionTo(string newState, double delta)
+    {
+        _currentState?.Exit(delta);
+
+        if (_states.TryGetValue(newState, out _currentState))
+        {
+            _console.Print("Transitioning to state: " + newState);
+
+            _currentState.Enter(delta);
+            _currentState.HandleState(delta);
         }
         else
         {
-            GD.PrintErr("State not found: " + newState);
+            throw new KeyNotFoundException("State not found: " + newState);
         }
-    }
-
-    public void AddState(string name, State state)
-    {
-        state.StateMachine = this;
-        states.Add(name, state);
     }
 
     public void PhysicsProcess(double delta)
     {
-        var nextState = _currentState?.HandleState(delta);
-        if (nextState != null)
-        {
-            TransitionTo(nextState);
-        }
+        _currentState?.HandleState(delta);
     }
 }
 
@@ -42,11 +49,7 @@ public class State
 {
     public StateMachine StateMachine { get; set; }
     
-    public virtual void Enter() { }
-    public virtual void Exit() { }
-
-    public virtual string HandleState(double delta)
-    {
-        return null;
-    }
+    public virtual void Enter(double delta) { }
+    public virtual void Exit(double delta) { }
+    public virtual void HandleState(double delta) { }
 }

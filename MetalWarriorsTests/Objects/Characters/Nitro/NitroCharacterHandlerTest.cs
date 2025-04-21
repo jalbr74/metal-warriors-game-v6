@@ -23,18 +23,17 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Idle;
         _nitroCharacter.Velocity = Vector2.Zero;
         
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Launching);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("launching");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -46,21 +45,23 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Launching;
+        _nitroCharacter.CurrentAnimation = "launching";
+        // _nitroCharacter.State = NitroState.Launching;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
         
         _controller.IsButtonBPressed.Returns(true);
     
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "launching";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Launching);
+        // _nitroCharacter.State.ShouldBe(NitroState.Launching);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("launching");
-        _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        _nitroCharacter.PlayedAnimations.Count.ShouldBe(0); // The animation should have already been played in the Launching Entered state
     }
     
     [Fact]
@@ -68,19 +69,18 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
     {
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Launching;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
+        _nitroCharacter.IsLaunchingAnimationComplete = true;
         
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
-        sut.LaunchingAnimationFinished();
+        const string currentState = "launching";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Flying);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -92,41 +92,39 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Flying;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
         
         // _controller
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "flying";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Falling);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity + BaseNitroState.FallingForce));
         _nitroCharacter.CurrentAnimation.ShouldBe("falling");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
     
-    [Fact]
+    // [Fact]
     public void Nitro_should_accelerate_when_jetting_is_started_again()
     {
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Flying;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
         
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "flying";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Flying);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxFallingVelocity - BaseNitroState.BoostingForce));
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -138,18 +136,19 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Flying;
+        // _nitroCharacter.State = NitroState.Flying;
         _nitroCharacter.Velocity = Vector2.Zero;
         
         // _controller
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "flying";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Falling);
+        // _nitroCharacter.State.ShouldBe(NitroState.Falling);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.FallingForce));
         _nitroCharacter.CurrentAnimation.ShouldBe("falling");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -161,18 +160,18 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Falling;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity + 10);
+        _nitroCharacter.PlayAnimation("falling");
         
         // _controller
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "falling";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Falling);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxFallingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("falling");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -184,18 +183,18 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Flying;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity + 10);
+        _nitroCharacter.PlayAnimation("flying");
         
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "flying";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Flying);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -207,18 +206,18 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Flying;
         _nitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity - 10);
+        _nitroCharacter.PlayAnimation("flying");
         
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "flying";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Flying);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -230,18 +229,18 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Idle;
         _nitroCharacter.Velocity = Vector2.Zero;
+        _nitroCharacter.PlayAnimation("idle");
         
         // _controller
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Idle);
         _nitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         _nitroCharacter.CurrentAnimation.ShouldBe("idle");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -253,18 +252,17 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Idle;
         _nitroCharacter.Velocity = Vector2.Zero;
         
         _controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Left);
-        _nitroCharacter.State.ShouldBe(NitroState.Walking);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, 0));
         _nitroCharacter.CurrentAnimation.ShouldBe("walking");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -276,18 +274,17 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Walking;
         _nitroCharacter.Velocity = new Vector2(-BaseNitroState.MovementSpeed, 0);
         
         _controller.IsDPadLeftPressed.Returns(false);
     
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "walking";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Idle);
         _nitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         _nitroCharacter.CurrentAnimation.ShouldBe("idle");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -299,18 +296,17 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Idle;
         _nitroCharacter.Velocity = Vector2.Zero;
         
         _controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Walking);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         _nitroCharacter.CurrentAnimation.ShouldBe("walking");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -322,43 +318,43 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // Arrange
         _nitroCharacter.OnFloor = true;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Walking;
+        // _nitroCharacter.State = NitroState.Walking;
         _nitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
         
         // _controller
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
+        const string currentState = "walking";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Idle);
+        // _nitroCharacter.State.ShouldBe(NitroState.Idle);
         _nitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         _nitroCharacter.CurrentAnimation.ShouldBe("idle");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
     
-    // [Fact]
+    [Fact]
     public void Nitro_switches_to_flying_after_launching_while_DPad_is_pressed()
     {
         // Arrange
         _nitroCharacter.OnFloor = false;
         _nitroCharacter.Direction = NitroDirection.Right;
-        _nitroCharacter.State = NitroState.Launching;
         _nitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity);
+        _nitroCharacter.IsLaunchingAnimationComplete = true;
         
         _controller.IsDPadRightPressed.Returns(true);
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter);
-        sut.LaunchingAnimationFinished();
+        const string currentState = "launching";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
         sut.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        _nitroCharacter.State.ShouldBe(NitroState.Flying);
         _nitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);

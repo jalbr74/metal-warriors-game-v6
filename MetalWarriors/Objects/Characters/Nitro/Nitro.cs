@@ -8,6 +8,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
     public NitroState State { get; set; }
+    public bool IsLaunchingAnimationComplete { get; set; }
     public bool OnFloor => IsOnFloor();
 
     public NitroDirection Direction
@@ -24,7 +25,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _nitroCharacterHandler = new NitroCharacterHandler(new SnesController(), this, new ConsolePrinter());
+        _nitroCharacterHandler = new NitroCharacterHandler(new SnesController(), this, new ConsolePrinter(), "idle");
     }
     
     public override void _PhysicsProcess(double delta)
@@ -41,12 +42,17 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
 
         if (NitroAnimations.Animation != "launching") return;
         
-        _nitroCharacterHandler.LaunchingAnimationFinished();
+        IsLaunchingAnimationComplete = true;
     }
 
     public void PlayAnimation(string animation)
     {
         if (NitroAnimations.Animation == animation) return;
+        
+        if (animation == "launching")
+        {
+            IsLaunchingAnimationComplete = false;
+        }
 
         GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);

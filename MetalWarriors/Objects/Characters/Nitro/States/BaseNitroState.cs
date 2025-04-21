@@ -1,4 +1,5 @@
-﻿using MetalWarriors.Utils;
+﻿using Godot;
+using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
@@ -10,79 +11,22 @@ public class BaseNitroState(ISnesController controller, INitroCharacter nitro, I
     public const float FallingForce = 10.0f;
     public const float BoostingForce = 10.0f;
     
-    public override string HandleState(double delta)
+    protected void HandleGravity()
     {
-        var velocity = nitro.Velocity;
-        var animation = nitro.CurrentAnimation;
-        
-        if (controller.IsDPadLeftPressed)
-        {
-            nitro.Direction = NitroDirection.Left;
-            velocity.X = -MovementSpeed;
-            animation = "walking";
-            nitro.State = NitroState.Walking;
-        }
-        else if (controller.IsDPadRightPressed)
-        {
-            nitro.Direction = NitroDirection.Right;
-            velocity.X = MovementSpeed;
-            animation = "walking";
-            nitro.State = NitroState.Walking;
-        }
-        else
-        {
-            velocity.X = 0;
-            animation = "idle";
-            
-            if (nitro.OnFloor)
-            {
-                nitro.State = NitroState.Idle;
-            }
-        }
-        
-        if (controller.IsButtonBPressed)
-        {
-            if (nitro.OnFloor)
-            {
-                velocity.Y = MaxRisingVelocity;
-                animation = "launching";
-                nitro.State = NitroState.Launching;
-            }
-            else
-            {
-                velocity.Y -= BoostingForce;
-        
-                if (velocity.Y < MaxRisingVelocity)
-                {
-                    velocity.Y = MaxRisingVelocity;
-                }
-
-                animation = nitro.State == NitroState.Flying ? "flying" : "launching";
-            }
-        }
-        else
-        {
-            if (nitro.OnFloor)
-            {
-                velocity.Y = 0;
-            }
-            else
-            {
-                velocity.Y += FallingForce;
-        
-                if (velocity.Y > MaxFallingVelocity)
-                {
-                    velocity.Y = MaxFallingVelocity;
-                }
-        
-                animation = "falling";
-                nitro.State = NitroState.Falling;
-            }
-        }
-        
-        nitro.Velocity = velocity;
-        nitro.PlayAnimation(animation);
-
-        return null;
+        // if (nitro.OnFloor)
+        // {
+        //     nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
+        // }
+        // else
+        // {
+        //     nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
+        //
+        //     if (nitro.Velocity.Y > MaxFallingVelocity)
+        //     {
+        //         nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
+        //     }
+        //
+        //     nitro.State = NitroState.Falling;
+        // }
     }
 }
