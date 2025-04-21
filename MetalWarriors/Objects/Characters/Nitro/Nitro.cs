@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using MetalWarriors.Objects.Characters.Nitro.States;
 using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
@@ -18,20 +19,30 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public string CurrentAnimation => NitroAnimations.Animation;
 
-    private NitroCharacterHandler _nitroCharacterHandler;
+    private StateMachine _stateMachine;
     
     public override void _Ready()
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _nitroCharacterHandler = new NitroCharacterHandler(new SnesController(), this, new ConsolePrinter(), "idle");
+        var controller = new SnesController();
+        var console = new ConsolePrinter();
+        
+        _stateMachine = new StateMachine(new System.Collections.Generic.Dictionary<string, State>
+        {
+            { "idle", new NitroIdleState(controller, this, console) },
+            {"walking", new NitroWalkingState(controller, this, console)},
+            {"launching", new NitroLaunchingState(controller, this, console)},
+            {"falling", new NitroFallingState(controller, this, console)},
+            {"flying", new NitroFlyingState(controller, this, console)},
+        }, "idle", console);
     }
     
     public override void _PhysicsProcess(double delta)
     {
         NitroAnimations.Offset = DetermineAnimationPositionOffset();
         
-        _nitroCharacterHandler.PhysicsProcess(delta);
+        _stateMachine.PhysicsProcess(delta);
         MoveAndSlide();
     }
     

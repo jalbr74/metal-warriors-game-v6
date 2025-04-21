@@ -5,8 +5,9 @@ namespace MetalWarriors.Utils;
 
 public class StateMachine
 {
-    private readonly Dictionary<string, State> _states;
     private State _currentState;
+    
+    private readonly Dictionary<string, State> _states;
     private IConsolePrinter _console;
     
     public StateMachine(Dictionary<string, State> states, string initialState, IConsolePrinter console)
@@ -42,6 +43,11 @@ public class StateMachine
     public void PhysicsProcess(double delta)
     {
         _currentState?.HandleState(delta);
+    }
+    
+    public void SetCurrentState(string state)
+    {
+        _currentState = _states[state];
     }
 }
 

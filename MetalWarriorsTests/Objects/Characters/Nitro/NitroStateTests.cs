@@ -10,12 +10,27 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
-public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
+public class NitroStateTests
 {
-    private readonly TestOutputConsolePrinter _consolePrinter = new(testOutputHelper);
-    
     private readonly ISnesController _controller = Substitute.For<ISnesController>();
+    private readonly TestOutputConsolePrinter _consolePrinter;
+    
     private readonly NitroCharacterImplForTesting _nitroCharacter = new();
+    private readonly StateMachine _stateMachine;
+
+    public NitroStateTests(ITestOutputHelper testOutputHelper)
+    {
+        _consolePrinter = new TestOutputConsolePrinter(testOutputHelper);
+        
+        _stateMachine = new StateMachine(new Dictionary<string, State>
+        {
+            {"idle", new NitroIdleState(_controller, _nitroCharacter, _consolePrinter)},
+            {"walking", new NitroWalkingState(_controller, _nitroCharacter, _consolePrinter)},
+            {"launching", new NitroLaunchingState(_controller, _nitroCharacter, _consolePrinter)},
+            {"falling", new NitroFallingState(_controller, _nitroCharacter, _consolePrinter)},
+            {"flying", new NitroFlyingState(_controller, _nitroCharacter, _consolePrinter)},
+        }, "idle", _consolePrinter);
+    }
     
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
@@ -28,9 +43,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -52,9 +66,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
     
         // Act
-        const string currentState = "launching";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("launching");
+        _stateMachine.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -75,9 +88,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "launching";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("launching");
+        _stateMachine.PhysicsProcess(0.1f);
     
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -97,9 +109,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "flying";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("flying");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -119,9 +130,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "flying";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("flying");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -142,9 +152,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "flying";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("flying");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -166,9 +175,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "falling";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("falling");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -189,9 +197,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "flying";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("flying");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -212,9 +219,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "flying";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("flying");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -235,9 +241,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -257,9 +262,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Left);
@@ -279,9 +283,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsDPadLeftPressed.Returns(false);
     
         // Act
-        const string currentState = "walking";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("walking");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -301,9 +304,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -324,9 +326,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "walking";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("walking");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -349,9 +350,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsButtonBPressed.Returns(true);
         
         // Act
-        const string currentState = "launching";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("launching");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -372,9 +372,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -395,9 +394,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         // _controller
         
         // Act
-        const string currentState = "falling";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("falling");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
@@ -418,9 +416,8 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        const string currentState = "idle";
-        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
-        sut.PhysicsProcess(0.1f);
+        _stateMachine.SetCurrentState("idle");
+        _stateMachine.PhysicsProcess(0.1f);
         
         // Assert
         _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
