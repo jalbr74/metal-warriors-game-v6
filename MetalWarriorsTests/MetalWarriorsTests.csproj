@@ -17,8 +17,4 @@
       <ProjectReference Include="..\MetalWarriors\Metal Warriors.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Objects\Characters\Nitro\States\" />
-    </ItemGroup>
-
 </Project>

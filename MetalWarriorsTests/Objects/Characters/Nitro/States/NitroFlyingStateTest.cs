@@ -1,0 +1,37 @@
+﻿using Godot;
+using MetalWarriors.Objects.Characters.Nitro;
+using MetalWarriors.Objects.Characters.Nitro.States;
+using NSubstitute;
+using Shouldly;
+using Xunit;
+using Xunit.Abstractions;
+
+namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
+
+public class NitroFlyingStateTest : BaseNitroStateTest
+{
+    public NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+    {
+    }
+    
+    [Fact]
+    public void Nitro_should_change_from_launching_to_flying_after_the_launching_animation_is_finished()
+    {
+        NitroCharacter.OnFloor = false;
+        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
+        NitroCharacter.IsLaunchingAnimationComplete = true;
+        
+        Controller.IsButtonBPressed.Returns(true);
+        
+        // Act
+        StateMachine.SetCurrentState("launching");
+        StateMachine.PhysicsProcess(0.1f);
+    
+        // Assert
+        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
+        NitroCharacter.CurrentAnimation.ShouldBe("flying");
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+    }
+}
