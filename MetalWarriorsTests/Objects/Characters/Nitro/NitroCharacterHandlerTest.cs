@@ -359,4 +359,29 @@ public class NitroCharacterHandlerTest(ITestOutputHelper testOutputHelper)
         _nitroCharacter.CurrentAnimation.ShouldBe("flying");
         _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
+    
+        
+    [Fact]
+    public void Nitro_should_fall_if_idle_and_no_buttons_pressed()
+    {
+        // Arrange
+        _nitroCharacter.OnFloor = false;
+        _nitroCharacter.Direction = NitroDirection.Right;
+        _nitroCharacter.Velocity = Vector2.Zero;
+        
+        // Controller not being used
+        // _controller
+        
+        // Act
+        const string currentState = "idle";
+        var sut = new NitroCharacterHandler(_controller, _nitroCharacter, _consolePrinter, currentState);
+        sut.PhysicsProcess(0.1f);
+        
+        // Assert
+        _nitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        _nitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.FallingForce));
+        _nitroCharacter.CurrentAnimation.ShouldBe("falling");
+        _nitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+    }
+
 }

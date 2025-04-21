@@ -8,7 +8,6 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.Right;
     public string CurrentAnimation { get; set; } = "";
-    public NitroState State { get; set; }
     public bool OnFloor { get; set; }
     public bool IsLaunchingAnimationComplete { get; set; }
 

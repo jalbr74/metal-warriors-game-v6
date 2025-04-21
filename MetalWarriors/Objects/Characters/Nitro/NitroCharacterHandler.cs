@@ -11,7 +11,6 @@ public enum NitroState { Idle, Walking, Launching, Falling, Flying }
 public interface INitroCharacter
 {
     Vector2 Velocity { get; set; }
-    NitroState State { get; set; }
     NitroDirection Direction { get; set; }
     string CurrentAnimation { get; }
     bool OnFloor { get; }

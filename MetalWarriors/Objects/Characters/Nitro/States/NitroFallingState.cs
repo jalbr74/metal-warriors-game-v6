@@ -15,30 +15,23 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
     
     public override void HandleState(double delta)
     {
-        string animation;
-        
         if (controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
-            animation = "walking";
-            nitro.State = NitroState.Walking;
         }
         else if (controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
-            animation = "walking";
-            nitro.State = NitroState.Walking;
         }
         else
         {
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
-            animation = "idle";
             
             if (nitro.OnFloor)
             {
-                nitro.State = NitroState.Idle;
+                // nitro.State = NitroState.Idle;
             }
         }
         
@@ -47,8 +40,7 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
             if (nitro.OnFloor)
             {
                 nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                animation = "launching";
-                nitro.State = NitroState.Launching;
+                // nitro.State = NitroState.Launching;
             }
             else
             {
@@ -58,8 +50,6 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
                 {
                     nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
                 }
-
-                animation = nitro.State == NitroState.Flying ? "flying" : "launching";
             }
         }
         else
@@ -77,11 +67,8 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
                     nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
                 }
         
-                animation = "falling";
-                nitro.State = NitroState.Falling;
+                // nitro.State = NitroState.Falling;
             }
         }
-        
-        // nitro.PlayAnimation(animation);
     }
 }

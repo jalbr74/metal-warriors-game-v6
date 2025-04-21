@@ -7,7 +7,6 @@ namespace MetalWarriors.Objects.Characters.Nitro;
 public partial class Nitro : CharacterBody2D, INitroCharacter
 {
     public AnimatedSprite2D NitroAnimations { get; set; }
-    public NitroState State { get; set; }
     public bool IsLaunchingAnimationComplete { get; set; }
     public bool OnFloor => IsOnFloor();
 
