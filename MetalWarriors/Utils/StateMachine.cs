@@ -23,26 +23,22 @@ public class StateMachine
         _currentState = _states[initialState];
     }
 
-    public void TransitionTo(string newState, double delta)
-    {
-        _currentState?.Exit(delta);
-
-        if (_states.TryGetValue(newState, out _currentState))
-        {
-            _console.Print("Transitioning to state: " + newState);
-
-            _currentState.Enter(delta);
-            _currentState.HandleState(delta);
-        }
-        else
-        {
-            throw new KeyNotFoundException("State not found: " + newState);
-        }
-    }
-
     public void PhysicsProcess(double delta)
     {
-        _currentState?.HandleState(delta);
+        var nextStateKey = _currentState?.HandleState(delta);
+        if (nextStateKey == null) return;
+        
+        if (!_states.TryGetValue(nextStateKey, out var nextState)) return;
+        if (nextState == _currentState) return;
+        
+        _console.Print("Transitioning to state: " + nextStateKey);
+                    
+        _currentState.Exit(delta);
+
+        nextState.Enter(delta);
+        nextState.HandleState(delta);
+
+        _currentState = nextState;
     }
     
     public void SetCurrentState(string state)
@@ -51,11 +47,11 @@ public class StateMachine
     }
 }
 
-public class State
+public abstract class State
 {
     public StateMachine StateMachine { get; set; }
-    
+
     public virtual void Enter(double delta) { }
     public virtual void Exit(double delta) { }
-    public virtual void HandleState(double delta) { }
+    public abstract string HandleState(double delta);
 }

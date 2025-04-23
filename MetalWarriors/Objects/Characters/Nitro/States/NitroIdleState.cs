@@ -13,7 +13,7 @@ public class NitroIdleState(ISnesController controller, INitroCharacter nitro, I
         nitro.PauseAnimation();
     }
     
-    public override void HandleState(double delta)
+    public override string HandleState(double delta)
     {
         // if (NitroShouldBeWalking())
         // {
@@ -22,27 +22,23 @@ public class NitroIdleState(ISnesController controller, INitroCharacter nitro, I
         
         if (controller.IsDPadLeftPressed || controller.IsDPadRightPressed)
         {
-            StateMachine.TransitionTo("walking", delta);
-            return;
+            return "walking";
         }
         
         if (controller.IsButtonBPressed)
         {
-            StateMachine.TransitionTo(nitro.OnFloor ? "launching" : "flying", delta);
-
-            return;
+            return nitro.OnFloor ? "launching" : "flying";
         }
         
         if (!nitro.OnFloor)
         {
-            StateMachine.TransitionTo("falling", delta);
-            return;
+            return "falling";
         }
         
         
         nitro.Velocity = Vector2.Zero;
         
-        return;
+        return null;
         
         if (controller.IsDPadLeftPressed)
         {

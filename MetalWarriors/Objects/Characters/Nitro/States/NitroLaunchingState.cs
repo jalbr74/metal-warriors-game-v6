@@ -12,12 +12,11 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
         nitro.PlayAnimation("launching");
     }
     
-    public override void HandleState(double delta)
+    public override string HandleState(double delta)
     {
         if (nitro.IsLaunchingAnimationComplete)
         {
-            StateMachine.TransitionTo("flying", delta);
-            return;
+            return "flying";
         }
         
         
@@ -81,5 +80,6 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
         }
         
         // nitro.PlayAnimation("launching");
+        return null;
     }
 }

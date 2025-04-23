@@ -12,7 +12,7 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
         nitro.PlayAnimation("flying");
     }
     
-    public override void HandleState(double delta)
+    public override string HandleState(double delta)
     {
         if (!nitro.OnFloor)
         {
@@ -27,8 +27,7 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
             }
             else
             {
-                StateMachine.TransitionTo("falling", delta);
-                return;
+                return "falling";
             }
         }
         
@@ -47,7 +46,7 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
         }
 
-        return;
+        return null;
         
         
         

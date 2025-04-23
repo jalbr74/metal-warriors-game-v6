@@ -3,7 +3,7 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class BaseNitroState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : State
+public abstract class BaseNitroState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : State
 {
     public const float MovementSpeed = 120.0f;
     public const float MaxFallingVelocity = 300.0f;

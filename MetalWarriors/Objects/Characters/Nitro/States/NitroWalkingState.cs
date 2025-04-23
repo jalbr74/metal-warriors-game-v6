@@ -12,12 +12,11 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         nitro.PlayAnimation("walking");
     }
     
-    public override void HandleState(double delta)
+    public override string HandleState(double delta)
     {
         if (!nitro.OnFloor)
         {
-            StateMachine.TransitionTo("falling", delta);
-            return;
+            return "falling";
         }
         
         if (controller.IsDPadLeftPressed)
@@ -34,8 +33,7 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         }
         else
         {
-            StateMachine.TransitionTo("idle", delta);
-            return;
+            return "idle";
             
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
             
@@ -47,8 +45,7 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         
         if (controller.IsButtonBPressed)
         {
-            StateMachine.TransitionTo("launching", delta);
-            return;
+            return "launching";
         }
         else
         {
@@ -70,5 +67,7 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         }
         
         // nitro.PlayAnimation(animation);
+
+        return null;
     }
 }
