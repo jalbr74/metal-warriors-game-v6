@@ -11,24 +11,24 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
         
         nitro.PlayAnimation("flying");
     }
-    
+
     public override string HandleState(double delta)
     {
-        if (!nitro.OnFloor)
+        if (!controller.IsButtonBPressed)
         {
-            if (controller.IsButtonBPressed)
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
-            
-                if (nitro.Velocity.Y < MaxRisingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                }
-            }
-            else
+            if (!nitro.OnFloor)
             {
                 return "falling";
             }
+
+            return controller.IsDPadLeftPressed || controller.IsDPadRightPressed ? "walking" : "idle";
+        }
+        
+        nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
+            
+        if (nitro.Velocity.Y < MaxRisingVelocity)
+        {
+            nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
         }
         
         if (controller.IsDPadLeftPressed)

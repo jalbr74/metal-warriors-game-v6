@@ -171,4 +171,27 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
+    
+    [Fact]
+    public void Nitro_transitions_to_idle_when_on_floor()
+    {
+        // Arrange
+        NitroCharacter.OnFloor = true;
+        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.CurrentAnimation = "flying";
+        
+        StateMachine.SetCurrentState("flying");
+        Controller.IsButtonBPressed.Returns(true);
+        
+        // Act
+        StateMachine.PhysicsProcess(0.1f);
+        
+        // Assert
+        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Velocity.ShouldBe(new Vector2(0, -BaseNitroState.BoostingForce));
+        NitroCharacter.CurrentAnimation.ShouldBe("flying");
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
+        NitroCharacter.AnimationWasPaused.ShouldBe(false);
+    }
 }
