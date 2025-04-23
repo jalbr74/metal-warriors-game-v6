@@ -15,9 +15,5 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AStringName_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003F08f0ea1144634eedbe3a87b9762ef1dd4bd200_003Fee_003F319a9cb2_003FStringName_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AVector2_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fe37dc1faf08a4d5ea030ad59bdf77522523400_003F95_003F36b0911a_003FVector2_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=02cfd4e8_002D632b_002D41ac_002Db77c_002D6d2cdbf59242/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestOne" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::E4A686BB-5BBD-4463-9B86-D3DE72A305EE::net8.0::MetalWarriorsTests.Objects.Characters.Nitro.States.BaseNitroStateTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::E4A686BB-5BBD-4463-9B86-D3DE72A305EE::net8.0::MetalWarriorsTests.Objects.Characters.Nitro.States.NitroLaunchingStateTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::E4A686BB-5BBD-4463-9B86-D3DE72A305EE::net8.0::MetalWarriorsTests.Objects.Characters.Nitro.States.NitroFlyingStateTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;ProjectFolder&gt;E4A686BB-5BBD-4463-9B86-D3DE72A305EE/d:Objects/d:Characters/d:Nitro/d:States&lt;/ProjectFolder&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
