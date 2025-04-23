@@ -10,7 +10,6 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
         console.Print("Entering Flying State");
         
         nitro.PlayAnimation("flying");
-        nitro.PauseAnimation();
     }
     
     public override void HandleState(double delta)
@@ -32,30 +31,25 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
                 return;
             }
         }
-
-        return;
         
         if (controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
-            // nitro.State = NitroState.Walking;
         }
         else if (controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
-            // nitro.State = NitroState.Walking;
         }
         else
         {
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
-            
-            if (nitro.OnFloor)
-            {
-                // nitro.State = NitroState.Idle;
-            }
         }
+
+        return;
+        
+        
         
         if (controller.IsButtonBPressed)
         {

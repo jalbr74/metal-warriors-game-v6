@@ -15,6 +15,24 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
     
     public override void HandleState(double delta)
     {
+        if (controller.IsButtonBPressed)
+        {
+            StateMachine.TransitionTo("flying", delta);
+            return;
+        }
+        
+        if (nitro.OnFloor)
+        {
+            if (controller.IsDPadLeftPressed || controller.IsDPadRightPressed)
+            {
+                StateMachine.TransitionTo("walking", delta);
+                return;
+            }
+
+            StateMachine.TransitionTo("idle", delta);
+            return;
+        }
+        
         // Nitro should be able to steer when falling
         if (controller.IsDPadLeftPressed)
         {
@@ -31,43 +49,11 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
         }
         
-        // Nitro should stop falling if on the floor
-        
-        if (controller.IsButtonBPressed)
+        nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
+
+        if (nitro.Velocity.Y > MaxFallingVelocity)
         {
-            if (nitro.OnFloor)
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                // nitro.State = NitroState.Launching;
-            }
-            else
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
-                
-                if (nitro.Velocity.Y < MaxRisingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                }
-            }
-        }
-        else
-        {
-            if (nitro.OnFloor)
-            {
-                StateMachine.TransitionTo("idle", delta);
-                return;
-            }
-            else
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
-        
-                if (nitro.Velocity.Y > MaxFallingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
-                }
-        
-                // nitro.State = NitroState.Falling;
-            }
+            nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
         }
     }
 }

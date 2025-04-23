@@ -14,6 +14,12 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
     
     public override void HandleState(double delta)
     {
+        if (!nitro.OnFloor)
+        {
+            StateMachine.TransitionTo("falling", delta);
+            return;
+        }
+        
         if (controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
@@ -41,20 +47,8 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
         
         if (controller.IsButtonBPressed)
         {
-            if (nitro.OnFloor)
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                // nitro.State = NitroState.Launching;
-            }
-            else
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
-                
-                if (nitro.Velocity.Y < MaxRisingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                }
-            }
+            StateMachine.TransitionTo("launching", delta);
+            return;
         }
         else
         {

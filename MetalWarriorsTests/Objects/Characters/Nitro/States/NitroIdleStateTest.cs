@@ -63,7 +63,6 @@ public class NitroIdleStateTest : BaseNitroStateTest
         // Arrange
         NitroCharacter.OnFloor = true;
         NitroCharacter.Direction = NitroDirection.Right;
-        // _nitroCharacter.State = NitroState.Walking;
         NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
         
         // _controller
@@ -74,7 +73,6 @@ public class NitroIdleStateTest : BaseNitroStateTest
         
         // Assert
         NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        // _nitroCharacter.State.ShouldBe(NitroState.Idle);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

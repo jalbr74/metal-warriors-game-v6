@@ -10,7 +10,6 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
         console.Print("Entering Launching State");
         
         nitro.PlayAnimation("launching");
-        nitro.PauseAnimation();
     }
     
     public override void HandleState(double delta)

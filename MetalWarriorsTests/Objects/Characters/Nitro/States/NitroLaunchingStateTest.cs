@@ -42,7 +42,6 @@ public class NitroLaunchingStateTest : BaseNitroStateTest
         NitroCharacter.OnFloor = false;
         NitroCharacter.Direction = NitroDirection.Right;
         NitroCharacter.CurrentAnimation = "launching";
-        // _nitroCharacter.State = NitroState.Launching;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
         
         Controller.IsButtonBPressed.Returns(true);
@@ -53,9 +52,33 @@ public class NitroLaunchingStateTest : BaseNitroStateTest
     
         // Assert
         NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        // _nitroCharacter.State.ShouldBe(NitroState.Launching);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0); // The animation should have already been played in the Launching Entered state
+    }
+    
+    [Fact]
+    public void Nitro_should_transition_from_walking_to_launching_when_B_button_is_pressed()
+    {
+        // Arrange
+        NitroCharacter.OnFloor = true;
+        NitroCharacter.Direction = NitroDirection.Left;
+        NitroCharacter.CurrentAnimation = "walking";
+        NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
+        
+        // Set up the Controller
+        Controller.IsDPadLeftPressed.Returns(true);
+        Controller.IsButtonBPressed.Returns(true);
+    
+        // Act
+        StateMachine.SetCurrentState("walking");
+        StateMachine.PhysicsProcess(0.1f);
+    
+        // Assert
+        NitroCharacter.Direction.ShouldBe(NitroDirection.Left);
+        NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
+        NitroCharacter.CurrentAnimation.ShouldBe("launching");
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state
+        NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
 }
