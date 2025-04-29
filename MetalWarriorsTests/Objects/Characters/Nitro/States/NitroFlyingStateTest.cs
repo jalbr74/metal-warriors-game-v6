@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
-public class NitroFlyingStateTest : BaseNitroStateTest
+public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
-    public NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
-    {
-    }
-    
     [Fact]
     public void Nitro_should_change_from_launching_to_flying_after_the_launching_animation_is_finished()
     {

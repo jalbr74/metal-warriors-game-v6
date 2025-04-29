@@ -3,11 +3,11 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroFallingState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : BaseNitroState(controller, nitro, console)
+public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
-    public override void Enter(double delta)
+    public override void Enter()
     {
-        console.Print("Entering Falling State");
+        nitro.Console.Print("Entering Falling State");
         
         nitro.PlayAnimation("falling");
         nitro.PauseAnimation();
@@ -15,7 +15,7 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
     
     public override bool ShouldTransitionToAnotherState(out string otherState)
     {
-        if (controller.IsButtonBPressed)
+        if (nitro.Controller.IsButtonBPressed)
         {
             otherState = "flying";
             return true;
@@ -23,7 +23,7 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
         
         if (nitro.OnFloor)
         {
-            if (controller.IsDPadLeftPressed || controller.IsDPadRightPressed)
+            if (nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed)
             {
                 otherState = "walking";
                 return true;
@@ -40,12 +40,12 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
     public override void PhysicsProcess(double delta)
     {
         // Nitro should be able to steer when falling
-        if (controller.IsDPadLeftPressed)
+        if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
         }
-        else if (controller.IsDPadRightPressed)
+        else if (nitro.Controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);

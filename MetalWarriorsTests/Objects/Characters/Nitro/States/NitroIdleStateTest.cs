@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
-public class NitroIdleStateTest : BaseNitroStateTest
+public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
-    public NitroIdleStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
-    {
-    }
-    
     [Fact]
     public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
     {

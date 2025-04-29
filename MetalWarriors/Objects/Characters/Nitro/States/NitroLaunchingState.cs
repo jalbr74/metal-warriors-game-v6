@@ -3,11 +3,11 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroLaunchingState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : BaseNitroState(controller, nitro, console)
+public class NitroLaunchingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
-    public override void Enter(double delta)
+    public override void Enter()
     {
-        console.Print("Entering Launching State");
+        nitro.Console.Print("Entering Launching State");
         
         nitro.PlayAnimation("launching");
     }
@@ -26,13 +26,13 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
     
     public override void PhysicsProcess(double delta)
     {
-        if (controller.IsDPadLeftPressed)
+        if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
             // nitro.State = NitroState.Walking;
         }
-        else if (controller.IsDPadRightPressed)
+        else if (nitro.Controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
@@ -48,7 +48,7 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
             }
         }
         
-        if (controller.IsButtonBPressed)
+        if (nitro.Controller.IsButtonBPressed)
         {
             if (nitro.OnFloor)
             {

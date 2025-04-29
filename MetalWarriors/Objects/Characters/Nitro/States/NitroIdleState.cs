@@ -3,11 +3,11 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroIdleState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : BaseNitroState(controller, nitro, console)
+public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
-    public override void Enter(double delta)
+    public override void Enter()
     {
-        console.Print("Entering Idle State");
+        nitro.Console.Print("Entering Idle State");
         
         nitro.PlayAnimation("idle");
         nitro.PauseAnimation();
@@ -15,13 +15,13 @@ public class NitroIdleState(ISnesController controller, INitroCharacter nitro, I
     
     public override bool ShouldTransitionToAnotherState(out string otherState)
     {
-        if (controller.IsDPadLeftPressed || controller.IsDPadRightPressed)
+        if (nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed)
         {
             otherState = "walking";
             return true;
         }
         
-        if (controller.IsButtonBPressed)
+        if (nitro.Controller.IsButtonBPressed)
         {
             otherState = nitro.OnFloor ? "launching" : "flying";
             return true;
@@ -41,13 +41,13 @@ public class NitroIdleState(ISnesController controller, INitroCharacter nitro, I
     {
         nitro.Velocity = Vector2.Zero;
         
-        if (controller.IsDPadLeftPressed)
+        if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
             // nitro.State = NitroState.Walking;
         }
-        else if (controller.IsDPadRightPressed)
+        else if (nitro.Controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
@@ -63,7 +63,7 @@ public class NitroIdleState(ISnesController controller, INitroCharacter nitro, I
             }
         }
         
-        if (controller.IsButtonBPressed)
+        if (nitro.Controller.IsButtonBPressed)
         {
             if (nitro.OnFloor)
             {

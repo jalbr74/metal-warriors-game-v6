@@ -3,11 +3,11 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroWalkingState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : BaseNitroState(controller, nitro, console)
+public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
-    public override void Enter(double delta)
+    public override void Enter()
     {
-        console.Print("Entering Walking State");
+        nitro.Console.Print("Entering Walking State");
         
         nitro.PlayAnimation("walking");
     }
@@ -20,9 +20,9 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
             return true;
         }
         
-        if (!controller.IsDPadLeftPressed && !controller.IsDPadRightPressed)
+        if (!nitro.Controller.IsDPadLeftPressed && !nitro.Controller.IsDPadRightPressed)
         {
-            if (controller.IsButtonBPressed)
+            if (nitro.Controller.IsButtonBPressed)
             {
                 otherState = nitro.OnFloor ? "launching" : "flying";
             }
@@ -34,7 +34,7 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
             return true;
         }
 
-        if (controller.IsButtonBPressed)
+        if (nitro.Controller.IsButtonBPressed)
         {
             otherState = "launching";
             return true;
@@ -46,7 +46,7 @@ public class NitroWalkingState(ISnesController controller, INitroCharacter nitro
     
     public override void PhysicsProcess(double delta)
     {
-        if (controller.IsDPadLeftPressed)
+        if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);

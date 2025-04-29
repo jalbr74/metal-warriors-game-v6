@@ -1,10 +1,13 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters.Nitro;
+using MetalWarriors.Utils;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
 
 public class NitroCharacterImplForTesting : INitroCharacter
 {
+    public ISnesController Controller { get; set; }
+    public IConsolePrinter Console { get; set; }
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.Right;
     public string CurrentAnimation { get; set; } = "";

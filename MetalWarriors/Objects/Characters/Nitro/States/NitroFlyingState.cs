@@ -3,18 +3,18 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroFlyingState(ISnesController controller, INitroCharacter nitro, IConsolePrinter console) : BaseNitroState(controller, nitro, console)
+public class NitroFlyingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
-    public override void Enter(double delta)
+    public override void Enter()
     {
-        console.Print("Entering Flying State");
+        nitro.Console.Print("Entering Flying State");
         
         nitro.PlayAnimation("flying");
     }
     
     public override bool ShouldTransitionToAnotherState(out string otherState)
     {
-        if (!controller.IsButtonBPressed)
+        if (!nitro.Controller.IsButtonBPressed)
         {
             if (!nitro.OnFloor)
             {
@@ -22,7 +22,7 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
             }
             else
             {
-                otherState = controller.IsDPadLeftPressed || controller.IsDPadRightPressed ? "walking" : "idle";
+                otherState = nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed ? "walking" : "idle";
             }
             
             return true;
@@ -41,12 +41,12 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
         }
         
-        if (controller.IsDPadLeftPressed)
+        if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
         }
-        else if (controller.IsDPadRightPressed)
+        else if (nitro.Controller.IsDPadRightPressed)
         {
             nitro.Direction = NitroDirection.Right;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
@@ -57,7 +57,7 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
         }
 
         
-        // if (controller.IsButtonBPressed)
+        // if (nitro.Controller.IsButtonBPressed)
         // {
         //     if (nitro.OnFloor)
         //     {

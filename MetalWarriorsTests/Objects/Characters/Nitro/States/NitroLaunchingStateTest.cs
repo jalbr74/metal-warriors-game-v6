@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
-public class NitroLaunchingStateTest : BaseNitroStateTest
+public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
-    public NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
-    {
-    }
-
     [Fact]
     public void Nitro_should_rise_constantly_when_launching()
     {

@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
-public class NitroWalkingStateTest : BaseNitroStateTest
+public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
-    public NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
-    {
-    }
-    
     [Fact]
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {

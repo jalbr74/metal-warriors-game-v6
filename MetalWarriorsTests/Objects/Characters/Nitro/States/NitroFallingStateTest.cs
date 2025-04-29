@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
-public class NitroFallingStateTest : BaseNitroStateTest
+public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
-    public NitroFallingStateTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
-    {
-    }
-    
     [Fact]
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {

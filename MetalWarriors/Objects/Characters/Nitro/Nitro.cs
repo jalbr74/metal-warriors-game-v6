@@ -7,6 +7,8 @@ namespace MetalWarriors.Objects.Characters.Nitro;
 
 public partial class Nitro : CharacterBody2D, INitroCharacter
 {
+    public ISnesController Controller { get; set; } = new SnesController();
+    public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D NitroAnimations { get; set; }
     public bool IsLaunchingAnimationComplete { get; set; }
     public bool OnFloor => IsOnFloor();
@@ -25,17 +27,14 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        var controller = new SnesController();
-        var console = new ConsolePrinter();
-        
         _stateMachine = new StateMachine(new System.Collections.Generic.Dictionary<string, State>
         {
-            { "idle", new NitroIdleState(controller, this, console) },
-            {"walking", new NitroWalkingState(controller, this, console)},
-            {"launching", new NitroLaunchingState(controller, this, console)},
-            {"falling", new NitroFallingState(controller, this, console)},
-            {"flying", new NitroFlyingState(controller, this, console)},
-        }, "idle", console);
+            {"idle", new NitroIdleState(this)},
+            {"walking", new NitroWalkingState(this)},
+            {"launching", new NitroLaunchingState(this)},
+            {"falling", new NitroFallingState(this)},
+            {"flying", new NitroFlyingState(this)},
+        }, "idle");
     }
     
     public override void _PhysicsProcess(double delta)
