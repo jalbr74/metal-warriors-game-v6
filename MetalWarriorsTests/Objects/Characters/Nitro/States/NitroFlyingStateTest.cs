@@ -21,7 +21,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("launching");
+        StateMachine.SetCurrentState(typeof(NitroLaunchingState));
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
@@ -43,7 +43,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("falling");
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -65,7 +65,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -87,7 +87,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -110,7 +110,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("launching");
+        StateMachine.SetCurrentState(typeof(NitroLaunchingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -130,7 +130,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         NitroCharacter.Velocity = new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity);
         NitroCharacter.CurrentAnimation = "flying";
         
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         Controller.IsDPadRightPressed.Returns(true);
         Controller.IsButtonBPressed.Returns(true);
         
@@ -154,7 +154,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
         NitroCharacter.CurrentAnimation = "falling";
         
-        StateMachine.SetCurrentState("falling");
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
@@ -177,7 +177,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         NitroCharacter.Velocity = Vector2.Zero;
         NitroCharacter.CurrentAnimation = "flying";
         
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         Controller.IsButtonBPressed.Returns(true);
         
         // Act

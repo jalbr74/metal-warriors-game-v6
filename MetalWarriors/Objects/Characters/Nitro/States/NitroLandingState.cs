@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
@@ -12,11 +13,11 @@ public class NitroLandingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.PlayAnimation("landing");
     }
     
-    public override bool ShouldTransitionToAnotherState(out string otherState)
+    public override bool ShouldTransitionToAnotherState(out Type otherState)
     {
         if (nitro.IsAnimationFinished)
         {
-            otherState = "idle";
+            otherState = typeof(NitroIdleState);
             return true;
         }
         

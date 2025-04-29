@@ -14,7 +14,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_transition_from_falling_to_landing_when_contact_is_made_with_the_floor_but_keep_moving_right()
     {
         // Arrange
-        StateMachine.SetCurrentState("falling");
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         Controller.IsDPadRightPressed.Returns(true);
         
         NitroCharacter.OnFloor = true;
@@ -38,7 +38,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_stop_falling_if_on_the_floor()
     {
         // Arrange
-        StateMachine.SetCurrentState("falling");
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         
         NitroCharacter.OnFloor = true;
         NitroCharacter.Direction = NitroDirection.FacingRight;

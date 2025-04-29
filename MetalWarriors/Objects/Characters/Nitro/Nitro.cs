@@ -27,15 +27,14 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     {
         NitroAnimations = GetNode<AnimatedSprite2D>("NitroAnimations");
         
-        _stateMachine = new StateMachine(new System.Collections.Generic.Dictionary<string, State>
-        {
-            {"idle", new NitroIdleState(this)},
-            {"walking", new NitroWalkingState(this)},
-            {"launching", new NitroLaunchingState(this)},
-            {"falling", new NitroFallingState(this)},
-            {"flying", new NitroFlyingState(this)},
-            {"landing", new NitroLandingState(this)},
-        }, "idle");
+        _stateMachine = new StateMachine([
+            new NitroIdleState(this),
+            new NitroWalkingState(this),
+            new NitroLaunchingState(this),
+            new NitroFallingState(this),
+            new NitroFlyingState(this),
+            new NitroLandingState(this),
+        ], typeof(NitroIdleState));
     }
     
     public override void _PhysicsProcess(double delta)

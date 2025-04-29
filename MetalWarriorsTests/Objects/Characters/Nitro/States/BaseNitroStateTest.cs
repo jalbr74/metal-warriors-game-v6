@@ -17,14 +17,13 @@ public class BaseNitroStateTest
         NitroCharacter.Controller = Controller;
         NitroCharacter.Console = new TestOutputConsolePrinter(testOutputHelper);
         
-        StateMachine = new StateMachine(new Dictionary<string, State>
-        {
-            {"idle", new NitroIdleState(NitroCharacter)},
-            {"walking", new NitroWalkingState(NitroCharacter)},
-            {"launching", new NitroLaunchingState(NitroCharacter)},
-            {"falling", new NitroFallingState(NitroCharacter)},
-            {"flying", new NitroFlyingState(NitroCharacter)},
-            {"landing", new NitroLandingState(NitroCharacter)},
-        }, "idle");
+        StateMachine = new StateMachine([
+            new NitroIdleState(NitroCharacter),
+            new NitroWalkingState(NitroCharacter),
+            new NitroLaunchingState(NitroCharacter),
+            new NitroFallingState(NitroCharacter),
+            new NitroFlyingState(NitroCharacter),
+            new NitroLandingState(NitroCharacter),
+        ], typeof(NitroIdleState));
     }
 }

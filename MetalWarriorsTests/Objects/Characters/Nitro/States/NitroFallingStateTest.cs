@@ -21,7 +21,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -42,7 +42,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState(typeof(NitroFlyingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -64,7 +64,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("falling");
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -86,7 +86,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -100,7 +100,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_fall_if_walking_and_not_on_the_floor()
     {
         // Arrange
-        StateMachine.SetCurrentState("walking");
+        StateMachine.SetCurrentState(typeof(NitroWalkingState));
         Controller.IsDPadLeftPressed.Returns(true);
         
         NitroCharacter.OnFloor = false;

@@ -21,7 +21,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -42,7 +42,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -64,7 +64,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert

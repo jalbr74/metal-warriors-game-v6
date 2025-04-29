@@ -22,7 +22,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -43,7 +43,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         Controller.IsDPadLeftPressed.Returns(false);
     
         // Act
-        StateMachine.SetCurrentState("walking");
+        StateMachine.SetCurrentState(typeof(NitroWalkingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -64,7 +64,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // _controller
         
         // Act
-        StateMachine.SetCurrentState("walking");
+        StateMachine.SetCurrentState(typeof(NitroWalkingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -78,7 +78,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
     public void Nitro_should_become_idle_when_landing_animation_is_finished()
     {
         // Arrange
-        StateMachine.SetCurrentState("landing");
+        StateMachine.SetCurrentState(typeof(NitroLandingState));
         
         NitroCharacter.OnFloor = true;
         NitroCharacter.Direction = NitroDirection.FacingRight;

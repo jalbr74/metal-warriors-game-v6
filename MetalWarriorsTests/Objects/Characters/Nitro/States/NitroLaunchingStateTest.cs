@@ -21,7 +21,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("idle");
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
@@ -43,7 +43,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState("launching");
+        StateMachine.SetCurrentState(typeof(NitroLaunchingState));
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
@@ -67,7 +67,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState("walking");
+        StateMachine.SetCurrentState(typeof(NitroWalkingState));
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert

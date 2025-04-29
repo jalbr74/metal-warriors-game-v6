@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
@@ -12,17 +13,17 @@ public class NitroFlyingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.PlayAnimation("flying");
     }
     
-    public override bool ShouldTransitionToAnotherState(out string otherState)
+    public override bool ShouldTransitionToAnotherState(out Type otherState)
     {
         if (!nitro.Controller.IsButtonBPressed)
         {
             if (!nitro.OnFloor)
             {
-                otherState = "falling";
+                otherState = typeof(NitroFallingState);
             }
             else
             {
-                otherState = nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed ? "walking" : "idle";
+                otherState = nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed ? typeof(NitroWalkingState) : typeof(NitroIdleState);
             }
             
             return true;

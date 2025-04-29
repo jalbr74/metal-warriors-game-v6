@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MetalWarriors.Utils;
 
-public class StateMachine(Dictionary<string, State> states, string initialState)
+public class StateMachine
 {
-    private State _currentState = states[initialState];
+    private readonly Dictionary<Type, State> _states = new ();
+    private State _currentState;
+    
+    public StateMachine(State[] states, Type initialState)
+    {
+        foreach (var state in states)
+        {
+            _states[state.GetType()] = state;
+        }
+        
+        _currentState = _states[initialState];
+    }
     
     public void PhysicsProcess(double delta)
     {
@@ -14,16 +26,16 @@ public class StateMachine(Dictionary<string, State> states, string initialState)
         {
             _currentState.Exit();
             
-            _currentState = states[otherState];
+            _currentState = _states[otherState];
             _currentState.Enter();
         }
         
         _currentState.PhysicsProcess(delta);
     }
     
-    public void SetCurrentState(string state)
+    public void SetCurrentState(Type state)
     {
-        _currentState = states[state];
+        _currentState = _states[state];
     }
 }
 
@@ -32,5 +44,5 @@ public abstract class State
     public virtual void Enter() { }
     public virtual void Exit() { }
     public abstract void PhysicsProcess(double delta);
-    public abstract bool ShouldTransitionToAnotherState(out string otherState);
+    public abstract bool ShouldTransitionToAnotherState(out Type otherState);
 }
