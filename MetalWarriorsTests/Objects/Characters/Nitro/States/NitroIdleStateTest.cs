@@ -15,7 +15,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         NitroCharacter.PlayAnimation("idle");
         
@@ -26,7 +26,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -37,7 +37,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(-BaseNitroState.MovementSpeed, 0);
         
         Controller.IsDPadLeftPressed.Returns(false);
@@ -47,7 +47,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -58,7 +58,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
         
         // _controller
@@ -68,29 +68,29 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
     
     [Fact]
-    public void Nitro_should_stop_falling_if_on_the_floor()
+    public void Nitro_should_become_idle_when_landing_animation_is_finished()
     {
         // Arrange
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
-        NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
+        StateMachine.SetCurrentState("landing");
         
-        // Controller not being used
-        // _controller
+        NitroCharacter.OnFloor = true;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
+        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.CurrentAnimation = "landing";
+        NitroCharacter.IsAnimationFinished = true;
         
         // Act
-        StateMachine.SetCurrentState("falling");
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

@@ -14,9 +14,9 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     public void Nitro_should_change_from_launching_to_flying_after_the_launching_animation_is_finished()
     {
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
-        NitroCharacter.IsLaunchingAnimationComplete = true;
+        NitroCharacter.IsAnimationFinished = true;
         
         Controller.IsButtonBPressed.Returns(true);
         
@@ -25,7 +25,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -36,7 +36,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
         NitroCharacter.CurrentAnimation = "falling";
         
@@ -47,7 +47,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxFallingVelocity - BaseNitroState.BoostingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -58,7 +58,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity + 10);
         NitroCharacter.CurrentAnimation = "flying";
         
@@ -69,7 +69,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
@@ -80,7 +80,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity - 10);
         NitroCharacter.CurrentAnimation = "flying";
         
@@ -91,7 +91,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
@@ -102,9 +102,9 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity);
-        NitroCharacter.IsLaunchingAnimationComplete = true;
+        NitroCharacter.IsAnimationFinished = true;
         
         Controller.IsDPadRightPressed.Returns(true);
         Controller.IsButtonBPressed.Returns(true);
@@ -114,7 +114,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -126,7 +126,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Left;
+        NitroCharacter.Direction = NitroDirection.FacingLeft;
         NitroCharacter.Velocity = new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity);
         NitroCharacter.CurrentAnimation = "flying";
         
@@ -138,7 +138,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
@@ -150,7 +150,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
         NitroCharacter.CurrentAnimation = "falling";
         
@@ -161,7 +161,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxFallingVelocity - BaseNitroState.BoostingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -173,7 +173,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         NitroCharacter.CurrentAnimation = "flying";
         
@@ -184,7 +184,7 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, -BaseNitroState.BoostingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0);

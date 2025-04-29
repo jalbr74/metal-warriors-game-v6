@@ -15,7 +15,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         Controller.IsButtonBPressed.Returns(true);
@@ -25,7 +25,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -36,7 +36,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.CurrentAnimation = "launching";
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
         
@@ -47,7 +47,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0); // The animation should have already been played in the Launching Entered state
@@ -58,7 +58,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Left;
+        NitroCharacter.Direction = NitroDirection.FacingLeft;
         NitroCharacter.CurrentAnimation = "walking";
         NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
         
@@ -71,7 +71,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Left);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state

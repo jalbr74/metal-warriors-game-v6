@@ -15,7 +15,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         Controller.IsDPadLeftPressed.Returns(true);
@@ -25,7 +25,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Left);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -36,7 +36,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         Controller.IsDPadRightPressed.Returns(true);
@@ -46,7 +46,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -57,7 +57,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         // Controller not being used
@@ -68,30 +68,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
-        NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
-        NitroCharacter.CurrentAnimation.ShouldBe("walking");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
-        NitroCharacter.AnimationWasPaused.ShouldBe(false);
-    }
-    
-    [Fact]
-    public void Nitro_should_transition_from_falling_to_walking_when_contact_is_made_with_the_floor()
-    {
-        // Arrange
-        StateMachine.SetCurrentState("falling");
-        Controller.IsDPadRightPressed.Returns(true);
-        
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.Right;
-        NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxFallingVelocity);
-        NitroCharacter.CurrentAnimation = "falling";
-        
-        // Act
-        StateMachine.PhysicsProcess(0.1f);
-        
-        // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

@@ -10,13 +10,13 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public ISnesController Controller { get; set; } = new SnesController();
     public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D NitroAnimations { get; set; }
-    public bool IsLaunchingAnimationComplete { get; set; }
+    public bool IsAnimationFinished { get; set; }
     public bool OnFloor => IsOnFloor();
 
     public NitroDirection Direction
     {
-        set => NitroAnimations.Scale = new Vector2(value == NitroDirection.Left ? -1 : 1, NitroAnimations.Scale.Y);
-        get => NitroAnimations.Scale.X >= 0 ? NitroDirection.Right : NitroDirection.Left;
+        set => NitroAnimations.Scale = new Vector2(value == NitroDirection.FacingLeft ? -1 : 1, NitroAnimations.Scale.Y);
+        get => NitroAnimations.Scale.X >= 0 ? NitroDirection.FacingRight : NitroDirection.FacingLeft;
     }
     
     public string CurrentAnimation => NitroAnimations.Animation;
@@ -34,6 +34,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
             {"launching", new NitroLaunchingState(this)},
             {"falling", new NitroFallingState(this)},
             {"flying", new NitroFlyingState(this)},
+            {"landing", new NitroLandingState(this)},
         }, "idle");
     }
     
@@ -47,23 +48,17 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public void AnimationFinished()
     {
-        // GD.Print("Animation finished");
-
-        if (NitroAnimations.Animation != "launching") return;
+        Console.Print("Animation finished");
         
-        IsLaunchingAnimationComplete = true;
+        IsAnimationFinished = true;
     }
 
     public void PlayAnimation(string animation)
     {
         if (NitroAnimations.Animation == animation) return;
         
-        if (animation == "launching")
-        {
-            IsLaunchingAnimationComplete = false;
-        }
+        IsAnimationFinished = false;
 
-        // GD.Print($"Playing animation: {animation}");
         NitroAnimations.Play(animation);
     }
     

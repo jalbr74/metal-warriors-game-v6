@@ -24,6 +24,7 @@ public class BaseNitroStateTest
             {"launching", new NitroLaunchingState(NitroCharacter)},
             {"falling", new NitroFallingState(NitroCharacter)},
             {"flying", new NitroFlyingState(NitroCharacter)},
+            {"landing", new NitroLandingState(NitroCharacter)},
         }, "idle");
     }
 }

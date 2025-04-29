@@ -9,10 +9,10 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public ISnesController Controller { get; set; }
     public IConsolePrinter Console { get; set; }
     public Vector2 Velocity { get; set; }
-    public NitroDirection Direction { get; set; } = NitroDirection.Right;
+    public NitroDirection Direction { get; set; } = NitroDirection.FacingRight;
     public string CurrentAnimation { get; set; } = "";
     public bool OnFloor { get; set; }
-    public bool IsLaunchingAnimationComplete { get; set; }
+    public bool IsAnimationFinished { get; set; }
 
     public List<string> PlayedAnimations { get; } = [];
     public bool AnimationWasPaused { get; private set; }

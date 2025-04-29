@@ -3,29 +3,40 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
+public class NitroLandingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
     public override void Enter()
     {
-        nitro.Console.Print("Entering Falling State");
+        nitro.Console.Print("Entering Landing State");
         
-        nitro.PlayAnimation("falling");
-        nitro.PauseAnimation();
+        nitro.PlayAnimation("landing");
     }
     
     public override bool ShouldTransitionToAnotherState(out string otherState)
     {
-        if (nitro.Controller.IsButtonBPressed)
+        if (nitro.IsAnimationFinished)
         {
-            otherState = "flying";
+            otherState = "idle";
             return true;
         }
         
-        if (nitro.OnFloor)
-        {
-            otherState = "landing";
-            return true;
-        }
+        // if (nitro.Controller.IsButtonBPressed)
+        // {
+        //     otherState = "launching";
+        //     return true;
+        // }
+        //
+        // if (nitro.OnFloor)
+        // {
+        //     if (nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed)
+        //     {
+        //         otherState = "walking";
+        //         return true;
+        //     }
+        //
+        //     otherState = "idle";
+        //     return true;
+        // }
 
         otherState = null;
         return false;
@@ -49,11 +60,6 @@ public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
         }
         
-        nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
-
-        if (nitro.Velocity.Y > MaxFallingVelocity)
-        {
-            nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
-        }
+        nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
     }
 }

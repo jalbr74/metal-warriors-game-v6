@@ -15,7 +15,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
         
         // _controller
@@ -25,7 +25,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity + BaseNitroState.FallingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -36,7 +36,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         // _controller
@@ -46,7 +46,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.FallingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -57,7 +57,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity + 10);
         NitroCharacter.PlayAnimation("falling");
         
@@ -68,7 +68,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxFallingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -79,7 +79,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     {
         // Arrange
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Right;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
         
         // Controller not being used
@@ -90,7 +90,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.FallingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -104,7 +104,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadLeftPressed.Returns(true);
         
         NitroCharacter.OnFloor = false;
-        NitroCharacter.Direction = NitroDirection.Left;
+        NitroCharacter.Direction = NitroDirection.FacingLeft;
         NitroCharacter.CurrentAnimation = "walking";
         NitroCharacter.Velocity = new Vector2(-BaseNitroState.MovementSpeed, 0);
         
@@ -112,7 +112,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.Left);
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.FallingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

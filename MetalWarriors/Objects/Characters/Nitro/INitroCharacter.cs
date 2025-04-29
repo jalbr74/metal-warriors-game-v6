@@ -3,7 +3,7 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro;
 
-public enum NitroDirection { Right, Left }
+public enum NitroDirection { FacingRight, FacingLeft }
 
 // Represents Nitro as a concept, and doesn't worry about the implementation details (scene/script stuff).
 public interface INitroCharacter
@@ -14,7 +14,7 @@ public interface INitroCharacter
     NitroDirection Direction { get; set; }
     string CurrentAnimation { get; }
     bool OnFloor { get; }
-    bool IsLaunchingAnimationComplete { get; set; }
+    bool IsAnimationFinished { get; set; }
     
     void PlayAnimation(string animation);
     void PauseAnimation();
