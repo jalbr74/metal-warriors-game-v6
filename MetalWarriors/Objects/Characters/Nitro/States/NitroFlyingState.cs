@@ -11,19 +11,29 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
         
         nitro.PlayAnimation("flying");
     }
-
-    public override string HandleState(double delta)
+    
+    public override bool ShouldTransitionToAnotherState(out string otherState)
     {
         if (!controller.IsButtonBPressed)
         {
             if (!nitro.OnFloor)
             {
-                return "falling";
+                otherState = "falling";
             }
-
-            return controller.IsDPadLeftPressed || controller.IsDPadRightPressed ? "walking" : "idle";
+            else
+            {
+                otherState = controller.IsDPadLeftPressed || controller.IsDPadRightPressed ? "walking" : "idle";
+            }
+            
+            return true;
         }
-        
+
+        otherState = null;
+        return false;
+    }
+    
+    public override void PhysicsProcess(double delta)
+    {
         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
             
         if (nitro.Velocity.Y < MaxRisingVelocity)
@@ -46,45 +56,42 @@ public class NitroFlyingState(ISnesController controller, INitroCharacter nitro,
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
         }
 
-        return null;
         
-        
-        
-        if (controller.IsButtonBPressed)
-        {
-            if (nitro.OnFloor)
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                // nitro.State = NitroState.Launching;
-            }
-            else
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
-                
-                if (nitro.Velocity.Y < MaxRisingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-                }
-            }
-        }
-        else
-        {
-            if (nitro.OnFloor)
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
-            }
-            else
-            {
-                nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
-        
-                if (nitro.Velocity.Y > MaxFallingVelocity)
-                {
-                    nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
-                }
-        
-                // nitro.State = NitroState.Falling;
-            }
-        }
+        // if (controller.IsButtonBPressed)
+        // {
+        //     if (nitro.OnFloor)
+        //     {
+        //         nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
+        //         // nitro.State = NitroState.Launching;
+        //     }
+        //     else
+        //     {
+        //         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
+        //         
+        //         if (nitro.Velocity.Y < MaxRisingVelocity)
+        //         {
+        //             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     if (nitro.OnFloor)
+        //     {
+        //         nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
+        //     }
+        //     else
+        //     {
+        //         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
+        //
+        //         if (nitro.Velocity.Y > MaxFallingVelocity)
+        //         {
+        //             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
+        //         }
+        //
+        //         // nitro.State = NitroState.Falling;
+        //     }
+        // }
         
         // nitro.PlayAnimation(animation);
     }

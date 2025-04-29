@@ -13,23 +13,32 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
         nitro.PauseAnimation();
     }
     
-    public override string HandleState(double delta)
+    public override bool ShouldTransitionToAnotherState(out string otherState)
     {
         if (controller.IsButtonBPressed)
         {
-            return "flying";
+            otherState = "flying";
+            return true;
         }
         
         if (nitro.OnFloor)
         {
             if (controller.IsDPadLeftPressed || controller.IsDPadRightPressed)
             {
-                return "walking";
+                otherState = "walking";
+                return true;
             }
 
-            return "idle";
+            otherState = "idle";
+            return true;
         }
-        
+
+        otherState = null;
+        return false;
+    }
+    
+    public override void PhysicsProcess(double delta)
+    {
         // Nitro should be able to steer when falling
         if (controller.IsDPadLeftPressed)
         {
@@ -52,7 +61,5 @@ public class NitroFallingState(ISnesController controller, INitroCharacter nitro
         {
             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
         }
-
-        return null;
     }
 }

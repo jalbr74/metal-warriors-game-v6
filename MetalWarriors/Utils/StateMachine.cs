@@ -15,30 +15,22 @@ public class StateMachine
         _states = states;
         _console = console;
 
-        foreach (var state in states.Values)
-        {
-            state.StateMachine = this;
-        }
-        
         _currentState = _states[initialState];
     }
 
     public void PhysicsProcess(double delta)
     {
-        var nextStateKey = _currentState?.HandleState(delta);
-        if (nextStateKey == null) return;
-        
-        if (!_states.TryGetValue(nextStateKey, out var nextState)) return;
-        if (nextState == _currentState) return;
-        
-        _console.Print("Transitioning to state: " + nextStateKey);
-                    
-        _currentState.Exit(delta);
+        if (_currentState == null) return;
 
-        nextState.Enter(delta);
-        nextState.HandleState(delta);
-
-        _currentState = nextState;
+        if (_currentState.ShouldTransitionToAnotherState(out var otherState))
+        {
+            _currentState.Exit(delta);
+            
+            _currentState = _states[otherState];
+            _currentState.Enter(delta);
+        }
+        
+        _currentState.PhysicsProcess(delta);
     }
     
     public void SetCurrentState(string state)
@@ -49,9 +41,8 @@ public class StateMachine
 
 public abstract class State
 {
-    public StateMachine StateMachine { get; set; }
-
     public virtual void Enter(double delta) { }
     public virtual void Exit(double delta) { }
-    public abstract string HandleState(double delta);
+    public abstract void PhysicsProcess(double delta);
+    public abstract bool ShouldTransitionToAnotherState(out string otherState);
 }

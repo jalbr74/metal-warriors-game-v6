@@ -42,12 +42,12 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.OnFloor = false;
         NitroCharacter.Direction = NitroDirection.Right;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
-        NitroCharacter.PlayAnimation("flying");
+        NitroCharacter.CurrentAnimation = "falling";
         
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState("flying");
+        StateMachine.SetCurrentState("falling");
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -64,7 +64,7 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.OnFloor = false;
         NitroCharacter.Direction = NitroDirection.Right;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity + 10);
-        NitroCharacter.PlayAnimation("flying");
+        NitroCharacter.CurrentAnimation = "flying";
         
         Controller.IsButtonBPressed.Returns(true);
         
@@ -76,7 +76,7 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
     }
     
     [Fact]
@@ -86,7 +86,7 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.OnFloor = false;
         NitroCharacter.Direction = NitroDirection.Right;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity - 10);
-        NitroCharacter.PlayAnimation("flying");
+        NitroCharacter.CurrentAnimation = "flying";
         
         Controller.IsButtonBPressed.Returns(true);
         
@@ -98,7 +98,7 @@ public class NitroFlyingStateTest : BaseNitroStateTest
         NitroCharacter.Direction.ShouldBe(NitroDirection.Right);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("flying");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
     }
     
     [Fact]

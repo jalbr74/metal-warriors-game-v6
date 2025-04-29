@@ -12,15 +12,20 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
         nitro.PlayAnimation("launching");
     }
     
-    public override string HandleState(double delta)
+    public override bool ShouldTransitionToAnotherState(out string otherState)
     {
         if (nitro.IsLaunchingAnimationComplete)
         {
-            return "flying";
+            otherState = "flying";
+            return true;
         }
-        
-        
-        
+
+        otherState = null;
+        return false;
+    }
+    
+    public override void PhysicsProcess(double delta)
+    {
         if (controller.IsDPadLeftPressed)
         {
             nitro.Direction = NitroDirection.Left;
@@ -80,6 +85,5 @@ public class NitroLaunchingState(ISnesController controller, INitroCharacter nit
         }
         
         // nitro.PlayAnimation("launching");
-        return null;
     }
 }
