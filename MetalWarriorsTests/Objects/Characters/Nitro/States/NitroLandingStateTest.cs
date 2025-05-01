@@ -32,7 +32,6 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
-    
         
     [Fact]
     public void Nitro_should_stop_falling_if_on_the_floor()

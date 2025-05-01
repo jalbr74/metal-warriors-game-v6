@@ -117,4 +117,27 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
+    
+    [Fact]
+    public void Nitro_should_transition_from_landing_to_falling_when_he_goes_off_a_cliff()
+    {
+        // Arrange
+        StateMachine.SetCurrentState(typeof(NitroLandingState));
+        Controller.IsDPadLeftPressed.Returns(true);
+        
+        NitroCharacter.OnFloor = false;
+        NitroCharacter.Direction = NitroDirection.FacingLeft;
+        NitroCharacter.CurrentAnimation = "landing";
+        NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, 0);
+    
+        // Act
+        StateMachine.PhysicsProcess(0.1f);
+    
+        // Assert
+        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
+        NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.FallingForce));
+        NitroCharacter.CurrentAnimation.ShouldBe("falling");
+        NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state
+        NitroCharacter.AnimationWasPaused.ShouldBe(false);
+    }
 }

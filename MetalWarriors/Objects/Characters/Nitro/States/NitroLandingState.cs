@@ -21,12 +21,18 @@ public class NitroLandingState(INitroCharacter nitro) : BaseNitroState(nitro)
             return true;
         }
         
-        // if (nitro.Controller.IsButtonBPressed)
-        // {
-        //     otherState = "launching";
-        //     return true;
-        // }
-        //
+        if (nitro.Controller.IsButtonBPressed)
+        {
+            otherState = typeof(NitroLaunchingState);
+            return true;
+        }
+        
+        if (!nitro.OnFloor)
+        {
+            otherState = typeof(NitroFallingState);
+            return true;
+        }
+        
         // if (nitro.OnFloor)
         // {
         //     if (nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed)

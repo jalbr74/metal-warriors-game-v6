@@ -11,7 +11,6 @@ public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.Console.Print("Entering Falling State");
         
         nitro.PlayAnimation("falling");
-        nitro.PauseAnimation();
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)
