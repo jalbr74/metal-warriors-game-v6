@@ -74,4 +74,35 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
+    
+    [Fact]
+    public void Nitro_gun_position_at_frame_0()
+    {
+        VerifyGunPositionAtFrame(0, BaseNitroState.GunPositionAtFrame0);
+        VerifyGunPositionAtFrame(1, BaseNitroState.GunPositionAtFrame1);
+        VerifyGunPositionAtFrame(2, BaseNitroState.GunPositionAtFrame2);
+        VerifyGunPositionAtFrame(3, BaseNitroState.GunPositionAtFrame3);
+        VerifyGunPositionAtFrame(4, BaseNitroState.GunPositionAtFrame4);
+        VerifyGunPositionAtFrame(5, BaseNitroState.GunPositionAtFrame5);
+        VerifyGunPositionAtFrame(6, BaseNitroState.GunPositionAtFrame6);
+        VerifyGunPositionAtFrame(7, BaseNitroState.GunPositionAtFrame7);
+
+        return;
+        
+        void VerifyGunPositionAtFrame(int frame, Vector2 expectedPosition)
+        {
+            // Arrange
+            NitroCharacter.CurrentAnimationFrame = frame;
+            NitroCharacter.GunPosition = Vector2.Zero;
+            NitroCharacter.OnFloor = true;
+            Controller.IsDPadRightPressed.Returns(true);
+        
+            // Act
+            StateMachine.SetCurrentState(typeof(NitroWalkingState));
+            StateMachine.PhysicsProcess(0.1f);
+        
+            // Assert
+            NitroCharacter.GunPosition.ShouldBe(expectedPosition);
+        }
+    }
 }

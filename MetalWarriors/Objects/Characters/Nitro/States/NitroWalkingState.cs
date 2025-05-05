@@ -51,13 +51,11 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
         {
             nitro.Direction = NitroDirection.FacingLeft;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
-            // nitro.State = NitroState.Walking;
         }
         else
         {
             nitro.Direction = NitroDirection.FacingRight;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
-            // nitro.State = NitroState.Walking;
         }
         
         if (nitro.OnFloor)
@@ -72,10 +70,19 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
             {
                 nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
             }
-    
-            // nitro.State = NitroState.Falling;
         }
-        
-        // nitro.PlayAnimation(animation);
+
+        nitro.GunPosition = nitro.CurrentAnimationFrame switch
+        {
+            0 => GunPositionAtFrame0,
+            1 => GunPositionAtFrame1,
+            2 => GunPositionAtFrame2,
+            3 => GunPositionAtFrame3,
+            4 => GunPositionAtFrame4,
+            5 => GunPositionAtFrame5,
+            6 => GunPositionAtFrame6,
+            7 => GunPositionAtFrame7,
+            _ => nitro.GunPosition
+        };
     }
 }

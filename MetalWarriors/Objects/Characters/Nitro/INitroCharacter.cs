@@ -13,8 +13,10 @@ public interface INitroCharacter
     Vector2 Velocity { get; set; }
     NitroDirection Direction { get; set; }
     string CurrentAnimation { get; }
-    bool OnFloor { get; }
+    int CurrentAnimationFrame { get; }
     bool IsAnimationFinished { get; set; }
+    Vector2 GunPosition { get; set; }
+    bool OnFloor { get; }
     
     void PlayAnimation(string animation);
     void PauseAnimation();

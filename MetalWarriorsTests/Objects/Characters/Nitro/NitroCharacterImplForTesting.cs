@@ -11,8 +11,10 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public Vector2 Velocity { get; set; }
     public NitroDirection Direction { get; set; } = NitroDirection.FacingRight;
     public string CurrentAnimation { get; set; } = "";
-    public bool OnFloor { get; set; }
+    public int CurrentAnimationFrame { get; set; } = 0;
     public bool IsAnimationFinished { get; set; }
+    public Vector2 GunPosition { get; set; }
+    public bool OnFloor { get; set; }
 
     public List<string> PlayedAnimations { get; } = [];
     public bool AnimationWasPaused { get; private set; }
