@@ -6,6 +6,15 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 
 public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
+    public static Vector2 GunPositionAtFrame0 = new (4, -8);
+    public static Vector2 GunPositionAtFrame1 = new (4, -9);
+    public static Vector2 GunPositionAtFrame2 = new (5, -10);
+    public static Vector2 GunPositionAtFrame3 = new (6, -8);
+    public static Vector2 GunPositionAtFrame4 = new (5, -8);
+    public static Vector2 GunPositionAtFrame5 = new (4, -9);
+    public static Vector2 GunPositionAtFrame6 = new (4, -10);
+    public static Vector2 GunPositionAtFrame7 = new (3, -7);
+    
     public override void Enter()
     {
         nitro.Console.Print("Entering Walking State");

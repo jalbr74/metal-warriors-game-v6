@@ -366,14 +366,14 @@ script = ExtResource("1_g5dot")
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"walking"
+animation = &"falling"
 autoplay = "idle"
 
 [node name="GunAnimations" type="AnimatedSprite2D" parent="NitroAnimations"]
 position = Vector2(4, -8)
 sprite_frames = SubResource("SpriteFrames_ak5to")
 animation = &"straight"
-autoplay = "up-1"
+autoplay = "straight"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -18)
