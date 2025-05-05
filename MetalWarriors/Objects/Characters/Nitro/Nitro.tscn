@@ -370,7 +370,7 @@ animation = &"falling"
 autoplay = "idle"
 
 [node name="GunAnimations" type="AnimatedSprite2D" parent="NitroAnimations"]
-position = Vector2(4, -8)
+position = Vector2(11, -8)
 sprite_frames = SubResource("SpriteFrames_ak5to")
 animation = &"straight"
 autoplay = "straight"

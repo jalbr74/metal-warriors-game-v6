@@ -6,11 +6,14 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 
 public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
+    public static Vector2 GunPositionAtFrame0 = new (11, -8);
+    
     public override void Enter()
     {
         nitro.Console.Print("Entering Falling State");
         
         nitro.PlayAnimation("falling");
+        nitro.GunPosition = GunPositionAtFrame0;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

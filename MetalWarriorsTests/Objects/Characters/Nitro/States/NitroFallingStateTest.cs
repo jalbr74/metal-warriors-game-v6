@@ -140,4 +140,22 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
+    
+    [Fact]
+    public void Nitro_gun_position_is_correct()
+    {
+        // Arrange
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
+        
+        NitroCharacter.CurrentAnimationFrame = 0;
+        NitroCharacter.GunPosition = Vector2.Zero;
+        NitroCharacter.OnFloor = false;
+
+        // Act
+        StateMachine.SetCurrentState(typeof(NitroWalkingState));
+        StateMachine.PhysicsProcess(0.1f);
+
+        // Assert
+        NitroCharacter.GunPosition.ShouldBe(NitroFallingState.GunPositionAtFrame0);
+    }
 }

@@ -88,7 +88,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     };
 
     [Theory, MemberData(nameof(GunPositionData))]
-    public void Nitro_gun_position_at_frame_0(int frame, Vector2 expectedPosition)
+    public void Nitro_gun_position_is_correct_for_a_given_animation_frame(int frame, Vector2 expectedPosition)
     {
         // Arrange
         NitroCharacter.CurrentAnimationFrame = frame;
