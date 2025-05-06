@@ -26,7 +26,7 @@ region = Rect2(123, 0, 41, 47)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tcyvt"]
 atlas = ExtResource("1_mrnoq")
-region = Rect2(528, 0, 44, 44)
+region = Rect2(176, 0, 44, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bd5i4"]
 atlas = ExtResource("4_davsn")
@@ -363,14 +363,22 @@ height = 36.0
 [node name="Nitro" type="CharacterBody2D"]
 script = ExtResource("1_g5dot")
 
+[node name="NitroAnimations2" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(0, -20)
+sprite_frames = SubResource("SpriteFrames_4jddo")
+animation = &"launching"
+autoplay = "idle"
+
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"falling"
+animation = &"landing"
 autoplay = "idle"
+frame = 3
 
 [node name="GunAnimations" type="AnimatedSprite2D" parent="NitroAnimations"]
-position = Vector2(11, -8)
+position = Vector2(13, -7)
 sprite_frames = SubResource("SpriteFrames_ak5to")
 animation = &"straight"
 autoplay = "straight"
@@ -379,4 +387,5 @@ autoplay = "straight"
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_mm4ra")
 
+[connection signal="animation_finished" from="NitroAnimations2" to="." method="AnimationFinished"]
 [connection signal="animation_finished" from="NitroAnimations" to="." method="AnimationFinished"]

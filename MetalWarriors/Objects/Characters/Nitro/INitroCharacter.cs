@@ -15,6 +15,7 @@ public interface INitroCharacter
     string CurrentAnimation { get; }
     int CurrentAnimationFrame { get; }
     bool IsAnimationFinished { get; set; }
+    Vector2 CurrentAnimationOffset { get; set; }
     Vector2 GunPosition { get; set; }
     bool OnFloor { get; }
     

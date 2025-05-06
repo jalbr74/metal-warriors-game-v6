@@ -6,12 +6,18 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 
 public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
+    public static Vector2 AnimationOffset = Vector2.Zero;
+    public static Vector2 GunPosition = new (5, -8);
+    
     public override void Enter()
     {
         nitro.Console.Print("Entering Idle State");
         
         nitro.PlayAnimation("idle");
         nitro.PauseAnimation();
+        
+        nitro.CurrentAnimationOffset = AnimationOffset;
+        nitro.GunPosition = GunPosition + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

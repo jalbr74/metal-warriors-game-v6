@@ -43,8 +43,8 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
         NitroCharacter.CurrentAnimation = "falling";
-        
-        // Controller not being used
+        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
+        NitroCharacter.GunPosition = new Vector2(100, 100);
         
         // Act
         StateMachine.PhysicsProcess(0.1f);
@@ -54,5 +54,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("landing");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        NitroCharacter.CurrentAnimationOffset.ShouldBe(NitroLandingState.AnimationOffset);
+        NitroCharacter.GunPosition.ShouldBe(NitroLandingState.GunPosition + NitroLandingState.AnimationOffset);
     }
 }

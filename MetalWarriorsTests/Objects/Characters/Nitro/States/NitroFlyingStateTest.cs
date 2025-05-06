@@ -190,4 +190,23 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0);
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
+    
+    [Fact]
+    public void Nitro_gun_position_is_correct()
+    {
+        // Arrange
+        StateMachine.SetCurrentState(typeof(NitroLaunchingState));
+        
+        NitroCharacter.CurrentAnimationFrame = 0;
+        NitroCharacter.IsAnimationFinished = true;
+        NitroCharacter.GunPosition = Vector2.Zero;
+        NitroCharacter.OnFloor = false;
+
+        // Act
+        StateMachine.PhysicsProcess(0.1f);
+
+        // Assert
+        NitroCharacter.GunPosition.ShouldBe(NitroFlyingState.GunPosition + NitroFlyingState.AnimationOffset);
+        NitroCharacter.CurrentAnimationOffset.ShouldBe(NitroFlyingState.AnimationOffset);
+    }
 }

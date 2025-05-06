@@ -1,10 +1,11 @@
-﻿using Godot;
+﻿using System.Numerics;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
+using Vector2 = Godot.Vector2;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 
@@ -75,6 +76,25 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.AnimationWasPaused.ShouldBe(false);
     }
     
+    [Fact]
+    public void Nitro_current_animation_should_reset_when_transitioning_to_walking()
+    {
+        // Arrange
+        NitroCharacter.OnFloor = true;
+        NitroCharacter.Direction = NitroDirection.FacingRight;
+        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
+        
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
+        Controller.IsDPadRightPressed.Returns(true);
+        
+        // Act
+        StateMachine.PhysicsProcess(0.1f);
+        
+        // Assert
+        NitroCharacter.CurrentAnimationOffset.ShouldBe(Vector2.Zero);
+    }
+    
     public static IEnumerable<object[]> GunPositionData => new List<object[]>
     {
         new object[] { 0, NitroWalkingState.GunPositionAtFrame0 },
@@ -95,10 +115,12 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.GunPosition = Vector2.Zero;
         NitroCharacter.OnFloor = true;
         Controller.IsDPadRightPressed.Returns(true);
+        NitroCharacter.GunPosition = new Vector2(100, 100);
 
         // Act
         StateMachine.SetCurrentState(typeof(NitroWalkingState));
         StateMachine.PhysicsProcess(0.1f);
+        
         // Assert
         NitroCharacter.GunPosition.ShouldBe(expectedPosition);
     }

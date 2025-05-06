@@ -29,6 +29,12 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public string CurrentAnimation => NitroAnimations.Animation;
     public int CurrentAnimationFrame => NitroAnimations.Frame;
 
+    public Vector2 CurrentAnimationOffset
+    {
+        get => NitroAnimations.Offset;
+        set => NitroAnimations.Offset = value;
+    }
+
     private StateMachine _stateMachine;
     
     public override void _Ready()
@@ -48,11 +54,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public override void _PhysicsProcess(double delta)
     {
-        // Console.Print($"Current animation frame: {CurrentAnimationFrame}");
-        // Console.Print($"Gun position: {GunPosition.X}, {GunPosition.Y}");
-        // Console.Print($"Gun position: {GunAnimations.Position}");
-        
-        NitroAnimations.Offset = DetermineAnimationPositionOffset();
+        NitroAnimations.Offset = CurrentAnimationOffset;
         
         _stateMachine.PhysicsProcess(delta);
         MoveAndSlide();
@@ -77,16 +79,5 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public void PauseAnimation()
     {
         NitroAnimations.Pause();
-    }
-    
-    private Vector2 DetermineAnimationPositionOffset()
-    {
-        return NitroAnimations.Animation.ToString() switch
-        {
-            "flying" => new Vector2(-10, 4),
-            "landing" => new Vector2(-4, 0),
-            "launching" => new Vector2(-8, 5),
-            _ => new Vector2(0, 0)
-        };
     }
 }

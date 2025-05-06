@@ -6,11 +6,16 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 
 public class NitroLandingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
+    public static Vector2 AnimationOffset = new (-4, 0);
+    public static Vector2 GunPosition = new (13, -7);
+    
     public override void Enter()
     {
         nitro.Console.Print("Entering Landing State");
         
         nitro.PlayAnimation("landing");
+        nitro.CurrentAnimationOffset = AnimationOffset;
+        nitro.GunPosition = GunPosition + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

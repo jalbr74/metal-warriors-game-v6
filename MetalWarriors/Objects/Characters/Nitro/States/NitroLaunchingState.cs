@@ -6,11 +6,16 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 
 public class NitroLaunchingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
+    public static Vector2 AnimationOffset = new (-8, 5);
+    public static Vector2 GunPosition = new (19, -10);
+    
     public override void Enter()
     {
         nitro.Console.Print("Entering Launching State");
         
         nitro.PlayAnimation("launching");
+        nitro.CurrentAnimationOffset = AnimationOffset;
+        nitro.GunPosition = GunPosition + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)
