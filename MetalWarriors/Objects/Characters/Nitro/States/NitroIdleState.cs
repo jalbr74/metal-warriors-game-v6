@@ -7,7 +7,7 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
     public static Vector2 AnimationOffset = Vector2.Zero;
-    public static Vector2 GunPosition = new (5, -8);
+    public static Vector2 GunOffset = new (5, -8);
     
     public override void Enter()
     {
@@ -16,8 +16,8 @@ public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.PlayAnimation("idle");
         nitro.PauseAnimation();
         
-        nitro.CurrentAnimationOffset = AnimationOffset;
-        nitro.GunPosition = GunPosition + AnimationOffset;
+        nitro.AnimationOffset = AnimationOffset;
+        nitro.GunOffset = GunOffset + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

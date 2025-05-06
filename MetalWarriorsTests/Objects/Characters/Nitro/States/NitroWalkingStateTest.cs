@@ -83,7 +83,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.OnFloor = true;
         NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
-        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
+        NitroCharacter.AnimationOffset = new Vector2(100, 100);
         
         StateMachine.SetCurrentState(typeof(NitroIdleState));
         Controller.IsDPadRightPressed.Returns(true);
@@ -92,36 +92,36 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.CurrentAnimationOffset.ShouldBe(Vector2.Zero);
+        NitroCharacter.AnimationOffset.ShouldBe(Vector2.Zero);
     }
     
-    public static IEnumerable<object[]> GunPositionData => new List<object[]>
+    public static IEnumerable<object[]> GunOffsetData => new List<object[]>
     {
-        new object[] { 0, NitroWalkingState.GunPositionAtFrame0 },
-        new object[] { 1, NitroWalkingState.GunPositionAtFrame1 },
-        new object[] { 2, NitroWalkingState.GunPositionAtFrame2 },
-        new object[] { 3, NitroWalkingState.GunPositionAtFrame3 },
-        new object[] { 4, NitroWalkingState.GunPositionAtFrame4 },
-        new object[] { 5, NitroWalkingState.GunPositionAtFrame5 },
-        new object[] { 6, NitroWalkingState.GunPositionAtFrame6 },
-        new object[] { 7, NitroWalkingState.GunPositionAtFrame7 }
+        new object[] { 0, NitroWalkingState.GunOffsetAtFrame0 },
+        new object[] { 1, NitroWalkingState.GunOffsetAtFrame1 },
+        new object[] { 2, NitroWalkingState.GunOffsetAtFrame2 },
+        new object[] { 3, NitroWalkingState.GunOffsetAtFrame3 },
+        new object[] { 4, NitroWalkingState.GunOffsetAtFrame4 },
+        new object[] { 5, NitroWalkingState.GunOffsetAtFrame5 },
+        new object[] { 6, NitroWalkingState.GunOffsetAtFrame6 },
+        new object[] { 7, NitroWalkingState.GunOffsetAtFrame7 }
     };
 
-    [Theory, MemberData(nameof(GunPositionData))]
+    [Theory, MemberData(nameof(GunOffsetData))]
     public void Nitro_gun_position_is_correct_for_a_given_animation_frame(int frame, Vector2 expectedPosition)
     {
         // Arrange
         NitroCharacter.CurrentAnimationFrame = frame;
-        NitroCharacter.GunPosition = Vector2.Zero;
+        NitroCharacter.GunOffset = Vector2.Zero;
         NitroCharacter.OnFloor = true;
         Controller.IsDPadRightPressed.Returns(true);
-        NitroCharacter.GunPosition = new Vector2(100, 100);
+        NitroCharacter.GunOffset = new Vector2(100, 100);
 
         // Act
         StateMachine.SetCurrentState(typeof(NitroWalkingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.GunPosition.ShouldBe(expectedPosition);
+        NitroCharacter.GunOffset.ShouldBe(expectedPosition);
     }
 }

@@ -7,15 +7,15 @@ namespace MetalWarriors.Objects.Characters.Nitro.States;
 public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
     public static Vector2 AnimationOffset = Vector2.Zero;
-    public static Vector2 GunPosition = new (11, -8);
+    public static Vector2 GunOffset = new (11, -8);
     
     public override void Enter()
     {
         nitro.Console.Print("Entering Falling State");
         
         nitro.PlayAnimation("falling");
-        nitro.CurrentAnimationOffset = AnimationOffset;
-        nitro.GunPosition = GunPosition + AnimationOffset;
+        nitro.AnimationOffset = AnimationOffset;
+        nitro.GunOffset = GunOffset + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

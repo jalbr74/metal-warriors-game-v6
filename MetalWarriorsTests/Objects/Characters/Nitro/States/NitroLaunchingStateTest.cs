@@ -17,8 +17,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         NitroCharacter.OnFloor = true;
         NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = Vector2.Zero;
-        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
-        NitroCharacter.GunPosition = new Vector2(100, 100);
+        NitroCharacter.AnimationOffset = new Vector2(100, 100);
+        NitroCharacter.GunOffset = new Vector2(100, 100);
         
         Controller.IsButtonBPressed.Returns(true);
         StateMachine.SetCurrentState(typeof(NitroIdleState));
@@ -31,8 +31,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
-        NitroCharacter.CurrentAnimationOffset.ShouldBe(NitroLaunchingState.AnimationOffset);
-        NitroCharacter.GunPosition.ShouldBe(NitroLaunchingState.GunPosition + NitroLaunchingState.AnimationOffset);
+        NitroCharacter.AnimationOffset.ShouldBe(NitroLaunchingState.AnimationOffset);
+        NitroCharacter.GunOffset.ShouldBe(NitroLaunchingState.GunOffset + NitroLaunchingState.AnimationOffset);
     }
     
     [Fact]

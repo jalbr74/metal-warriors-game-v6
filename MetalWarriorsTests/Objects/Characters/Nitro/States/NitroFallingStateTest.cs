@@ -17,8 +17,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.OnFloor = false;
         NitroCharacter.Direction = NitroDirection.FacingRight;
         NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxRisingVelocity);
-        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
-        NitroCharacter.GunPosition = new Vector2(100, 100);
+        NitroCharacter.AnimationOffset = new Vector2(100, 100);
+        NitroCharacter.GunOffset = new Vector2(100, 100);
         
         StateMachine.SetCurrentState(typeof(NitroFlyingState));
         
@@ -30,8 +30,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity + BaseNitroState.FallingForce));
         NitroCharacter.CurrentAnimation.ShouldBe("falling");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
-        NitroCharacter.GunPosition.ShouldBe(NitroFallingState.GunPosition);
-        NitroCharacter.CurrentAnimationOffset.ShouldBe(NitroFallingState.AnimationOffset);
+        NitroCharacter.GunOffset.ShouldBe(NitroFallingState.GunOffset);
+        NitroCharacter.AnimationOffset.ShouldBe(NitroFallingState.AnimationOffset);
     }
     
     [Fact]
@@ -151,13 +151,13 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.SetCurrentState(typeof(NitroIdleState));
         
         NitroCharacter.CurrentAnimationFrame = 0;
-        NitroCharacter.GunPosition = Vector2.Zero;
+        NitroCharacter.GunOffset = Vector2.Zero;
         NitroCharacter.OnFloor = false;
 
         // Act
         StateMachine.PhysicsProcess(0.1f);
 
         // Assert
-        NitroCharacter.GunPosition.ShouldBe(NitroFallingState.GunPosition);
+        NitroCharacter.GunOffset.ShouldBe(NitroFallingState.GunOffset);
     }
 }

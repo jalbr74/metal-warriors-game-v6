@@ -86,8 +86,8 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.CurrentAnimation = "landing";
         NitroCharacter.IsAnimationFinished = true;
         
-        NitroCharacter.CurrentAnimationOffset = new Vector2(100, 100);
-        NitroCharacter.GunPosition = new Vector2(100, 100);
+        NitroCharacter.AnimationOffset = new Vector2(100, 100);
+        NitroCharacter.GunOffset = new Vector2(100, 100);
         
         // Act
         StateMachine.PhysicsProcess(0.1f);
@@ -97,7 +97,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
-        NitroCharacter.CurrentAnimationOffset.ShouldBe(Vector2.Zero);
-        NitroCharacter.GunPosition.ShouldBe(NitroIdleState.GunPosition);
+        NitroCharacter.AnimationOffset.ShouldBe(Vector2.Zero);
+        NitroCharacter.GunOffset.ShouldBe(NitroIdleState.GunOffset);
     }
 }

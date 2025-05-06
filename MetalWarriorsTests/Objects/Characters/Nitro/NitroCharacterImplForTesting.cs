@@ -12,9 +12,9 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public NitroDirection Direction { get; set; } = NitroDirection.FacingRight;
     public string CurrentAnimation { get; set; } = "";
     public int CurrentAnimationFrame { get; set; } = 0;
-    public Vector2 CurrentAnimationOffset { get; set; } = Vector2.Zero;
+    public Vector2 AnimationOffset { get; set; } = Vector2.Zero;
     public bool IsAnimationFinished { get; set; }
-    public Vector2 GunPosition { get; set; }
+    public Vector2 GunOffset { get; set; }
     public bool OnFloor { get; set; }
 
     public List<string> PlayedAnimations { get; } = [];

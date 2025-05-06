@@ -20,7 +20,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
         get => NitroAnimations.Scale.X >= 0 ? NitroDirection.FacingRight : NitroDirection.FacingLeft;
     }
 
-    public Vector2 GunPosition
+    public Vector2 GunOffset
     {
         get => GunAnimations.Position;
         set => GunAnimations.Position = value;
@@ -29,7 +29,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public string CurrentAnimation => NitroAnimations.Animation;
     public int CurrentAnimationFrame => NitroAnimations.Frame;
 
-    public Vector2 CurrentAnimationOffset
+    public Vector2 AnimationOffset
     {
         get => NitroAnimations.Offset;
         set => NitroAnimations.Offset = value;
@@ -54,7 +54,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     
     public override void _PhysicsProcess(double delta)
     {
-        NitroAnimations.Offset = CurrentAnimationOffset;
+        NitroAnimations.Offset = AnimationOffset;
         
         _stateMachine.PhysicsProcess(delta);
         MoveAndSlide();

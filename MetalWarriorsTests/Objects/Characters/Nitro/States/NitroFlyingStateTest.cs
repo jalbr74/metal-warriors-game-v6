@@ -199,14 +199,14 @@ public class NitroFlyingStateTest(ITestOutputHelper testOutputHelper) : BaseNitr
         
         NitroCharacter.CurrentAnimationFrame = 0;
         NitroCharacter.IsAnimationFinished = true;
-        NitroCharacter.GunPosition = Vector2.Zero;
+        NitroCharacter.GunOffset = Vector2.Zero;
         NitroCharacter.OnFloor = false;
 
         // Act
         StateMachine.PhysicsProcess(0.1f);
 
         // Assert
-        NitroCharacter.GunPosition.ShouldBe(NitroFlyingState.GunPosition + NitroFlyingState.AnimationOffset);
-        NitroCharacter.CurrentAnimationOffset.ShouldBe(NitroFlyingState.AnimationOffset);
+        NitroCharacter.GunOffset.ShouldBe(NitroFlyingState.GunOffset + NitroFlyingState.AnimationOffset);
+        NitroCharacter.AnimationOffset.ShouldBe(NitroFlyingState.AnimationOffset);
     }
 }

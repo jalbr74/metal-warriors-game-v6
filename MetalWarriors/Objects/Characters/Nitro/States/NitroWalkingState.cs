@@ -8,22 +8,22 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
     public static Vector2 AnimationOffset = Vector2.Zero;
     
-    public static Vector2 GunPositionAtFrame0 = new (4, -8);
-    public static Vector2 GunPositionAtFrame1 = new (4, -9);
-    public static Vector2 GunPositionAtFrame2 = new (5, -10);
-    public static Vector2 GunPositionAtFrame3 = new (6, -8);
-    public static Vector2 GunPositionAtFrame4 = new (5, -8);
-    public static Vector2 GunPositionAtFrame5 = new (4, -9);
-    public static Vector2 GunPositionAtFrame6 = new (4, -10);
-    public static Vector2 GunPositionAtFrame7 = new (3, -7);
+    public static Vector2 GunOffsetAtFrame0 = new (4, -8);
+    public static Vector2 GunOffsetAtFrame1 = new (4, -9);
+    public static Vector2 GunOffsetAtFrame2 = new (5, -10);
+    public static Vector2 GunOffsetAtFrame3 = new (6, -8);
+    public static Vector2 GunOffsetAtFrame4 = new (5, -8);
+    public static Vector2 GunOffsetAtFrame5 = new (4, -9);
+    public static Vector2 GunOffsetAtFrame6 = new (4, -10);
+    public static Vector2 GunOffsetAtFrame7 = new (3, -7);
     
     public override void Enter()
     {
         nitro.Console.Print("Entering Walking State");
         
         nitro.PlayAnimation("walking");
-        nitro.CurrentAnimationOffset = AnimationOffset;
-        nitro.GunPosition = GunPositionAtFrame0 + AnimationOffset;
+        nitro.AnimationOffset = AnimationOffset;
+        nitro.GunOffset = GunOffsetAtFrame0 + AnimationOffset;
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)
@@ -85,17 +85,17 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
             }
         }
 
-        nitro.GunPosition = nitro.CurrentAnimationFrame switch
+        nitro.GunOffset = nitro.CurrentAnimationFrame switch
         {
-            0 => GunPositionAtFrame0,
-            1 => GunPositionAtFrame1,
-            2 => GunPositionAtFrame2,
-            3 => GunPositionAtFrame3,
-            4 => GunPositionAtFrame4,
-            5 => GunPositionAtFrame5,
-            6 => GunPositionAtFrame6,
-            7 => GunPositionAtFrame7,
-            _ => nitro.GunPosition
+            0 => GunOffsetAtFrame0,
+            1 => GunOffsetAtFrame1,
+            2 => GunOffsetAtFrame2,
+            3 => GunOffsetAtFrame3,
+            4 => GunOffsetAtFrame4,
+            5 => GunOffsetAtFrame5,
+            6 => GunOffsetAtFrame6,
+            7 => GunOffsetAtFrame7,
+            _ => nitro.GunOffset
         };
     }
 }
