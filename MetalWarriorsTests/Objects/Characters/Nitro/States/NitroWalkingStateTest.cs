@@ -15,9 +15,16 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: Vector2.Zero,
+            animationOffset: Vector2.Zero,
+            gunOffset: Vector2.Zero,
+            currentAnimation: "flying",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
         
         Controller.IsDPadLeftPressed.Returns(true);
         
@@ -36,9 +43,16 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: Vector2.Zero,
+            animationOffset: Vector2.Zero,
+            gunOffset: Vector2.Zero,
+            currentAnimation: "flying",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
         
         Controller.IsDPadRightPressed.Returns(true);
         
@@ -57,9 +71,16 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_walking_animation_should_continually_play()
     {
         // Arrange
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = Vector2.Zero;
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: Vector2.Zero,
+            animationOffset: Vector2.Zero,
+            gunOffset: Vector2.Zero,
+            currentAnimation: "flying",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
         
         // Controller not being used
         Controller.IsDPadRightPressed.Returns(true);
@@ -80,15 +101,21 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_current_animation_should_reset_when_transitioning_to_walking()
     {
         // Arrange
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = Vector2.Zero;
-        NitroCharacter.AnimationOffset = new Vector2(100, 100);
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: Vector2.Zero,
+            animationOffset: new Vector2(100, 100),
+            gunOffset: Vector2.Zero,
+            currentAnimation: "flying",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
         
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
+        StateMachine.SetCurrentState(typeof(NitroIdleState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -111,11 +138,18 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_gun_position_is_correct_for_a_given_animation_frame(int frame, Vector2 expectedPosition)
     {
         // Arrange
-        NitroCharacter.CurrentAnimationFrame = frame;
-        NitroCharacter.GunOffset = Vector2.Zero;
-        NitroCharacter.OnFloor = true;
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: Vector2.Zero,
+            animationOffset: Vector2.Zero,
+            gunOffset: new Vector2(100, 100),
+            currentAnimation: "flying",
+            currentAnimationFrame: frame,
+            isAnimationFinished: false
+        );
+        
         Controller.IsDPadRightPressed.Returns(true);
-        NitroCharacter.GunOffset = new Vector2(100, 100);
 
         // Act
         StateMachine.SetCurrentState(typeof(NitroWalkingState));

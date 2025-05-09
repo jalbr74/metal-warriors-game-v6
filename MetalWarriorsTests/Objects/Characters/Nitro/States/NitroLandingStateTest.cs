@@ -14,15 +14,21 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_transition_from_falling_to_landing_when_contact_is_made_with_the_floor_but_keep_moving_right()
     {
         // Arrange
-        StateMachine.SetCurrentState(typeof(NitroFallingState));
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxFallingVelocity),
+            animationOffset: Vector2.Zero,
+            gunOffset: Vector2.Zero,
+            currentAnimation: "falling",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
+        
         Controller.IsDPadRightPressed.Returns(true);
         
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxFallingVelocity);
-        NitroCharacter.CurrentAnimation = "falling";
-        
         // Act
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
@@ -37,16 +43,19 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_stop_falling_if_on_the_floor()
     {
         // Arrange
-        StateMachine.SetCurrentState(typeof(NitroFallingState));
-        
-        NitroCharacter.OnFloor = true;
-        NitroCharacter.Direction = NitroDirection.FacingRight;
-        NitroCharacter.Velocity = new Vector2(0, BaseNitroState.MaxFallingVelocity);
-        NitroCharacter.CurrentAnimation = "falling";
-        NitroCharacter.AnimationOffset = new Vector2(100, 100);
-        NitroCharacter.GunOffset = new Vector2(100, 100);
+        NitroCharacter.SetInitialState(
+            onFloor: true,
+            direction: NitroDirection.FacingRight,
+            velocity: new Vector2(0, BaseNitroState.MaxFallingVelocity),
+            animationOffset: new Vector2(100, 100),
+            gunOffset: new Vector2(100, 100),
+            currentAnimation: "falling",
+            currentAnimationFrame: 0,
+            isAnimationFinished: false
+        );
         
         // Act
+        StateMachine.SetCurrentState(typeof(NitroFallingState));
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert

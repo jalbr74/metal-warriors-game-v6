@@ -31,4 +31,26 @@ public class NitroCharacterImplForTesting : INitroCharacter
     {
         AnimationWasPaused = true;
     }
+    
+    // This is used to make sure we set everything up correctly for consistency
+    public void SetInitialState(
+        bool onFloor,
+        NitroDirection direction,
+        Vector2 velocity,
+        Vector2 animationOffset,
+        Vector2 gunOffset,
+        string currentAnimation,
+        int currentAnimationFrame,
+        bool isAnimationFinished
+    )
+    {
+        OnFloor = onFloor;
+        Direction = direction;
+        Velocity = velocity;
+        AnimationOffset = animationOffset;
+        GunOffset = gunOffset;
+        CurrentAnimation = currentAnimation;
+        CurrentAnimationFrame = currentAnimationFrame;
+        IsAnimationFinished = isAnimationFinished;
+    }
 }

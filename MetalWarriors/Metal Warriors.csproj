@@ -4,4 +4,10 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>MetalWarriors</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="TODO.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Objects\Player\" />
+  </ItemGroup>
 </Project>
