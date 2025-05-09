@@ -7,7 +7,7 @@ namespace MetalWarriors.Objects.Characters.Nitro;
 
 public partial class Nitro : CharacterBody2D, INitroCharacter
 {
-    public ISnesController Controller { get; set; } = new SnesController();
+    public ISnesController Controller { get; set; } = new NullSnesController();
     public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D NitroAnimations { get; set; }
     public AnimatedSprite2D GunAnimations { get; set; }
@@ -50,6 +50,8 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
             new NitroFlyingState(this),
             new NitroLandingState(this),
         ], typeof(NitroIdleState));
+        
+        GD.Print("Nitro is ready");
     }
     
     public override void _PhysicsProcess(double delta)

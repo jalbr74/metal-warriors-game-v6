@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cb5ifct8cu7qw"]
+
+[ext_resource type="Script" uid="uid://bonjeynq6ehxx" path="res://Objects/Characters/Pilot/Pilot.cs" id="1_rj7po"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d7ilm"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6tg7y"]
+
+[node name="Pilot" type="CharacterBody2D"]
+script = ExtResource("1_rj7po")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_d7ilm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6tg7y")
