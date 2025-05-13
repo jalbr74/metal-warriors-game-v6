@@ -97,3 +97,16 @@ scale = Vector2(100, 100)
 texture_normal = SubResource("CanvasTexture_trm7v")
 passby_press = true
 action = "Button_A"
+
+[node name="DPadRight" type="TouchScreenButton" parent="CanvasLayer/Controller"]
+position = Vector2(885, 1056)
+scale = Vector2(128, 40.0001)
+texture_normal = SubResource("CanvasTexture_xseyk")
+passby_press = true
+action = "Select"
+
+[node name="DPadRight2" type="TouchScreenButton" parent="CanvasLayer/Controller"]
+position = Vector2(1197, 1056)
+scale = Vector2(128, 40)
+texture_normal = SubResource("CanvasTexture_xseyk")
+passby_press = true

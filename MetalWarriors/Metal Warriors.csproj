@@ -8,6 +8,7 @@
     <Content Include="TODO.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Objects\Characters\Pilot\" />
+    <Folder Include="Objects\Characters\ParkedNitro\States\" />
+    <Folder Include="Objects\Characters\Pilot\States\" />
   </ItemGroup>
 </Project>

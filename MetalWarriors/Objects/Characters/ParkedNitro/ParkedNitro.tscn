@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://t5f1uksnok2f"]
+
+[ext_resource type="Script" uid="uid://c4p2wiuctww3v" path="res://Objects/Characters/ParkedNitro/ParkedNitro.cs" id="1_jtb35"]
+[ext_resource type="Texture2D" uid="uid://04ydm1jfavx7" path="res://Objects/Characters/ParkedNitro/parked-nitro.png" id="1_o8x43"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jtb35"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_o8x43")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hukb3"]
+radius = 11.0
+height = 40.0
+
+[node name="ParkedNitro" type="CharacterBody2D"]
+script = ExtResource("1_jtb35")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -21)
+sprite_frames = SubResource("SpriteFrames_jtb35")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+shape = SubResource("CapsuleShape2D_hukb3")
