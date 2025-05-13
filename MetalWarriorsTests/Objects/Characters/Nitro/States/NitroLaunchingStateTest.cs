@@ -15,7 +15,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     public void Nitro_should_rise_constantly_when_launching()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -29,8 +29,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -45,7 +45,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     public void Nitro_should_keep_rising_constantly_when_launching()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxRisingVelocity),
@@ -59,8 +59,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState(typeof(NitroLaunchingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLaunchingState));
+        NitroCharacter._PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -73,7 +73,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     public void Nitro_should_transition_from_walking_to_launching_when_B_button_is_pressed()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
@@ -89,8 +89,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
+        NitroCharacter._PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -104,7 +104,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     public void Nitro_should_transition_from_landing_to_launching_when_B_button_is_pressed()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
@@ -119,8 +119,8 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         Controller.IsButtonBPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState(typeof(NitroLandingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLandingState));
+        NitroCharacter._PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);

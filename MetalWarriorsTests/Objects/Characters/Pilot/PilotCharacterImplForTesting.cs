@@ -1,6 +1,7 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Pilot;
+using MetalWarriors.Objects.Characters.Pilot.States;
 using MetalWarriors.Utils;
 
 namespace MetalWarriorsTests.Objects.Characters.Pilot;
@@ -19,20 +20,9 @@ public class PilotCharacterImplForTesting : IPilotCharacter
     public List<string> PlayedAnimations { get; } = [];
     public bool AnimationWasPaused { get; private set; }
     
-    public void PlayAnimation(string animation)
-    {
-        CurrentAnimation = animation;
-        
-        PlayedAnimations.Add(animation);
-    }
-
-    public void PauseAnimation()
-    {
-        AnimationWasPaused = true;
-    }
+    public StateMachine StateMachine { get; set; }
     
-    // This is used to make sure we set everything up correctly for consistency
-    public void SetInitialState(
+    public void Initialize(
         bool onFloor,
         CharacterDirection direction,
         Vector2 velocity,
@@ -47,5 +37,27 @@ public class PilotCharacterImplForTesting : IPilotCharacter
         CurrentAnimation = currentAnimation;
         CurrentAnimationFrame = currentAnimationFrame;
         IsAnimationFinished = isAnimationFinished;
+        
+        // Pilot states:
+        // Idle
+        // Walking
+        // Jetting
+        // Falling
+        
+        StateMachine = new StateMachine([
+            new PilotIdleState(this),
+        ], typeof(PilotIdleState));
+    }
+
+    public void PlayAnimation(string animation)
+    {
+        CurrentAnimation = animation;
+        
+        PlayedAnimations.Add(animation);
+    }
+
+    public void PauseAnimation()
+    {
+        AnimationWasPaused = true;
     }
 }

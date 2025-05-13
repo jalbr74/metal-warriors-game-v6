@@ -15,7 +15,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_decelerate_when_jetting_is_stopped()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxRisingVelocity),
@@ -27,8 +27,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroFlyingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroFlyingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -43,7 +43,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_fall_after_reaching_the_apex_after_thrust_is_cut()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -55,8 +55,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroFlyingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroFlyingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -69,7 +69,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_not_fall_too_fast()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxFallingVelocity + 10),
@@ -81,8 +81,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroFallingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroFallingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -94,7 +94,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_fall_if_idle_and_no_buttons_pressed()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -106,8 +106,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -120,7 +120,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_fall_if_walking_and_not_on_the_floor()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(-BaseNitroState.MovementSpeed, 0),
@@ -134,8 +134,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -148,7 +148,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_transition_from_landing_to_falling_when_he_goes_off_a_cliff()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
@@ -162,8 +162,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadLeftPressed.Returns(true);
     
         // Act
-        StateMachine.SetCurrentState(typeof(NitroLandingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLandingState));
+        NitroCharacter._PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -177,7 +177,7 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_gun_position_is_correct()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: false,
             direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
@@ -189,8 +189,8 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
 
         // Assert
         NitroCharacter.GunOffset.ShouldBe(NitroFallingState.GunOffset);

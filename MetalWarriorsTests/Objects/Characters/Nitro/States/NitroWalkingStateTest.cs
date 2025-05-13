@@ -16,7 +16,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_move_left_when_left_D_Pad_is_pressed()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -30,8 +30,8 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -44,7 +44,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_move_right_when_right_D_Pad_is_pressed()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -58,8 +58,8 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -72,7 +72,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_walking_animation_should_continually_play()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -87,8 +87,8 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -102,7 +102,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_current_animation_should_reset_when_transitioning_to_walking()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -116,8 +116,8 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroIdleState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.AnimationOffset.ShouldBe(Vector2.Zero);
@@ -139,7 +139,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_gun_position_is_correct_for_a_given_animation_frame(int frame, Vector2 expectedPosition)
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
@@ -153,8 +153,8 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
 
         // Act
-        StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.GunOffset.ShouldBe(expectedPosition);

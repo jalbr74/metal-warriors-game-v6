@@ -15,7 +15,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_transition_from_falling_to_landing_when_contact_is_made_with_the_floor_but_keep_moving_right()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxFallingVelocity),
@@ -29,8 +29,8 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroFallingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroFallingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -44,7 +44,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
     public void Nitro_should_stop_falling_if_on_the_floor()
     {
         // Arrange
-        NitroCharacter.SetInitialState(
+        NitroCharacter.Initialize(
             onFloor: true,
             direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxFallingVelocity),
@@ -56,8 +56,8 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         );
         
         // Act
-        StateMachine.SetCurrentState(typeof(NitroFallingState));
-        StateMachine.PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroFallingState));
+        NitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);

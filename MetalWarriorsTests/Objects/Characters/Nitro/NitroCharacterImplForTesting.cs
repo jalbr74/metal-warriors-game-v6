@@ -1,6 +1,7 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
+using MetalWarriors.Objects.Characters.Nitro.States;
 using MetalWarriors.Utils;
 
 namespace MetalWarriorsTests.Objects.Characters.Nitro;
@@ -21,20 +22,10 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public List<string> PlayedAnimations { get; } = [];
     public bool AnimationWasPaused { get; private set; }
     
-    public void PlayAnimation(string animation)
-    {
-        CurrentAnimation = animation;
-        
-        PlayedAnimations.Add(animation);
-    }
-
-    public void PauseAnimation()
-    {
-        AnimationWasPaused = true;
-    }
+    public StateMachine StateMachine { get; set; }
     
     // This is used to make sure we set everything up correctly for consistency
-    public void SetInitialState(
+    public void Initialize(
         bool onFloor,
         CharacterDirection direction,
         Vector2 velocity,
@@ -53,5 +44,31 @@ public class NitroCharacterImplForTesting : INitroCharacter
         CurrentAnimation = currentAnimation;
         CurrentAnimationFrame = currentAnimationFrame;
         IsAnimationFinished = isAnimationFinished;
+        
+        StateMachine = new StateMachine([
+            new NitroIdleState(this),
+            new NitroWalkingState(this),
+            new NitroLaunchingState(this),
+            new NitroFallingState(this),
+            new NitroFlyingState(this),
+            new NitroLandingState(this),
+        ], typeof(NitroIdleState));
+    }
+
+    public void _PhysicsProcess(double delta)
+    {
+        StateMachine.PhysicsProcess(delta);
+    }
+
+    public void PlayAnimation(string animation)
+    {
+        CurrentAnimation = animation;
+        
+        PlayedAnimations.Add(animation);
+    }
+
+    public void PauseAnimation()
+    {
+        AnimationWasPaused = true;
     }
 }
