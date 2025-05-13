@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
@@ -17,7 +18,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -33,7 +34,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -45,7 +46,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -61,7 +62,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -73,7 +74,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -90,7 +91,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("walking");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -103,7 +104,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: new Vector2(100, 100),
             gunOffset: Vector2.Zero,
@@ -140,7 +141,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: Vector2.Zero,
             gunOffset: new Vector2(100, 100),

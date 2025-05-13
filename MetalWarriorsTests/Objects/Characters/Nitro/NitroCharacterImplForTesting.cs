@@ -1,4 +1,5 @@
 ﻿using Godot;
+using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Utils;
 
@@ -9,7 +10,7 @@ public class NitroCharacterImplForTesting : INitroCharacter
     public ISnesController Controller { get; set; }
     public IConsolePrinter Console { get; set; }
     public Vector2 Velocity { get; set; }
-    public NitroDirection Direction { get; set; } = NitroDirection.FacingRight;
+    public CharacterDirection Direction { get; set; } = CharacterDirection.FacingRight;
     public string CurrentAnimation { get; set; } = "";
     public int CurrentAnimationFrame { get; set; } = 0;
     public Vector2 AnimationOffset { get; set; } = Vector2.Zero;
@@ -35,7 +36,7 @@ public class NitroCharacterImplForTesting : INitroCharacter
     // This is used to make sure we set everything up correctly for consistency
     public void SetInitialState(
         bool onFloor,
-        NitroDirection direction,
+        CharacterDirection direction,
         Vector2 velocity,
         Vector2 animationOffset,
         Vector2 gunOffset,

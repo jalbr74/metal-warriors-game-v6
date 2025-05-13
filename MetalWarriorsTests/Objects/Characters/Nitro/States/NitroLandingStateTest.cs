@@ -1,4 +1,5 @@
 ﻿using Godot;
+using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
@@ -16,7 +17,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: new Vector2(BaseNitroState.MovementSpeed, BaseNitroState.MaxFallingVelocity),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -32,7 +33,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(BaseNitroState.MovementSpeed, 0));
         NitroCharacter.CurrentAnimation.ShouldBe("landing");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -45,7 +46,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxFallingVelocity),
             animationOffset: new Vector2(100, 100),
             gunOffset: new Vector2(100, 100),
@@ -59,7 +60,7 @@ public class NitroLandingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("landing");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

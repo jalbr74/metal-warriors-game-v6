@@ -1,4 +1,5 @@
 ﻿using Godot;
+using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
@@ -16,7 +17,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -30,7 +31,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
     }
@@ -41,7 +42,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: new Vector2(-BaseNitroState.MovementSpeed, 0),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -57,7 +58,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -69,7 +70,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -83,7 +84,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -95,7 +96,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: new Vector2(100, 100),
             gunOffset: new Vector2(100, 100),
@@ -109,7 +110,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         StateMachine.PhysicsProcess(0.1f);
         
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
         NitroCharacter.CurrentAnimation.ShouldBe("idle");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);

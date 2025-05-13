@@ -62,12 +62,12 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
     {
         if (nitro.Controller.IsDPadLeftPressed)
         {
-            nitro.Direction = NitroDirection.FacingLeft;
+            nitro.Direction = CharacterDirection.FacingLeft;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
         }
         else
         {
-            nitro.Direction = NitroDirection.FacingRight;
+            nitro.Direction = CharacterDirection.FacingRight;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
         }
         

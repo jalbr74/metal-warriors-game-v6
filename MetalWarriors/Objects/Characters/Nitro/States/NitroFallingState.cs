@@ -41,12 +41,12 @@ public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
         // Nitro should be able to steer when falling
         if (nitro.Controller.IsDPadLeftPressed)
         {
-            nitro.Direction = NitroDirection.FacingLeft;
+            nitro.Direction = CharacterDirection.FacingLeft;
             nitro.Velocity = new Vector2(-MovementSpeed, nitro.Velocity.Y);
         }
         else if (nitro.Controller.IsDPadRightPressed)
         {
-            nitro.Direction = NitroDirection.FacingRight;
+            nitro.Direction = CharacterDirection.FacingRight;
             nitro.Velocity = new Vector2(MovementSpeed, nitro.Velocity.Y);
         }
         else

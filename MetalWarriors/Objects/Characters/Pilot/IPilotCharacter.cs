@@ -1,6 +1,6 @@
 ﻿namespace MetalWarriors.Objects.Characters.Pilot;
 
-public interface IPilotCharacter
+public interface IPilotCharacter : ICharacter
 {
     
 }

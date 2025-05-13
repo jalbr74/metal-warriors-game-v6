@@ -14,10 +14,10 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public bool IsAnimationFinished { get; set; }
     public bool OnFloor => IsOnFloor();
 
-    public NitroDirection Direction
+    public CharacterDirection Direction
     {
-        set => NitroAnimations.Scale = new Vector2(value == NitroDirection.FacingLeft ? -1 : 1, NitroAnimations.Scale.Y);
-        get => NitroAnimations.Scale.X >= 0 ? NitroDirection.FacingRight : NitroDirection.FacingLeft;
+        set => NitroAnimations.Scale = new Vector2(value == CharacterDirection.FacingLeft ? -1 : 1, NitroAnimations.Scale.Y);
+        get => NitroAnimations.Scale.X >= 0 ? CharacterDirection.FacingRight : CharacterDirection.FacingLeft;
     }
 
     public Vector2 GunOffset

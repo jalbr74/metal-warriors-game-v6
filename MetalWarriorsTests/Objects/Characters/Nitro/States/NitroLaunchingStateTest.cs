@@ -1,4 +1,5 @@
 ﻿using Godot;
+using MetalWarriors.Objects.Characters;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
@@ -16,7 +17,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: Vector2.Zero,
             animationOffset: new Vector2(100, 100),
             gunOffset: new Vector2(100, 100),
@@ -32,7 +33,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
@@ -46,7 +47,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: false,
-            direction: NitroDirection.FacingRight,
+            direction: CharacterDirection.FacingRight,
             velocity: new Vector2(0, BaseNitroState.MaxRisingVelocity),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -62,7 +63,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingRight);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(0); // The animation should have already been played in the Launching Entered state
@@ -74,7 +75,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingLeft,
+            direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -92,7 +93,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state
@@ -105,7 +106,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         // Arrange
         NitroCharacter.SetInitialState(
             onFloor: true,
-            direction: NitroDirection.FacingLeft,
+            direction: CharacterDirection.FacingLeft,
             velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
             animationOffset: Vector2.Zero,
             gunOffset: Vector2.Zero,
@@ -122,7 +123,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         StateMachine.PhysicsProcess(0.1f);
     
         // Assert
-        NitroCharacter.Direction.ShouldBe(NitroDirection.FacingLeft);
+        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
         NitroCharacter.Velocity.ShouldBe(new Vector2(-BaseNitroState.MovementSpeed, BaseNitroState.MaxRisingVelocity));
         NitroCharacter.CurrentAnimation.ShouldBe("launching");
         NitroCharacter.PlayedAnimations.Count.ShouldBe(1); // The animation should have already been played in the Launching Entered state
