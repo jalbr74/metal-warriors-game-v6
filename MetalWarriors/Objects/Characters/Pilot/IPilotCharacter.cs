@@ -3,8 +3,12 @@ using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Pilot;
 
-public interface IPilotCharacter : ICharacter
+public interface IPilotCharacter
 {
+    IConsolePrinter Console { get; set; }
+    CharacterDirection Direction { get; set; }
+    Vector2 Velocity { get; set; }
+    
     ISnesController Controller { get; set; }
     string CurrentAnimation { get; }
     int CurrentAnimationFrame { get; }

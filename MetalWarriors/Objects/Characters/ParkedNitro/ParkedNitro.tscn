@@ -52,7 +52,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"exiting",
-"speed": 5.0
+"speed": 8.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hukb3"]
@@ -66,6 +66,7 @@ script = ExtResource("1_jtb35")
 position = Vector2(-4, -20)
 sprite_frames = SubResource("SpriteFrames_jtb35")
 animation = &"exiting"
+autoplay = "exiting"
 frame = 4
 frame_progress = 1.0
 

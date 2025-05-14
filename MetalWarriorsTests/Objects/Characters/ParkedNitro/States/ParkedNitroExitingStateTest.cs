@@ -19,13 +19,13 @@ public class ParkedNitroExitingStateTest(ITestOutputHelper testOutputHelper) : B
         );
         
         // Act
-        ParkedNitroCharacter.StateMachine.SetCurrentState(typeof(ParkedNitroIdleState));
+        ParkedNitroCharacter.StateMachine.SetCurrentState(typeof(ParkedNitroBeforeEnteringState));
         ParkedNitroCharacter._PhysicsProcess(0.1f);
         
         // Assert
         ParkedNitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
-        // ParkedNitroCharacter.Velocity.ShouldBe(new Vector2(0, BaseNitroState.MaxRisingVelocity + BaseNitroState.FallingForce));
-        // ParkedNitroCharacter.CurrentAnimation.ShouldBe("falling");
-        // ParkedNitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        ParkedNitroCharacter.Velocity.ShouldBe(Vector2.Zero);
+        ParkedNitroCharacter.CurrentAnimation.ShouldBe("exiting");
+        ParkedNitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
 }

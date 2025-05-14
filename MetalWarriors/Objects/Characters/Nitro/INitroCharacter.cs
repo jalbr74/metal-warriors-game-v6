@@ -4,8 +4,12 @@ using MetalWarriors.Utils;
 namespace MetalWarriors.Objects.Characters.Nitro;
 
 // Represents Nitro as a concept, and doesn't worry about the implementation details (scene/script stuff).
-public interface INitroCharacter : ICharacter
+public interface INitroCharacter
 {
+    IConsolePrinter Console { get; set; }
+    CharacterDirection Direction { get; set; }
+    Vector2 Velocity { get; set; }
+    
     ISnesController Controller { get; set; }
     string CurrentAnimation { get; }
     int CurrentAnimationFrame { get; }

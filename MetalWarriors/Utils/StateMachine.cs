@@ -43,6 +43,11 @@ public abstract class State
 {
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public abstract void PhysicsProcess(double delta);
-    public abstract bool ShouldTransitionToAnotherState(out Type otherState);
+    public virtual void PhysicsProcess(double delta) { }
+
+    public virtual bool ShouldTransitionToAnotherState(out Type otherState)
+    {
+        otherState = null;
+        return false;
+    }
 }

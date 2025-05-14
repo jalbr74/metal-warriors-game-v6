@@ -11,6 +11,8 @@ public class ParkedNitroCharacterImplForTesting : IParkedNitroCharacter
     public IConsolePrinter Console { get; set; }
     public CharacterDirection Direction { get; set; }
     public Vector2 Velocity { get; set; }
+    public string CurrentAnimation { get; set; } = "";
+    public List<string> PlayedAnimations { get; } = [];
     
     public StateMachine StateMachine { get; set; }
 
@@ -19,6 +21,7 @@ public class ParkedNitroCharacterImplForTesting : IParkedNitroCharacter
     )
     {
         StateMachine = new StateMachine([
+            new ParkedNitroBeforeEnteringState(this),
             new ParkedNitroEnteringState(this),
             new ParkedNitroIdleState(this),
             new ParkedNitroExitingState(this),
@@ -28,5 +31,12 @@ public class ParkedNitroCharacterImplForTesting : IParkedNitroCharacter
     public void _PhysicsProcess(double delta)
     {
         StateMachine.PhysicsProcess(delta);
+    }
+    
+    public void PlayAnimation(string animation)
+    {
+        CurrentAnimation = animation;
+        
+        PlayedAnimations.Add(animation);
     }
 }
