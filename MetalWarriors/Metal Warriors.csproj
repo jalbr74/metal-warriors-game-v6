@@ -7,7 +7,4 @@
   <ItemGroup>
     <Content Include="TODO.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Objects\Characters\ParkedNitro\States\" />
-  </ItemGroup>
 </Project>

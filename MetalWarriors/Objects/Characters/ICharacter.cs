@@ -7,14 +7,15 @@ public enum CharacterDirection { FacingRight, FacingLeft }
 
 public interface ICharacter
 {
-    ISnesController Controller { get; set; }
     IConsolePrinter Console { get; set; }
-    string CurrentAnimation { get; }
-    int CurrentAnimationFrame { get; }
-    bool IsAnimationFinished { get; set; }
     CharacterDirection Direction { get; set; }
     Vector2 Velocity { get; set; }
-    bool OnFloor { get; }
-    void PlayAnimation(string animation);
-    void PauseAnimation();
+    
+    // ISnesController Controller { get; set; }
+    // string CurrentAnimation { get; }
+    // int CurrentAnimationFrame { get; }
+    // bool IsAnimationFinished { get; set; }
+    // bool OnFloor { get; }
+    // void PlayAnimation(string animation);
+    // void PauseAnimation();
 }

@@ -1,7 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://t5f1uksnok2f"]
+[gd_scene load_steps=11 format=3 uid="uid://t5f1uksnok2f"]
 
 [ext_resource type="Script" uid="uid://c4p2wiuctww3v" path="res://Objects/Characters/ParkedNitro/ParkedNitro.cs" id="1_jtb35"]
 [ext_resource type="Texture2D" uid="uid://04ydm1jfavx7" path="res://Objects/Characters/ParkedNitro/parked-nitro.png" id="1_o8x43"]
+[ext_resource type="Texture2D" uid="uid://bvrkrombkwfoh" path="res://Objects/Characters/ParkedNitro/parked-nitro-exiting.png" id="3_hukb3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y7pda"]
+atlas = ExtResource("3_hukb3")
+region = Rect2(0, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02f6s"]
+atlas = ExtResource("3_hukb3")
+region = Rect2(42, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4odir"]
+atlas = ExtResource("3_hukb3")
+region = Rect2(84, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exypo"]
+atlas = ExtResource("3_hukb3")
+region = Rect2(126, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lg0nv"]
+atlas = ExtResource("3_hukb3")
+region = Rect2(168, 0, 42, 44)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_jtb35"]
 animations = [{
@@ -11,6 +32,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y7pda")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_02f6s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4odir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exypo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lg0nv")
+}],
+"loop": false,
+"name": &"exiting",
 "speed": 5.0
 }]
 
@@ -22,8 +63,11 @@ height = 40.0
 script = ExtResource("1_jtb35")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-2, -21)
+position = Vector2(-4, -20)
 sprite_frames = SubResource("SpriteFrames_jtb35")
+animation = &"exiting"
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -20)
