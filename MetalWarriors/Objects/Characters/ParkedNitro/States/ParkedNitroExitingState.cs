@@ -6,7 +6,7 @@ public class ParkedNitroExitingState(IParkedNitroCharacter parkedNitro) : BasePa
 {
     public override void Enter()
     {
-        parkedNitro.Console.Print("Entering ParkedNitroExitingState");
+        parkedNitro.Console.Print($"Entering state: {GetType().Name}");
         
         parkedNitro.PlayAnimation("exiting");
     }

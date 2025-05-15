@@ -15,7 +15,7 @@ public class StateMachine
             _states[state.GetType()] = state;
         }
         
-        _currentState = _states[initialState];
+        TransitionToState(initialState);
     }
     
     public void PhysicsProcess(double delta)

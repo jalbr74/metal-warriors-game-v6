@@ -45,7 +45,10 @@ public class PilotCharacterImplForTesting : IPilotCharacter
         // Falling
         
         StateMachine = new StateMachine([
+            new PilotFallingState(this),
             new PilotIdleState(this),
+            new PilotJettingState(this),
+            new PilotWalkingState(this),
         ], typeof(PilotIdleState));
     }
 
