@@ -19,8 +19,8 @@ public class ParkedNitroExitingStateTest(ITestOutputHelper testOutputHelper) : B
         );
         
         // Act
-        ParkedNitroCharacter.StateMachine.SetCurrentState(typeof(ParkedNitroBeforeEnteringState));
-        ParkedNitroCharacter._PhysicsProcess(0.1f);
+        ParkedNitroCharacter.StateMachine.TransitionToState(typeof(ParkedNitroExitingState));
+        ParkedNitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         ParkedNitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -28,4 +28,6 @@ public class ParkedNitroExitingStateTest(ITestOutputHelper testOutputHelper) : B
         ParkedNitroCharacter.CurrentAnimation.ShouldBe("exiting");
         ParkedNitroCharacter.PlayedAnimations.Count.ShouldBe(1);
     }
+    
+    // TODO: Test other cases for exiting state
 }

@@ -30,7 +30,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
         
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -60,7 +60,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLaunchingState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -90,7 +90,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -120,7 +120,7 @@ public class NitroLaunchingStateTest(ITestOutputHelper testOutputHelper) : BaseN
     
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLandingState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
     
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);

@@ -37,6 +37,12 @@ public class StateMachine
     {
         _currentState = _states[state];
     }
+
+    // This is mainly used for testing, when you don't have an existing state to transition from
+    public void TransitionToState(Type state)
+    {
+        _currentState = new AutomaticallyTransitionToAnotherState(state);
+    }
 }
 
 public abstract class State
@@ -49,5 +55,14 @@ public abstract class State
     {
         otherState = null;
         return false;
+    }
+}
+
+internal class AutomaticallyTransitionToAnotherState(Type stateToTransitionTo) : State
+{
+    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    {
+        otherState = stateToTransitionTo;
+        return true;
     }
 }

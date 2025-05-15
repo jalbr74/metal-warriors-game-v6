@@ -21,16 +21,10 @@ public class ParkedNitroCharacterImplForTesting : IParkedNitroCharacter
     )
     {
         StateMachine = new StateMachine([
-            new ParkedNitroBeforeEnteringState(this),
             new ParkedNitroEnteringState(this),
             new ParkedNitroIdleState(this),
             new ParkedNitroExitingState(this),
         ], typeof(ParkedNitroIdleState));
-    }
-    
-    public void _PhysicsProcess(double delta)
-    {
-        StateMachine.PhysicsProcess(delta);
     }
     
     public void PlayAnimation(string animation)

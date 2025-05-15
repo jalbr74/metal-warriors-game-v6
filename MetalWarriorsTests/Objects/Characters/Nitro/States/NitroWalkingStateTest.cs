@@ -31,7 +31,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingLeft);
@@ -59,7 +59,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -88,7 +88,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
@@ -117,7 +117,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.AnimationOffset.ShouldBe(Vector2.Zero);
@@ -154,7 +154,7 @@ public class NitroWalkingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
 
         // Act
         NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        NitroCharacter._PhysicsProcess(0.1f);
+        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
         
         // Assert
         NitroCharacter.GunOffset.ShouldBe(expectedPosition);

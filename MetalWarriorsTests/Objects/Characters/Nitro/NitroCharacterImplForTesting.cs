@@ -55,11 +55,6 @@ public class NitroCharacterImplForTesting : INitroCharacter
         ], typeof(NitroIdleState));
     }
 
-    public void _PhysicsProcess(double delta)
-    {
-        StateMachine.PhysicsProcess(delta);
-    }
-
     public void PlayAnimation(string animation)
     {
         CurrentAnimation = animation;
