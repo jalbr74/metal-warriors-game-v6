@@ -15,12 +15,14 @@ public partial class HumanPlayer : Node2D, IHumanPlayer
     private PackedScene _nitroPackedScene;
     private PackedScene _parkedNitroPackedScene;
     private PackedScene _pilotPackedScene;
+    
+    private NullSnesController _nullSnesController = new ();
 
     public override void _Ready()
     {
-        _nitroPackedScene = (PackedScene)ResourceLoader.Load("res://Objects/Characters/Nitro/Nitro.tscn");
-        _parkedNitroPackedScene = (PackedScene)ResourceLoader.Load("res://Objects/Characters/ParkedNitro/ParkedNitro.tscn");
-        _pilotPackedScene = (PackedScene)ResourceLoader.Load("res://Objects/Characters/Pilot/Pilot.tscn");
+        _nitroPackedScene = (PackedScene)ResourceLoader.Load(IResourceConstants.NitroScene);
+        _parkedNitroPackedScene = (PackedScene)ResourceLoader.Load(IResourceConstants.ParkedNitroScene);
+        _pilotPackedScene = (PackedScene)ResourceLoader.Load(IResourceConstants.PilotScene);
         
         _cameraMover = GetNode<RemoteTransform2D>("CameraMover");
         
@@ -37,22 +39,20 @@ public partial class HumanPlayer : Node2D, IHumanPlayer
     {
         if (Controller.IsSelectPressed)
         {
-            GD.Print("Select button pressed.");
-
             if (_playerAvatar is Nitro nitro)
             {
-                GD.Print("Creating a ParkedNitro instance.");
-                
                 var parkedNitro = _parkedNitroPackedScene.Instantiate<ParkedNitro>();
                 parkedNitro.Position = nitro.Position;
                 AddChild(parkedNitro);
                 
                 var pilot = _pilotPackedScene.Instantiate<Pilot>();
                 pilot.Position = nitro.Position;
+                pilot.Controller = Controller;
                 AddChild(pilot);
 
                 _playerAvatar = pilot;
-                
+
+                nitro.Controller = _nullSnesController;
                 nitro.QueueFree();
             }
         }

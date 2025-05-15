@@ -6,7 +6,7 @@ public class ParkedNitroIdleState(IParkedNitroCharacter parkedNitro) : BaseParke
 {
     public override void Enter()
     {
-        // parkedNitro.Console.Print("Entering ParkedNitroIdleState");
+        parkedNitro.Console.Print($"Entering state: {GetType().Name}");
     }
     
     public override bool ShouldTransitionToAnotherState(out Type otherState)

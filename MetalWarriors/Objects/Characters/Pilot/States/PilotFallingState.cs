@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace MetalWarriors.Objects.Characters.ParkedNitro.States;
+namespace MetalWarriors.Objects.Characters.Pilot.States;
 
-public class ParkedNitroEnteringState(IParkedNitroCharacter parkedNitro) : BaseParkedNitroState(parkedNitro)
+public class PilotFallingState(IPilotCharacter pilot) : BasePilotState(pilot)
 {
     public override void Enter()
     {
-        parkedNitro.Console.Print($"Entering state: {GetType().Name}");
+        pilot.Console.Print($"Entering state: {GetType().Name}");
     }
-    
+
     public override bool ShouldTransitionToAnotherState(out Type otherState)
     {
         otherState = null;
