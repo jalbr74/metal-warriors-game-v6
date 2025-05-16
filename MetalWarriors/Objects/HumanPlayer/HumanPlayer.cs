@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.ParkedNitro;
@@ -37,23 +38,50 @@ public partial class HumanPlayer : Node2D, IHumanPlayer
     
     public override void _Process(double delta)
     {
-        if (Controller.IsSelectPressed)
+        if (Controller.WasSelectPressed)
         {
-            if (_playerAvatar is Nitro nitro)
+            switch (_playerAvatar)
             {
-                var parkedNitro = _parkedNitroPackedScene.Instantiate<ParkedNitro>();
-                parkedNitro.Position = nitro.Position;
-                AddChild(parkedNitro);
+                case Nitro nitro:
+                {
+                    var parkedNitro = _parkedNitroPackedScene.Instantiate<ParkedNitro>();
+                    parkedNitro.Position = nitro.Position;
+                    AddChild(parkedNitro);
                 
-                var pilot = _pilotPackedScene.Instantiate<Pilot>();
-                pilot.Position = nitro.Position;
-                pilot.Controller = Controller;
-                AddChild(pilot);
+                    var newPilot = _pilotPackedScene.Instantiate<Pilot>();
+                    newPilot.Position = nitro.Position;
+                    newPilot.Controller = Controller;
+                    AddChild(newPilot);
 
-                _playerAvatar = pilot;
+                    _playerAvatar = newPilot;
 
-                nitro.Controller = _nullSnesController;
-                nitro.QueueFree();
+                    nitro.Controller = _nullSnesController;
+                    nitro.QueueFree();
+                    break;
+                }
+                case Pilot pilot:
+                {
+                    var detectedMech = pilot.GetDetectedMech();
+                    
+                    if (detectedMech == null)
+                    {
+                        Console.WriteLine("No detected mech to park in.");
+                        break;
+                    }
+                    
+                    var newNitro = _nitroPackedScene.Instantiate<Nitro>();
+                    newNitro.Position = detectedMech.Position;
+                    newNitro.Controller = Controller;
+                    AddChild(newNitro);
+
+                    _playerAvatar = newNitro;
+
+                    pilot.Controller = _nullSnesController;
+                    pilot.QueueFree();
+                    detectedMech.QueueFree();
+                    
+                    break;
+                }
             }
         }
         

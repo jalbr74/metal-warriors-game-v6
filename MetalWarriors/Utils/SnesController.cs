@@ -8,6 +8,7 @@ public class SnesController : ISnesController
     public bool IsDPadRightPressed => Input.IsActionPressed("D_Pad_Right");
     public bool IsButtonBPressed => Input.IsActionPressed("Button_B");
     public bool IsSelectPressed => Input.IsActionPressed("Select");
+    public bool WasSelectPressed => Input.IsActionJustPressed("Select");
 }
 
 public class NullSnesController : ISnesController
@@ -16,4 +17,5 @@ public class NullSnesController : ISnesController
     public bool IsDPadRightPressed => false;
     public bool IsButtonBPressed => false;
     public bool IsSelectPressed => false;
+    public bool WasSelectPressed => false;
 }

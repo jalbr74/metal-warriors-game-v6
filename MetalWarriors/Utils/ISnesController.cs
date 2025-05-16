@@ -6,4 +6,5 @@ public interface ISnesController
     bool IsDPadRightPressed { get; }
     bool IsButtonBPressed { get; }
     bool IsSelectPressed { get; }
+    bool WasSelectPressed { get; }
 }

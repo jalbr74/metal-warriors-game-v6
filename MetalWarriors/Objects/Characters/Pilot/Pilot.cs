@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using MetalWarriors.Objects.Characters.Pilot.States;
 using MetalWarriors.Utils;
@@ -9,11 +11,14 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
     public ISnesController Controller { get; set; } = new NullSnesController();
     public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D Animations { get; set; }
+    public Area2D ParkedMechDetector { get; set; }
     
     public string CurrentAnimation { get; }
     public int CurrentAnimationFrame { get; }
     public bool IsAnimationFinished { get; set; }
     public bool OnFloor { get; }
+    
+    private List<Node2D> _detectedCollidableMechs = new ();
     
     public CharacterDirection Direction
     {
@@ -32,6 +37,7 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
         ], typeof(PilotIdleState));
         
         Animations = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        ParkedMechDetector = GetNode<Area2D>("ParkedMechDetector");
     }
     
     public override void _PhysicsProcess(double delta)
@@ -47,6 +53,20 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
 
     public void PauseAnimation()
     {
-        
+    }
+
+    public void CollidableMechEntered(Node2D collidableMech)
+    {
+        _detectedCollidableMechs.Add(collidableMech);
+    }
+    
+    public void CollidableMechExited(Node2D collidableMech)
+    {
+        _detectedCollidableMechs.Remove(collidableMech);
+    }
+
+    public Node2D GetDetectedMech()
+    {
+        return _detectedCollidableMechs.FirstOrDefault();
     }
 }
