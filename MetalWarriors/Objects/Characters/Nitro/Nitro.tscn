@@ -361,6 +361,7 @@ radius = 5.0
 height = 36.0
 
 [node name="Nitro" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_g5dot")
 
 [node name="NitroAnimations2" type="AnimatedSprite2D" parent="."]

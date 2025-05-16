@@ -42,7 +42,7 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
 
     public void PlayAnimation(string animation)
     {
-        
+        Animations.Play(animation);
     }
 
     public void PauseAnimation()

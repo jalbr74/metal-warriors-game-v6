@@ -4,7 +4,7 @@ namespace MetalWarriors.Objects.Characters.Pilot.States;
 
 public abstract class BasePilotState(IPilotCharacter nitro) : State
 {
-    public const float MovementSpeed = 120.0f;
+    public const float MovementSpeed = 60.0f;
     public const float MaxFallingVelocity = 300.0f;
     public const float MaxRisingVelocity = -135.0f;
     public const float FallingForce = 10.0f;
