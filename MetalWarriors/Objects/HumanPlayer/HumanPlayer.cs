@@ -63,22 +63,10 @@ public partial class HumanPlayer : Node2D, IHumanPlayer
                 {
                     var detectedMech = pilot.GetDetectedMech();
                     
-                    if (detectedMech == null)
+                    if (detectedMech is ParkedNitro parkedNitro)
                     {
-                        Console.WriteLine("No detected mech to park in.");
-                        break;
+                        parkedNitro.ReceivePilot(pilot, nitro => _playerAvatar = nitro);
                     }
-                    
-                    var newNitro = _nitroPackedScene.Instantiate<Nitro>();
-                    newNitro.Position = detectedMech.Position;
-                    newNitro.Controller = Controller;
-                    AddChild(newNitro);
-
-                    _playerAvatar = newNitro;
-
-                    pilot.Controller = _nullSnesController;
-                    pilot.QueueFree();
-                    detectedMech.QueueFree();
                     
                     break;
                 }
