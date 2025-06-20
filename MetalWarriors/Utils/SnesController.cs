@@ -13,6 +13,9 @@ public class SnesController : ISnesController
 
 public class NullSnesController : ISnesController
 {
+    private NullSnesController() { }
+    public static NullSnesController Instance { get; } = new();
+    
     public bool IsDPadLeftPressed => false;
     public bool IsDPadRightPressed => false;
     public bool IsButtonBPressed => false;

@@ -7,13 +7,15 @@ namespace MetalWarriors.Objects.Characters.Nitro;
 
 public partial class Nitro : CharacterBody2D, INitroCharacter
 {
-    public ISnesController Controller { get; set; } = new NullSnesController();
+    public ISnesController Controller { get; set; } = NullSnesController.Instance;
     public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D NitroAnimations { get; set; }
     public AnimatedSprite2D GunAnimations { get; set; }
     public bool IsAnimationFinished { get; set; }
     public bool OnFloor => IsOnFloor();
 
+    private const int ParkedItemsLayer = 3;
+    
     public CharacterDirection Direction
     {
         set => NitroAnimations.Scale = new Vector2(value == CharacterDirection.FacingLeft ? -1 : 1, NitroAnimations.Scale.Y);
@@ -43,12 +45,15 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
         GunAnimations = GetNode<AnimatedSprite2D>("NitroAnimations/GunAnimations");
         
         _stateMachine = new StateMachine([
-            new NitroIdleState(this),
-            new NitroWalkingState(this),
-            new NitroLaunchingState(this),
             new NitroFallingState(this),
             new NitroFlyingState(this),
+            new NitroIdleState(this),
             new NitroLandingState(this),
+            new NitroLaunchingState(this),
+            new NitroParkedState(this),
+            new NitroPoweringDownState(this),
+            new NitroPoweringUpState(this),
+            new NitroWalkingState(this),
         ], typeof(NitroIdleState));
         
         GD.Print("Nitro is ready");
@@ -81,5 +86,19 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public void PauseAnimation()
     {
         NitroAnimations.Pause();
+    }
+    
+    public void PowerUp(ISnesController controller)
+    {
+        Controller = controller;
+        
+        CollisionUtils.RemoveCollisionLayer(this, ParkedItemsLayer);
+    }
+
+    public void PowerDown()
+    {
+        CollisionUtils.AddCollisionLayer(this, ParkedItemsLayer);
+        
+        Controller = NullSnesController.Instance;
     }
 }

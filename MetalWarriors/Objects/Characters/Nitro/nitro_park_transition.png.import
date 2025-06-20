@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bvrkrombkwfoh"
-path="res://.godot/imported/parked-nitro-exiting.png-bce2cc593b12e054dee9d737f441979c.ctex"
+uid="uid://ditbppbvglyg8"
+path="res://.godot/imported/nitro_park_transition.png-f643306e0e5a74ee033fe924cc85044a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Objects/Characters/ParkedNitro/parked-nitro-exiting.png"
-dest_files=["res://.godot/imported/parked-nitro-exiting.png-bce2cc593b12e054dee9d737f441979c.ctex"]
+source_file="res://Objects/Characters/Nitro/nitro_park_transition.png"
+dest_files=["res://.godot/imported/nitro_park_transition.png-f643306e0e5a74ee033fe924cc85044a.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://c4y5ipx1wva21"]
+[gd_scene load_steps=60 format=3 uid="uid://c4y5ipx1wva21"]
 
 [ext_resource type="Script" uid="uid://s85mw8snbr6m" path="res://Objects/Characters/Nitro/Nitro.cs" id="1_g5dot"]
 [ext_resource type="Texture2D" uid="uid://dld8wgs2drbhq" path="res://Objects/Characters/Nitro/nitro-red-walking-Sheet.png" id="1_mrnoq"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://btmd78k8t1cm7" path="res://Objects/Characters/Nitro/nitro_red_landing.png" id="4_davsn"]
 [ext_resource type="Texture2D" uid="uid://d2j1rroy2qpo2" path="res://Objects/Characters/Nitro/nitro_red_launching.png" id="5_rmckq"]
 [ext_resource type="Texture2D" uid="uid://b07k463y3j4d6" path="res://Objects/Characters/Nitro/nitro_gun_with_positions.png" id="7_gtlkr"]
+[ext_resource type="Texture2D" uid="uid://ditbppbvglyg8" path="res://Objects/Characters/Nitro/nitro_park_transition.png" id="7_x4dgv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6mhxt"]
 atlas = ExtResource("3_bnnru")
@@ -55,6 +56,50 @@ region = Rect2(46, 0, 46, 50)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jfo7s"]
 atlas = ExtResource("5_rmckq")
 region = Rect2(92, 0, 46, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pjtub"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(168, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jg51r"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(0, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_18a3v"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(42, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vq0nm"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(84, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1pj4"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(126, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6gvx0"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(168, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5kvcj"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(168, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdx5k"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(126, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hx8n6"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(84, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rbpcs"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(42, 0, 42, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sra7"]
+atlas = ExtResource("7_x4dgv")
+region = Rect2(0, 0, 42, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hggx2"]
 atlas = ExtResource("1_mrnoq")
@@ -184,6 +229,54 @@ animations = [{
 }],
 "loop": false,
 "name": &"launching",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pjtub")
+}],
+"loop": true,
+"name": &"parked",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jg51r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_18a3v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vq0nm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1pj4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6gvx0")
+}],
+"loop": true,
+"name": &"powering-down",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5kvcj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sdx5k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hx8n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rbpcs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sra7")
+}],
+"loop": true,
+"name": &"powering-up",
 "speed": 5.0
 }, {
 "frames": [{
@@ -364,19 +457,11 @@ height = 36.0
 collision_layer = 2
 script = ExtResource("1_g5dot")
 
-[node name="NitroAnimations2" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(0, -20)
-sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"launching"
-autoplay = "idle"
-
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"landing"
+animation = &"parked"
 autoplay = "idle"
-frame = 3
 
 [node name="GunAnimations" type="AnimatedSprite2D" parent="NitroAnimations"]
 position = Vector2(13, -7)
@@ -388,5 +473,4 @@ autoplay = "straight"
 position = Vector2(0, -18)
 shape = SubResource("CapsuleShape2D_mm4ra")
 
-[connection signal="animation_finished" from="NitroAnimations2" to="." method="AnimationFinished"]
 [connection signal="animation_finished" from="NitroAnimations" to="." method="AnimationFinished"]

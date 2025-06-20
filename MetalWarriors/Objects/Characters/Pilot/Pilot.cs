@@ -8,7 +8,7 @@ namespace MetalWarriors.Objects.Characters.Pilot;
 
 public partial class Pilot : CharacterBody2D, IPilotCharacter
 {
-    public ISnesController Controller { get; set; } = new NullSnesController();
+    public ISnesController Controller { get; set; } = NullSnesController.Instance;
     public IConsolePrinter Console { get; set; } = new ConsolePrinter();
     public AnimatedSprite2D Animations { get; set; }
     public Area2D ParkedMechDetector { get; set; }
@@ -57,11 +57,15 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
 
     public void CollidableMechEntered(Node2D collidableMech)
     {
+        GD.Print("CollidableMechEntered");
+        
         _detectedCollidableMechs.Add(collidableMech);
     }
     
     public void CollidableMechExited(Node2D collidableMech)
     {
+        GD.Print("CollidableMechExited");
+        
         _detectedCollidableMechs.Remove(collidableMech);
     }
 
