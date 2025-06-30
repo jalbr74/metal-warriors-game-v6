@@ -255,7 +255,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6gvx0")
 }],
-"loop": true,
+"loop": false,
 "name": &"powering-down",
 "speed": 8.0
 }, {
@@ -275,7 +275,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7sra7")
 }],
-"loop": true,
+"loop": false,
 "name": &"powering-up",
 "speed": 5.0
 }, {
@@ -460,8 +460,10 @@ script = ExtResource("1_g5dot")
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"parked"
+animation = &"powering-up"
 autoplay = "idle"
+frame = 4
+frame_progress = 1.0
 
 [node name="GunAnimations" type="AnimatedSprite2D" parent="NitroAnimations"]
 position = Vector2(13, -7)

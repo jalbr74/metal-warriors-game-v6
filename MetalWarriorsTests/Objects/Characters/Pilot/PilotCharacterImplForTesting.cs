@@ -38,12 +38,6 @@ public class PilotCharacterImplForTesting : IPilotCharacter
         CurrentAnimationFrame = currentAnimationFrame;
         IsAnimationFinished = isAnimationFinished;
         
-        // Pilot states:
-        // Idle
-        // Walking
-        // Jetting
-        // Falling
-        
         StateMachine = new StateMachine([
             new PilotFallingState(this),
             new PilotIdleState(this),
