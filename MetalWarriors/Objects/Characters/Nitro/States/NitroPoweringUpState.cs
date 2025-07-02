@@ -11,13 +11,8 @@ public class NitroPoweringUpState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.PlayAnimation("powering-up");
     }
     
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    public override Type? ProcessOrPass(double delta)
     {
-        otherState = null;
-        return false;
-    }
-
-    public override void PhysicsProcess(double delta)
-    {
+        return null;
     }
 }

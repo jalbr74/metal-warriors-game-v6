@@ -1,6 +1,5 @@
 ﻿using Godot;
 using MetalWarriors.Objects.Characters;
-using MetalWarriors.Objects.Characters.Nitro;
 using MetalWarriors.Objects.Characters.Nitro.States;
 using NSubstitute;
 using Shouldly;
@@ -12,109 +11,104 @@ namespace MetalWarriorsTests.Objects.Characters.Nitro.States;
 public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroStateTest(testOutputHelper)
 {
     [Fact]
-    public void Nitro_should_not_go_farther_down_if_already_on_the_floor()
+    public void TestTransitionToWalkingStateWhenWalkingRight()
     {
         // Arrange
-        NitroCharacter.Initialize(
-            onFloor: true,
-            direction: CharacterDirection.FacingRight,
-            velocity: Vector2.Zero,
-            animationOffset: Vector2.Zero,
-            gunOffset: Vector2.Zero,
-            currentAnimation: "idle",
-            currentAnimationFrame: 0,
-            isAnimationFinished: false
-        );
+        Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroIdleState));
-        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
-        
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
         // Assert
-        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
-        NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
-        NitroCharacter.CurrentAnimation.ShouldBe("idle");
+        otherState.ShouldBe(typeof(NitroWalkingState));
     }
     
     [Fact]
-    public void Nitro_should_stop_moving_when_left_D_Pad_is_not_pressed()
+    public void TestTransitionToWalkingStateWhenWalkingLeft()
     {
         // Arrange
-        NitroCharacter.Initialize(
-            onFloor: true,
-            direction: CharacterDirection.FacingRight,
-            velocity: new Vector2(-BaseNitroState.MovementSpeed, 0),
-            animationOffset: Vector2.Zero,
-            gunOffset: Vector2.Zero,
-            currentAnimation: "flying",
-            currentAnimationFrame: 0,
-            isAnimationFinished: false
-        );
+        Controller.IsDPadLeftPressed.Returns(true);
         
-        Controller.IsDPadLeftPressed.Returns(false);
-    
         // Act
-        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
-        
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
         // Assert
-        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
-        NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
-        NitroCharacter.CurrentAnimation.ShouldBe("idle");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        otherState.ShouldBe(typeof(NitroWalkingState));
     }
     
     [Fact]
-    public void Nitro_should_stop_moving_when_right_D_Pad_is_not_pressed()
+    public void TestTransitionToLaunchingState()
     {
         // Arrange
-        NitroCharacter.Initialize(
-            onFloor: true,
-            direction: CharacterDirection.FacingRight,
-            velocity: new Vector2(BaseNitroState.MovementSpeed, 0),
-            animationOffset: Vector2.Zero,
-            gunOffset: Vector2.Zero,
-            currentAnimation: "flying",
-            currentAnimationFrame: 0,
-            isAnimationFinished: false
-        );
+        NitroCharacter.OnFloor.Returns(true);
+        
+        Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroWalkingState));
-        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
-        
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
         // Assert
-        NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
-        NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
-        NitroCharacter.CurrentAnimation.ShouldBe("idle");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
+        otherState.ShouldBe(typeof(NitroLaunchingState));
     }
     
     [Fact]
-    public void Nitro_should_become_idle_when_landing_animation_is_finished()
+    public void TestTransitionToFallingState()
     {
         // Arrange
-        NitroCharacter.Initialize(
-            onFloor: true,
-            direction: CharacterDirection.FacingRight,
-            velocity: Vector2.Zero,
-            animationOffset: new Vector2(100, 100),
-            gunOffset: new Vector2(100, 100),
-            currentAnimation: "landing",
-            currentAnimationFrame: 0,
-            isAnimationFinished: true
-        );
+        NitroCharacter.OnFloor.Returns(false);
         
         // Act
-        NitroCharacter.StateMachine.SetCurrentState(typeof(NitroLandingState));
-        NitroCharacter.StateMachine.PhysicsProcess(0.1f);
-        
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
         // Assert
+        otherState.ShouldBe(typeof(NitroFallingState));
+    }
+
+    [Fact]
+    public void TestGravityIsWorking()
+    {
+        // Arrange
+        NitroCharacter.OnFloor.Returns(true);
+        NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
+        
+        // Act
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
+        // Assert
+        otherState.ShouldBeNull();
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
-        NitroCharacter.CurrentAnimation.ShouldBe("idle");
-        NitroCharacter.PlayedAnimations.Count.ShouldBe(1);
-        NitroCharacter.AnimationOffset.ShouldBe(Vector2.Zero);
-        NitroCharacter.GunOffset.ShouldBe(NitroIdleState.GunOffset);
+    }
+
+    [Fact]
+    public void TestMechPoweringDown()
+    {
+        // Arrange
+        NitroCharacter.OnFloor.Returns(true);
+        NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
+        
+        Controller.IsSelectPressed.Returns(true);
+        
+        // Act
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
+        // Assert
+        otherState.ShouldBe(typeof(NitroPoweringDownState));
+    }
+
+    [Fact]
+    public void MechShouldStopMovingWhenIdle()
+    {
+        // Arrange
+        NitroCharacter.Velocity = new Vector2(100, 0);
+        NitroCharacter.OnFloor.Returns(true);
+        NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
+        
+        // Act
+        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+
+        // Assert
+        otherState.ShouldBe(null);
+        NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
     }
 }

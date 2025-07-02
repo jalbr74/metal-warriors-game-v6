@@ -11,21 +11,14 @@ public class PilotWalkingState(IPilotCharacter pilot) : BasePilotState(pilot)
         
         pilot.PlayAnimation("walking");
     }
-
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    
+    public override Type? ProcessOrPass(double delta)
     {
         if (!pilot.Controller.IsDPadLeftPressed && !pilot.Controller.IsDPadRightPressed)
         {
-            otherState = typeof(PilotIdleState);
-            return true;
+            return typeof(PilotIdleState);
         }
         
-        otherState = null;
-        return false;
-    }
-
-    public override void PhysicsProcess(double delta)
-    {
         if (pilot.Controller.IsDPadLeftPressed)
         {
             pilot.Direction = CharacterDirection.FacingLeft;
@@ -36,5 +29,7 @@ public class PilotWalkingState(IPilotCharacter pilot) : BasePilotState(pilot)
             pilot.Direction = CharacterDirection.FacingRight;
             pilot.Velocity = new Vector2(MovementSpeed, pilot.Velocity.Y);
         }
+        
+        return null;
     }
 }

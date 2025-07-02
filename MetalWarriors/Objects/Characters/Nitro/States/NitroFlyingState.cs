@@ -17,29 +17,20 @@ public class NitroFlyingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffset + AnimationOffset;
     }
-    
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+
+    public override Type? ProcessOrPass(double delta)
     {
+        // Check if processing should be delegated to another state
         if (!nitro.Controller.IsButtonBPressed)
         {
             if (!nitro.OnFloor)
             {
-                otherState = typeof(NitroFallingState);
-            }
-            else
-            {
-                otherState = nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed ? typeof(NitroWalkingState) : typeof(NitroIdleState);
+                return typeof(NitroFallingState);
             }
             
-            return true;
+            return nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed ? typeof(NitroWalkingState) : typeof(NitroIdleState);
         }
-
-        otherState = null;
-        return false;
-    }
-    
-    public override void PhysicsProcess(double delta)
-    {
+        
         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
             
         if (nitro.Velocity.Y < MaxRisingVelocity)
@@ -62,43 +53,6 @@ public class NitroFlyingState(INitroCharacter nitro) : BaseNitroState(nitro)
             nitro.Velocity = new Vector2(0, nitro.Velocity.Y);
         }
 
-        
-        // if (nitro.Controller.IsButtonBPressed)
-        // {
-        //     if (nitro.OnFloor)
-        //     {
-        //         nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-        //         // nitro.State = NitroState.Launching;
-        //     }
-        //     else
-        //     {
-        //         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y - BoostingForce);
-        //         
-        //         if (nitro.Velocity.Y < MaxRisingVelocity)
-        //         {
-        //             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxRisingVelocity);
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     if (nitro.OnFloor)
-        //     {
-        //         nitro.Velocity = new Vector2(nitro.Velocity.X, 0);
-        //     }
-        //     else
-        //     {
-        //         nitro.Velocity = new Vector2(nitro.Velocity.X, nitro.Velocity.Y + FallingForce);
-        //
-        //         if (nitro.Velocity.Y > MaxFallingVelocity)
-        //         {
-        //             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
-        //         }
-        //
-        //         // nitro.State = NitroState.Falling;
-        //     }
-        // }
-        
-        // nitro.PlayAnimation(animation);
+        return null;
     }
 }

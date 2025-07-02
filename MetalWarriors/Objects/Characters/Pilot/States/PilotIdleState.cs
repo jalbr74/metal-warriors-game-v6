@@ -11,21 +11,14 @@ public class PilotIdleState(IPilotCharacter pilot) : BasePilotState(pilot)
         
         pilot.PlayAnimation("idle");
     }
-
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    
+    public override Type? ProcessOrPass(double delta)
     {
         if (pilot.Controller.IsDPadLeftPressed || pilot.Controller.IsDPadRightPressed)
         {
-            otherState = typeof(PilotWalkingState);
-            return true;
+            return typeof(PilotWalkingState);
         }
         
-        otherState = null;
-        return false;
-    }
-
-    public override void PhysicsProcess(double delta)
-    {
-        pilot.Velocity = Vector2.Zero;
+        return null;
     }
 }

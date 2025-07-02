@@ -17,27 +17,13 @@ public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffset + AnimationOffset;
     }
-    
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
-    {
-        if (nitro.Controller.IsButtonBPressed)
-        {
-            otherState = typeof(NitroFlyingState);
-            return true;
-        }
-        
-        if (nitro.OnFloor)
-        {
-            otherState = typeof(NitroLandingState);
-            return true;
-        }
 
-        otherState = null;
-        return false;
-    }
-    
-    public override void PhysicsProcess(double delta)
+    public override Type? ProcessOrPass(double delta)
     {
+        // Check if processing should be delegated to another state
+        if (nitro.Controller.IsButtonBPressed) return typeof(NitroFlyingState);
+        if (nitro.OnFloor) return typeof(NitroLandingState);
+        
         // Nitro should be able to steer when falling
         if (nitro.Controller.IsDPadLeftPressed)
         {
@@ -60,5 +46,7 @@ public class NitroFallingState(INitroCharacter nitro) : BaseNitroState(nitro)
         {
             nitro.Velocity = new Vector2(nitro.Velocity.X, MaxFallingVelocity);
         }
+
+        return null;
     }
 }

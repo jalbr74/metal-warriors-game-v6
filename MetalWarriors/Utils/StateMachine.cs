@@ -1,12 +1,15 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 
 namespace MetalWarriors.Utils;
 
 public class StateMachine
 {
+    public State? CurrentState { get; private set; }
+
+    // TODO: Stop using types, since it uses reflection and may be slow.
     private readonly Dictionary<Type, State> _states = new ();
-    private State _currentState;
     
     public StateMachine(State[] states, Type initialState)
     {
@@ -20,49 +23,45 @@ public class StateMachine
     
     public void PhysicsProcess(double delta)
     {
-        if (_currentState == null) return;
+        if (CurrentState == null) return;
 
-        if (_currentState.ShouldTransitionToAnotherState(out var otherState))
+        var nextState = CurrentState.ProcessOrPass(delta);
+
+        while (nextState != null)
         {
-            _currentState.Exit();
+            CurrentState.Exit();
             
-            _currentState = _states[otherState];
-            _currentState.Enter();
+            CurrentState = _states[nextState];
+            CurrentState.Enter();
+
+            nextState = CurrentState.ProcessOrPass(delta);
         }
-        
-        _currentState.PhysicsProcess(delta);
     }
     
     public void SetCurrentState(Type state)
     {
-        _currentState = _states[state];
+        CurrentState = _states[state];
     }
 
     // This is mainly used for testing, when you don't have an existing state to transition from
     public void TransitionToState(Type state)
     {
-        _currentState = new AutomaticallyTransitionToAnotherState(state);
+        CurrentState = new AutomaticallyTransitionToAnotherState(state);
     }
 }
 
+// TODO: Probably should be an interface, but this is easier for now
 public abstract class State
 {
     public virtual void Enter() { }
     public virtual void Exit() { }
-    public virtual void PhysicsProcess(double delta) { }
-
-    public virtual bool ShouldTransitionToAnotherState(out Type otherState)
-    {
-        otherState = null;
-        return false;
-    }
+    public virtual Type? ProcessOrPass(double delta) { return null; }
 }
 
 internal class AutomaticallyTransitionToAnotherState(Type stateToTransitionTo) : State
 {
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    public override Type ProcessOrPass(double delta)
     {
-        otherState = stateToTransitionTo;
-        return true;
+        return stateToTransitionTo;
     }
 }

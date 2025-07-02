@@ -26,40 +26,21 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.GunOffset = GunOffsetAtFrame0 + AnimationOffset;
     }
     
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    public override Type? ProcessOrPass(double delta)
     {
-        if (!nitro.OnFloor)
-        {
-            otherState = typeof(NitroFallingState);
-            return true;
-        }
-        
+        // Check if processing should be delegated to another state
+        if (!nitro.OnFloor) return typeof(NitroFallingState);
+        if (nitro.Controller.IsButtonBPressed) return typeof(NitroLaunchingState);
         if (!nitro.Controller.IsDPadLeftPressed && !nitro.Controller.IsDPadRightPressed)
         {
             if (nitro.Controller.IsButtonBPressed)
             {
-                otherState = nitro.OnFloor ? typeof(NitroLaunchingState) : typeof(NitroFlyingState);
-            }
-            else
-            {
-                otherState = typeof(NitroIdleState);
+                return nitro.OnFloor ? typeof(NitroLaunchingState) : typeof(NitroFlyingState);
             }
             
-            return true;
-        }
-
-        if (nitro.Controller.IsButtonBPressed)
-        {
-            otherState = typeof(NitroLaunchingState);
-            return true;
+            return typeof(NitroIdleState);
         }
         
-        otherState = null;
-        return false;
-    }
-    
-    public override void PhysicsProcess(double delta)
-    {
         if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = CharacterDirection.FacingLeft;
@@ -97,5 +78,7 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
             7 => GunOffsetAtFrame7,
             _ => nitro.GunOffset
         };
+        
+        return null;
     }
 }

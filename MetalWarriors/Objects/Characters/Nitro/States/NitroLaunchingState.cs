@@ -1,6 +1,5 @@
 ﻿using System;
 using Godot;
-using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
@@ -18,20 +17,11 @@ public class NitroLaunchingState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.GunOffset = GunOffset + AnimationOffset;
     }
     
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    public override Type? ProcessOrPass(double delta)
     {
-        if (nitro.IsAnimationFinished)
-        {
-            otherState = typeof(NitroFlyingState);
-            return true;
-        }
-
-        otherState = null;
-        return false;
-    }
-    
-    public override void PhysicsProcess(double delta)
-    {
+        // Check if processing should be delegated to another state
+        if (nitro.IsAnimationFinished) return typeof(NitroFlyingState);
+        
         if (nitro.Controller.IsDPadLeftPressed)
         {
             nitro.Direction = CharacterDirection.FacingLeft;
@@ -90,6 +80,6 @@ public class NitroLaunchingState(INitroCharacter nitro) : BaseNitroState(nitro)
             }
         }
         
-        // nitro.PlayAnimation("launching");
+        return null;
     }
 }

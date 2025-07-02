@@ -9,13 +9,8 @@ public class PilotFallingState(IPilotCharacter pilot) : BasePilotState(pilot)
         pilot.Console.Print($"Entering state: {GetType().Name}");
     }
 
-    public override bool ShouldTransitionToAnotherState(out Type otherState)
+    public override Type? ProcessOrPass(double delta)
     {
-        otherState = null;
-        return false;
-    }
-
-    public override void PhysicsProcess(double delta)
-    {
+        return null;
     }
 }
