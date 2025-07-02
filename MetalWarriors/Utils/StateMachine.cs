@@ -4,14 +4,22 @@ using System.Collections.Generic;
 
 namespace MetalWarriors.Utils;
 
+public interface IState
+{
+    void Enter();
+    void Exit();
+    Type? ProcessOrPass(double delta);
+}
+
+
 public class StateMachine
 {
-    public State? CurrentState { get; private set; }
+    public IState? CurrentState { get; private set; }
 
     // TODO: Stop using types, since it uses reflection and may be slow.
-    private readonly Dictionary<Type, State> _states = new ();
+    private readonly Dictionary<Type, IState> _states = new ();
     
-    public StateMachine(State[] states, Type initialState)
+    public StateMachine(IState[] states, Type initialState)
     {
         foreach (var state in states)
         {
@@ -50,17 +58,12 @@ public class StateMachine
     }
 }
 
-// TODO: Probably should be an interface, but this is easier for now
-public abstract class State
+internal class AutomaticallyTransitionToAnotherState(Type stateToTransitionTo) : IState
 {
-    public virtual void Enter() { }
-    public virtual void Exit() { }
-    public virtual Type? ProcessOrPass(double delta) { return null; }
-}
+    public void Enter() { }
+    public void Exit() { }
 
-internal class AutomaticallyTransitionToAnotherState(Type stateToTransitionTo) : State
-{
-    public override Type ProcessOrPass(double delta)
+    public Type ProcessOrPass(double delta)
     {
         return stateToTransitionTo;
     }

@@ -1,9 +1,10 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using MetalWarriors.Utils;
 
 namespace MetalWarriors.Objects.Characters.Nitro.States;
 
-public abstract class BaseNitroState(INitroCharacter nitro) : State
+public abstract class BaseNitroState(INitroCharacter nitro) : IState
 {
     public const float MovementSpeed = 120.0f;
     public const float MaxFallingVelocity = 300.0f;
@@ -29,4 +30,8 @@ public abstract class BaseNitroState(INitroCharacter nitro) : State
         //     nitro.State = NitroState.Falling;
         // }
     }
+
+    public virtual void Enter() { }
+    public virtual void Exit() { }
+    public virtual Type ProcessOrPass(double delta) { return null; }
 }

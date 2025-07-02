@@ -5,25 +5,34 @@ using Xunit;
 
 namespace MetalWarriorsTests.Utils;
 
-internal class State1 : State
+internal class State1 : IState
 {
-    public override Type? ProcessOrPass(double delta)
+    public void Enter() { }
+    public void Exit() { }
+    
+    public Type? ProcessOrPass(double delta)
     {
         return typeof (State2);
     }
 }
 
-internal class State2 : State
+internal class State2 : IState
 {
-    public override Type? ProcessOrPass(double delta)
+    public void Enter() { }
+    public void Exit() { }
+    
+    public Type? ProcessOrPass(double delta)
     {
         return typeof (State3);
     }
 }
 
-internal class State3 : State
+internal class State3 : IState
 {
-    public override Type? ProcessOrPass(double delta)
+    public void Enter() { }
+    public void Exit() { }
+    
+    public Type? ProcessOrPass(double delta)
     {
         return null;
     }
