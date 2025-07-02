@@ -15,10 +15,10 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var otherState = new NitroFallingState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroFallingState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroFlyingState));
+        passedToState.ShouldBe(typeof(NitroFlyingState));
     }
     
     [Fact]
@@ -28,9 +28,9 @@ public class NitroFallingStateTest(ITestOutputHelper testOutputHelper) : BaseNit
         NitroCharacter.OnFloor.Returns(true);
         
         // Act
-        var otherState = new NitroFallingState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroFallingState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroLandingState));
+        passedToState.ShouldBe(typeof(NitroLandingState));
     }
 }

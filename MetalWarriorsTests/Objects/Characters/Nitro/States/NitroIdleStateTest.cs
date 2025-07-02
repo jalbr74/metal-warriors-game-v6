@@ -17,10 +17,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         Controller.IsDPadRightPressed.Returns(true);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroWalkingState));
+        passedToState.ShouldBe(typeof(NitroWalkingState));
     }
     
     [Fact]
@@ -30,10 +30,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         Controller.IsDPadLeftPressed.Returns(true);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroWalkingState));
+        passedToState.ShouldBe(typeof(NitroWalkingState));
     }
     
     [Fact]
@@ -45,10 +45,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         Controller.IsButtonBPressed.Returns(true);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroLaunchingState));
+        passedToState.ShouldBe(typeof(NitroLaunchingState));
     }
     
     [Fact]
@@ -58,10 +58,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.OnFloor.Returns(false);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroFallingState));
+        passedToState.ShouldBe(typeof(NitroFallingState));
     }
 
     [Fact]
@@ -72,10 +72,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBeNull();
+        passedToState.ShouldBeNull();
         NitroCharacter.Direction.ShouldBe(CharacterDirection.FacingRight);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
     }
@@ -90,10 +90,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         Controller.IsSelectPressed.Returns(true);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(typeof(NitroPoweringDownState));
+        passedToState.ShouldBe(typeof(NitroPoweringDownState));
     }
 
     [Fact]
@@ -105,10 +105,10 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
         
         // Act
-        var otherState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
+        var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);
 
         // Assert
-        otherState.ShouldBe(null);
+        passedToState.ShouldBe(null);
         NitroCharacter.Velocity.ShouldBe(Vector2.Zero);
     }
 }

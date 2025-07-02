@@ -11,12 +11,10 @@ public interface IState
     Type? ProcessOrPass(double delta);
 }
 
-
 public class StateMachine
 {
     public IState? CurrentState { get; private set; }
 
-    // TODO: Stop using types, since it uses reflection and may be slow.
     private readonly Dictionary<Type, IState> _states = new ();
     
     public StateMachine(IState[] states, Type initialState)
@@ -46,13 +44,7 @@ public class StateMachine
         }
     }
     
-    public void SetCurrentState(Type state)
-    {
-        CurrentState = _states[state];
-    }
-
-    // This is mainly used for testing, when you don't have an existing state to transition from
-    public void TransitionToState(Type state)
+    private void TransitionToState(Type state)
     {
         CurrentState = new AutomaticallyTransitionToAnotherState(state);
     }
@@ -62,9 +54,5 @@ internal class AutomaticallyTransitionToAnotherState(Type stateToTransitionTo) :
 {
     public void Enter() { }
     public void Exit() { }
-
-    public Type ProcessOrPass(double delta)
-    {
-        return stateToTransitionTo;
-    }
+    public Type ProcessOrPass(double delta) => stateToTransitionTo;
 }
