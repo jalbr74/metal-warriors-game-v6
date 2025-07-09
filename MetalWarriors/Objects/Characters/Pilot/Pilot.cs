@@ -35,6 +35,8 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
             new PilotWalkingState(this),
             new PilotJettingState(this),
         ], typeof(PilotIdleState));
+
+        _stateMachine.IsVerbose = true;
         
         Animations = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         ParkedMechDetector = GetNode<Area2D>("ParkedMechDetector");

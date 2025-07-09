@@ -6,7 +6,6 @@ public class NitroPoweringDownState(INitroCharacter nitro) : BaseNitroState(nitr
 {
     public override void Enter()
     {
-        nitro.Console.Print($"Entering state: {GetType().Name}");
     }
     
     public override Type? ProcessOrPass(double delta)

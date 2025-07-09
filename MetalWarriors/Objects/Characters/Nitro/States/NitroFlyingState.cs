@@ -11,8 +11,6 @@ public class NitroFlyingState(INitroCharacter nitro) : BaseNitroState(nitro)
     
     public override void Enter()
     {
-        nitro.Console.Print("Entering Flying State");
-        
         nitro.PlayAnimation("flying");
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffset + AnimationOffset;

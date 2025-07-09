@@ -11,8 +11,6 @@ public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
     
     public override void Enter()
     {
-        nitro.Console.Print("Entering Idle State");
-        
         nitro.PlayAnimation("idle");
         nitro.PauseAnimation();
         
@@ -25,7 +23,7 @@ public class NitroIdleState(INitroCharacter nitro) : BaseNitroState(nitro)
         // Check if processing should be delegated to another state
         if (nitro.Controller.IsDPadLeftPressed || nitro.Controller.IsDPadRightPressed) return typeof(NitroWalkingState);
         if (nitro.Controller.IsButtonBPressed) return typeof(NitroLaunchingState);
-        if (nitro.Controller.IsSelectPressed) return typeof(NitroPoweringDownState);
+        if (nitro.Controller.WasSelectPressed) return typeof(NitroPoweringDownState);
         if (!nitro.OnFloor) return typeof(NitroFallingState);
         
         // TODO: We should lerp to this

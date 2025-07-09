@@ -11,8 +11,6 @@ public class NitroLandingState(INitroCharacter nitro) : BaseNitroState(nitro)
     
     public override void Enter()
     {
-        nitro.Console.Print("Entering Landing State");
-        
         nitro.PlayAnimation("landing");
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffset + AnimationOffset;

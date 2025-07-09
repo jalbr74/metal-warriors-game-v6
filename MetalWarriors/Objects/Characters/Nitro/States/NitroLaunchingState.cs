@@ -10,8 +10,6 @@ public class NitroLaunchingState(INitroCharacter nitro) : BaseNitroState(nitro)
     
     public override void Enter()
     {
-        nitro.Console.Print("Entering Launching State");
-        
         nitro.PlayAnimation("launching");
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffset + AnimationOffset;

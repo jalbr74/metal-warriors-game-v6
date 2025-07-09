@@ -87,7 +87,7 @@ public class NitroIdleStateTest(ITestOutputHelper testOutputHelper) : BaseNitroS
         NitroCharacter.OnFloor.Returns(true);
         NitroCharacter.Direction.Returns(CharacterDirection.FacingRight);
         
-        Controller.IsSelectPressed.Returns(true);
+        Controller.WasSelectPressed.Returns(true);
         
         // Act
         var passedToState = new NitroIdleState(NitroCharacter).ProcessOrPass(0.1f);

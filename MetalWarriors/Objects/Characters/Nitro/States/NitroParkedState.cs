@@ -6,7 +6,6 @@ public class NitroParkedState(INitroCharacter nitro) : BaseNitroState(nitro)
 {
     public override void Enter()
     {
-        nitro.Console.Print($"Entering state: {GetType().Name}");
     }
     
     public override Type? ProcessOrPass(double delta)

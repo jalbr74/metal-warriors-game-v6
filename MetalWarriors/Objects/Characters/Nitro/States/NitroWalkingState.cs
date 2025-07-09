@@ -19,8 +19,6 @@ public class NitroWalkingState(INitroCharacter nitro) : BaseNitroState(nitro)
     
     public override void Enter()
     {
-        nitro.Console.Print("Entering Walking State");
-        
         nitro.PlayAnimation("walking");
         nitro.AnimationOffset = AnimationOffset;
         nitro.GunOffset = GunOffsetAtFrame0 + AnimationOffset;

@@ -7,12 +7,10 @@ public class PilotWalkingState(IPilotCharacter pilot) : BasePilotState(pilot)
 {
     public override void Enter()
     {
-        pilot.Console.Print($"Entering state: {GetType().Name}");
-        
         pilot.PlayAnimation("walking");
     }
     
-    public override Type? ProcessOrPass(double delta)
+    public override Type ProcessOrPass(double delta)
     {
         if (!pilot.Controller.IsDPadLeftPressed && !pilot.Controller.IsDPadRightPressed)
         {

@@ -6,7 +6,6 @@ public class PilotJettingState(IPilotCharacter pilot) : BasePilotState(pilot)
 {
     public override void Enter()
     {
-        pilot.Console.Print($"Entering state: {GetType().Name}");
     }
     
     public override Type? ProcessOrPass(double delta)

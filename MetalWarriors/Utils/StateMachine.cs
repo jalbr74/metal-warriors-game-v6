@@ -13,6 +13,7 @@ public interface IState
 
 public class StateMachine
 {
+    public bool IsVerbose { get; set; } = false;
     public IState? CurrentState { get; private set; }
 
     private readonly Dictionary<Type, IState> _states = new ();
@@ -38,13 +39,16 @@ public class StateMachine
             CurrentState.Exit();
             
             CurrentState = _states[nextState];
+
+            if (IsVerbose) Console.WriteLine($"Entering state: {CurrentState.GetType().Name}");
+
             CurrentState.Enter();
 
             nextState = CurrentState.ProcessOrPass(delta);
         }
     }
     
-    private void TransitionToState(Type state)
+    public void TransitionToState(Type state)
     {
         CurrentState = new AutomaticallyTransitionToAnotherState(state);
     }

@@ -55,6 +55,8 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
             new NitroPoweringUpState(this),
             new NitroWalkingState(this),
         ], typeof(NitroIdleState));
+
+        _stateMachine.IsVerbose = true;
         
         GD.Print("Nitro is ready");
     }
@@ -91,6 +93,8 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public void PowerUp(ISnesController controller)
     {
         Controller = controller;
+
+        _stateMachine.TransitionToState(typeof(NitroIdleState));
         
         CollisionUtils.RemoveCollisionLayer(this, ParkedItemsLayer);
     }
