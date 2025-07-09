@@ -16,6 +16,11 @@ public class PilotIdleState(IPilotCharacter pilot) : BasePilotState(pilot)
         {
             return typeof(PilotWalkingState);
         }
+
+        if (!pilot.OnFloor)
+        {
+            return typeof(PilotFallingState);
+        }
         
         pilot.Velocity = Vector2.Zero;
         

@@ -16,7 +16,7 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
     public string CurrentAnimation { get; }
     public int CurrentAnimationFrame { get; }
     public bool IsAnimationFinished { get; set; }
-    public bool OnFloor { get; }
+    public bool OnFloor => IsOnFloor();
     
     private List<Node2D> _detectedCollidableMechs = new ();
     
@@ -34,6 +34,7 @@ public partial class Pilot : CharacterBody2D, IPilotCharacter
             new PilotIdleState(this),
             new PilotWalkingState(this),
             new PilotJettingState(this),
+            new PilotFallingState(this),
         ], typeof(PilotIdleState));
 
         _stateMachine.IsVerbose = true;
