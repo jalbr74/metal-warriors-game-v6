@@ -14,6 +14,12 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     public bool IsAnimationFinished { get; set; }
     public bool OnFloor => IsOnFloor();
 
+    public bool IsGunVisible
+    {
+        get => GunAnimations.Visible;
+        set => GunAnimations.Visible = value;
+    }
+
     private const int ParkedItemsLayer = 3;
     
     public CharacterDirection Direction
@@ -94,7 +100,7 @@ public partial class Nitro : CharacterBody2D, INitroCharacter
     {
         Controller = controller;
 
-        _stateMachine.TransitionToState(typeof(NitroIdleState));
+        _stateMachine.TransitionToState(typeof(NitroPoweringUpState));
         
         CollisionUtils.RemoveCollisionLayer(this, ParkedItemsLayer);
     }

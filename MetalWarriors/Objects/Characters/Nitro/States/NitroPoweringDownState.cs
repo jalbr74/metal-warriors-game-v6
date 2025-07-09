@@ -6,9 +6,11 @@ public class NitroPoweringDownState(INitroCharacter nitro) : BaseNitroState(nitr
 {
     public override void Enter()
     {
+        nitro.IsGunVisible = false;
+        nitro.PlayAnimation("powering-down");
     }
     
-    public override Type? ProcessOrPass(double delta)
+    public override Type ProcessOrPass(double delta)
     {
         return null;
     }

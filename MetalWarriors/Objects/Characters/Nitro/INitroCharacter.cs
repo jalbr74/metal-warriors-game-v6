@@ -15,9 +15,10 @@ public interface INitroCharacter
     int CurrentAnimationFrame { get; }
     bool IsAnimationFinished { get; set; }
     bool OnFloor { get; }
+    bool IsGunVisible { get; set; }
     Vector2 AnimationOffset { get; set; }
     Vector2 GunOffset { get; set; }
-    
+
     // Methods
     void PlayAnimation(string animation);
     void PauseAnimation();

@@ -27,7 +27,7 @@ region = Rect2(123, 0, 41, 47)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tcyvt"]
 atlas = ExtResource("1_mrnoq")
-region = Rect2(176, 0, 44, 44)
+region = Rect2(352, 0, 44, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bd5i4"]
 atlas = ExtResource("4_davsn")
@@ -63,43 +63,43 @@ region = Rect2(168, 0, 42, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jg51r"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(0, 0, 42, 44)
+region = Rect2(0, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_18a3v"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(42, 0, 42, 44)
+region = Rect2(49, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vq0nm"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(84, 0, 42, 44)
+region = Rect2(98, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e1pj4"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(126, 0, 42, 44)
+region = Rect2(147, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6gvx0"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(168, 0, 42, 44)
+region = Rect2(196, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5kvcj"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(168, 0, 42, 44)
+region = Rect2(196, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sdx5k"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(126, 0, 42, 44)
+region = Rect2(147, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hx8n6"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(84, 0, 42, 44)
+region = Rect2(98, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rbpcs"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(42, 0, 42, 44)
+region = Rect2(49, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7sra7"]
 atlas = ExtResource("7_x4dgv")
-region = Rect2(0, 0, 42, 44)
+region = Rect2(0, 0, 49, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hggx2"]
 atlas = ExtResource("1_mrnoq")
@@ -460,7 +460,7 @@ script = ExtResource("1_g5dot")
 [node name="NitroAnimations" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_4jddo")
-animation = &"powering-up"
+animation = &"powering-down"
 autoplay = "idle"
 frame = 4
 frame_progress = 1.0

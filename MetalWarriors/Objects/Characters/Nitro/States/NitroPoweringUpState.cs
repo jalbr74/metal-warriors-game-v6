@@ -9,8 +9,15 @@ public class NitroPoweringUpState(INitroCharacter nitro) : BaseNitroState(nitro)
         nitro.PlayAnimation("powering-up");
     }
     
-    public override Type? ProcessOrPass(double delta)
+    public override Type ProcessOrPass(double delta)
     {
+        if (nitro.IsAnimationFinished)
+        {
+            nitro.IsGunVisible = true;
+            
+            return typeof(NitroIdleState);
+        }
+        
         return null;
     }
 }
